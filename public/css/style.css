@@ -1,0 +1,267 @@
+body {
+    background-color: #ebebeb;
+    font-family: 'Playfair', sans-serif!important;
+    font-size: 20px!important;
+}
+
+.navbar {
+    min-height: 57px;
+}
+
+.navbar-toggler {
+    background-color: #7cc0d0;
+    border: 2px solid transparent;
+    -webkit-box-shadow: 0px 0px 41px -14px grey;
+    -moz-box-shadow: 0px 0px 41px -14px grey;
+    box-shadow: 0px 0px 41px -14px grey;
+}
+
+.logo {
+    font-family: Playfair;
+    color: #343a40!important;
+    font-size: 24px!important;
+}
+
+.bg-budget {
+    background-color: #F5E663!important;
+}
+
+ a {
+    color: black!important;
+}
+
+.nav-name {
+    font-size: 24px!important;
+
+}
+
+.input-group {
+    width: 80%;
+}
+
+.form-control {
+    padding: 1.1rem .75rem!important;
+    font-size: 20px!important;
+    text-align: center;
+}
+
+.form-control:focus {
+    border: 2px solid #40798C!important;
+    background-color: #e9f3e9!important;
+    outline: none!important;
+    box-shadow: none!important;
+}
+
+.login-color {
+    background-color: #F5E663;
+    color: black;
+}
+
+.register-color {
+    background-color: #47A8BD!important;
+    color: black!important;
+}
+
+.btn-login {
+    width: 330px;
+    height: 60px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000;
+    font-size: 20px;
+    background-color: #F5E663;
+    letter-spacing: 2px;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0px;
+}
+
+.btn-login:hover
+{
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+    box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+    border: 2px solid #F5E683;
+    background-color: #F5E683;
+    border: none;
+    color: white;
+}
+
+.btn-register {
+    width: 330px;
+    height: 60px;
+    outline: none!important;
+    border: none!important;
+    border-radius: 5px!important;
+    cursor: pointer;
+    color: #ffffff!important;
+    font-size: 20px!important;
+    background-color: #47A8BD!important;
+    letter-spacing: 2px!important;
+    font-weight: bold!important;
+}
+
+.btn-register:hover
+{
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9)!important;
+    -moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9)!important;
+    box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9)!important;
+    border: 2px solid #40798C!important;
+    background-color: #73abbf!important;
+    border: none!important;
+    color: #000!important;
+}
+
+.bg-background {
+    background-image: url("img/background.png");
+    -webkit-box-shadow: 0px 0px 20px 2px rgba(204,204,204,0.9);
+    -moz-box-shadow: 0px 0px 20px 2px rgba(204,204,204,0.9);
+    box-shadow: 0px 0px 20px 2px rgba(204,204,204,0.9);
+    border: 2px solid lightgray;
+}
+
+.btn-active {
+    font-weight: 600;
+    cursor: context-menu;
+}
+
+.bg-color {
+    color: #47A8BD;
+}
+
+label {
+    height: 60px;
+    margin-top: 10px;
+}
+
+.bg-shadow {
+    -webkit-box-shadow: 0px 0px 20px 2px rgba(204,204,204,0.9);
+    -moz-box-shadow: 0px 0px 20px 2px rgba(204,204,204,0.9);
+    box-shadow: 0px 0px 20px 2px rgba(204,204,204,0.9);
+}
+
+.bg-table {
+    background-color: #47A8BD;
+}
+
+.btn-settings {
+    width: 340px;
+    height: 70px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 20px;
+    background-color: #47A8BD;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0px;
+}
+
+.btn-settings:hover
+{
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+    box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+    border: 2px solid #40798C;
+    background-color: #73abbf;
+    border: none;
+}
+
+.btn-sub-settings {
+    width: 80px;
+    height: 40px;
+    background-color: #47A8BD ;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+}
+
+.btn-sub-settings:hover {
+    border: 2px solid #40798C;
+    background-color: #73abbf;
+    border: none;
+}
+
+.btn-sub-mini-setting {
+    width: 90px;
+    height: 40px;
+    background-color: #F5E663;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    letter-spacing: 0px;
+    font-size: 1rem;
+}
+
+.btn-sub-mini-setting:hover
+{
+    border: 2px solid #40798C;
+    background-color: #F5E683;
+    border: none;
+}
+
+.h4 {
+    color: #40798C;
+    font-weight: bold;
+}
+
+.border {
+    border: 1px solid #40798C;
+}
+
+.little-input {
+    width: 30%;
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center; 
+    font-size: 16px; 
+    padding: 5px;
+}
+
+.footer a {
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color:lightgray!important;
+}
+
+.method-pay {
+    height:58%;
+}
+
+.method-pay label{
+    height:30px; 
+    margin-top:0px;
+}
+
+@media screen and (max-width:1200px) {
+
+.btn-register {
+    width: 290px;
+}
+
+.btn-login {
+    width: 290px;
+}
+}
+
+@media screen and (max-width:767px) {
+    .input-group {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+

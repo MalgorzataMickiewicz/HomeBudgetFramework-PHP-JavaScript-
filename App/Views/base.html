@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="/css/fontello/fontello.css" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet" />
+
+    <!--[if lt IE 9]>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+    <header>
+
+        <nav class="navbar bg-budget navbar-dark navbar-expand-lg text-center">
+            <a class="navbar-brand logo ml-2" href="/">Your Budget</a>
+
+            {% if current_user %}
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu"
+                aria-controls="main-menu" aria-expanded="false" aria-label="Przełącznik nawigacji">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="navbar-nav my-auto">
+                        <li class="nav-item"> <a class="nav-link" href=""> Dodaj przychód</a></li>
+                        <li class="nav-item"> <a class="nav-link" href=""> Dodaj wydatek</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" role="button"
+                                aria-expanded="false" id="submenu" aria-haspopup="true"> Przeglądaj bilans </a>
+
+                            <div class="dropdown-menu" aria-labelledby="submenu">
+
+                                <a class="dropdown-item" href=""> Bieżący miesiąc </a>
+                                <a class="dropdown-item" href=""> Poprzedni miesiąc </a>
+                                
+                                <div class="dropdown-divider"></div>
+                                
+                                <a class="dropdown-item" href=""> Bieżący rok </a>
+                                <a class="dropdown-item" href=""> Niestandardowy </a>
+
+                            </div>
+
+                        </li>
+                        <li class="nav-item"> <a class="nav-link" href="/profile/show">Ustawienia</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="/logout">Wyloguj się</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+
+        </nav>
+
+    </header>
+
+    <main>
+
+        <div class="container">
+
+            {% for message in flash_messages %}
+                <div class="alert alert-{{ message.type }}">
+                    {{ message.body }}
+                </div>
+            {% endfor %}
+
+            {% block body %}
+            {% endblock %}
+
+        </div>
+    </main>
+
+    <footer class="fixed-bottom">    
+        <div class="footer">
+         © Małgorzata Mickiewicz <a href="malgorzatamickiewicz.pl/kontakt">contact with me</a>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <script src="/js/bootstrap.min.js"></script>
+    {% block footer %}
+    {% endblock %}
+</body>
+</html>

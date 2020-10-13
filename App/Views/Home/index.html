@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Logowanie | TB twojbudzet.com{% endblock %}
+
+{% block body %}
+
+    <h1>Witaj</h1>
+
+    {% if current_user %}
+         {{ current_user.name }}
+
+         <div class="row text-center bg-background my-4 p-sm-3 p-lg-0">
+
+            <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
+
+            <h2 class="h3">
+                <p> Wybierz co chcesz zrobić używając menu u góry strony. </p>
+                <p> Kontroluj swoje przychody i wydatki używając opcji przeglądania bilansu i ciesz się życiem!</p>
+                
+            </h2>
+
+                <img class="img-fluid mt-3 mb-3" alt="obraz" src="/img/obraz.png">
+            </div>
+        </div>
+
+    {% else %}
+        <a href="/signup/new">Zarejestruj się</a> lub <a href="/login">zaloguj</a>.
+    {% endif %}
+
+{% endblock %}
