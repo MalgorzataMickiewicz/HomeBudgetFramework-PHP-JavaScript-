@@ -1,3 +1,9 @@
-<h1>Password reset</h1>
+{% extends 'base.html' %}
 
-<p>Please <a href="{{ url }}">click here to reset your password</a>.</p>
+{% block body %}
+
+<h1>Resetowanie hasła w Twój Budżet</h1>
+
+<p style="font-size: 16px;">Kliknij <a class="bg-color font-weight-bold" href="{{ url }}">tutaj aby zresetować swoje hasło w aplikacji</a>.</p>
+
+{% endblock %}
