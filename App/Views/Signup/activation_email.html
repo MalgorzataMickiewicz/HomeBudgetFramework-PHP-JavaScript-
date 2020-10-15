@@ -1,3 +1,9 @@
-<h1>Account activation</h1>
+{% extends 'base.html' %}
 
-<p>Thank you for signing up. Please <a href="{{ url }}">click here to activate your account</a>.</p>
+{% block body %}
+
+<h1>Aktywacja konta Twój Budżet</h1>
+
+<p style="font-size: 16px;">Dziękujemy za rejestrację. Kliknij <a class="bg-color font-weight-bold" href="{{ url }}">tutaj i aktywuj swoje konto.</a>.</p>
+
+{% endblock %}

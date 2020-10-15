@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Logowanie | TB twojbudzet.com{% endblock %}
+{% block title %}TB twojbudzet.com{% endblock %}
 
 {% block body %}
 
@@ -9,7 +9,7 @@
     {% if current_user %}
          {{ current_user.name }}
 
-         <div class="row text-center bg-background my-4 p-sm-3 p-lg-0">
+         <div class="row text-center bg-background my-6 p-sm-3 p-lg-3">
 
             <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
 
@@ -24,7 +24,21 @@
         </div>
 
     {% else %}
-        <a href="/signup/new">Zarejestruj się</a> lub <a href="/login">zaloguj</a>.
+    <div class="row text-center bg-background my-4 p-sm-3 p-lg-0">
+
+        <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
+            <div>
+                <p>
+                    Chcesz mieć kontrolę nad swoim budżetem domowym? <br />
+                    Dobrze trafiłeś! Przedstawiam Ci aplikację, która ułatwi Ci to zadanie. <br />
+                    Wybierz co chcesz zrobić i przejmij kontrolę już teraz:<br />
+                </p>
+                <p style="font-size: 24px;">
+                    <a href="/signup/new">Zarejestruj się</a> lub <a href="/login">zaloguj</a>.
+                </p>
+            </div>
+        </div>
+    </div>
     {% endif %}
 
 {% endblock %}
