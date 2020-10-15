@@ -44,19 +44,19 @@ class Config
      * Secret key for hashing
      * @var boolean
      */
-    const SECRET_KEY = 'your-secret-key';
+    const SECRET_KEY = 'adonis94';
 
     /**
      * Mailgun API key
      *
      * @var string
      */
-    const MAILGUN_API_KEY = 'your-mailgun-api-key';
+    const MAILGUN_API_KEY = 'key-423b6af955098f687beb44004e167cdc';
 
     /**
      * Mailgun domain
      *
      * @var string
      */
-    const MAILGUN_DOMAIN = 'your-mailgun-domain';
+    const MAILGUN_DOMAIN = 'sandbox2a1058c28a3a4403b553f30e180a7f7f.mailgun.org';
 }
