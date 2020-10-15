@@ -1,5 +1,4 @@
-Password reset
+Resetowanie hasła w Twój Budżet
 
-Please click the following link to reset your password:
-
+Kliknij tutaj aby zresetować swoje hasło w aplikacji:
 {{ url }}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Reset password{% endblock %}
+{% block title %}Reset hasła| TB twojbudzet.com{% endblock %}
 
 {% block footer %}
     <script src="/js/hideShowPassword.min.js"></script>
@@ -37,10 +37,10 @@
 
 {% block body %}
 
-    <h1>Reset password</h1>
+    <h1>Resetetowanie hasła</h1>
 
     {% if user.errors is not empty %}
-        <p>Errors:</p>
+        <p>Błędy:</p>
         <ul>
             {% for error in user.errors %}
                 <li>{{ error }}</li>
@@ -48,17 +48,23 @@
         </ul>
     {% endif %}
 
-    <form method="post" id="formPassword" action="/password/reset-password">
+    <div class="row text-center bg-background my-6 p-sm-3 p-lg-0">
+        <div class="col-lg-8 offset-lg-2 bg-white my-4 shadow p-3">
+            <h1 class="h3 font-weight-bold my-4 nav-name">Resetowanie hasła</h1>
 
-        <input type="hidden" name="token" value="{{ token }}" />
+            <form method="post" id="formPassword" action="/password/reset-password">
 
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required class="form-control" />
+                <input type="hidden" name="token" value="{{ token }}" />
+
+                <div class="col-10 offset-md-1 input-group mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text login-color"> ✉ </span>
+                    </div>
+                    <input type="password" name="password" class="form-control" placeholder="Hasło" id="inputpassword" aria-label="password" aria-describedby="password">
+
+                </div>
+                    <button type="submit" class="btn-login mt-0 mb-4">Zresetuj hasło</button>
+            </form>
         </div>
-
-        <button type="submit" class="btn btn-default">Reset password</button>
-
-    </form>
 
 {% endblock %}
