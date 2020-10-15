@@ -1,5 +1,6 @@
-Account activation
+Aktywacja konta Twój Budżet
 
-Thank you for signing up. Please click the following link to activate your account:
+Dziękujemy za rejestrację. Kliknij i aktywuj swoje konto:
+{{ url }} 
 
-{{ url }}
+

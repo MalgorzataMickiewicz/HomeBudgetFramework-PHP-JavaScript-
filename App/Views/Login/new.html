@@ -1,30 +1,63 @@
 {% extends "base.html" %}
 
-{% block title %}Log in{% endblock %}
+{% block title %}Zaloguj się | TB twojbudzet.com{% endblock %}
 
 {% block body %}
 
-    <h1>Log in</h1>
+    <h1>Zaloguj się</h1>
 
-    <form action="/login/create" method="post">
+    <div class="row text-center bg-background my-6 p-sm-3 p-lg-0">
+        <div class="col-lg-4 offset-lg-1 bg-white my-4 shadow p-3">
+            <h1 class="h3 font-weight-bold my-4 nav-name">Logowanie</h1>
 
-        <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input type="email" id="inputEmail" name="email" placeholder="Email address" autofocus value="{{ email }}" class="form-control" />
+            <form action="/login/create" method="post">
+
+                <div class="col-10 offset-md-1 input-group mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text login-color"> ✉ </span>
+                    </div>
+
+                    <input type="email" name="email" class="form-control" placeholder="*Email" id="inputEmail"  autofocus value="{{ email }}" 
+                        aria-label="email" aria-describedby="email">
+                </div>
+
+                <div class="col-10 offset-md-1 input-group mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text login-color">
+                            <svg class="bi bi-lock-fill" width="1em" height="1em" viewBox="0 0 16 16"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="11" height="9" x="2.5" y="7" rx="2" />
+                                <path fill-rule="evenodd"
+                                    d="M4.5 4a3.5 3.5 0 117 0v3h-1V4a2.5 2.5 0 00-5 0v3h-1V4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </div>
+
+                    <input type="password" name="password" class="form-control" placeholder="*Hasło" id="inputPassword"
+                        aria-label="password" aria-describedby="password">
+                </div>
+
+                <div class="checkbox my-0">
+                    <label>
+                        <input type="checkbox" class="my-0" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Zapamiętaj mnie
+                    </label>
+                </div>
+                <button type="submit" class="btn-login mt-0 mb-4">Zaloguj się</button>
+                <p>*Pole wymagane</p>
+                <a href="/password/forgot">Zapomniałeś hasła?</a>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" class="form-control" />
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Remember me
-            </label>
-        </div>
 
-        <button type="submit" class="btn btn-default">Log in</button>
-        <a href="/password/forgot">Forgot password?</a>
-
-    </form>
+        <div class="col-lg-4 offset-lg-2 offset-xs-0 bg-white my-4 shadow p-3">
+            <h1 class="h3 font-weight-bold my-4 nav-name">Nie masz jeszcze konta? <br />Zarejestruj się!</h1>
+            <a href="/signup/new">
+                <button type="submit" class="btn btn-register my-3">Rejestracja </button>
+            </a>
+            <p class="h4 font-weight-bold mb-2 mt-2 "> Dlaczego warto założyć konto? </p>
+            <p class="mt-4 mb-0"> ★ Zyskujesz dostęp do historii swojego budżetu </p>
+            <p>★ Nie widzisz reklam </p>
+        </div>
+    </div>
 
 {% endblock %}

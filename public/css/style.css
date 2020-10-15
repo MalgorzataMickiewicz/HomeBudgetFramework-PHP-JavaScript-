@@ -53,8 +53,8 @@ body {
 }
 
 .login-color {
-    background-color: #F5E663;
-    color: black;
+    background-color: #F5E663!important;
+    color: black!important;
 }
 
 .register-color {
@@ -97,7 +97,7 @@ body {
     border-radius: 5px!important;
     cursor: pointer;
     color: #ffffff!important;
-    font-size: 20px!important;
+    font-size: 24px!important;
     background-color: #47A8BD!important;
     letter-spacing: 2px!important;
     font-weight: bold!important;
@@ -120,6 +120,8 @@ body {
     -moz-box-shadow: 0px 0px 20px 2px rgba(204,204,204,0.9);
     box-shadow: 0px 0px 20px 2px rgba(204,204,204,0.9);
     border: 2px solid lightgray;
+    margin-bottom: 60px!important;
+    margin-top: 20px!important;
 }
 
 .btn-active {
@@ -128,7 +130,8 @@ body {
 }
 
 .bg-color {
-    color: #47A8BD;
+    color: #47A8BD!important;
+    text-decoration: none;
 }
 
 label {
@@ -212,6 +215,7 @@ label {
 .h4 {
     color: #40798C;
     font-weight: bold;
+    font-size:18px!important;
 }
 
 .border {
