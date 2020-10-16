@@ -61,7 +61,7 @@ class Profile extends Authenticated
 
             Flash::addMessage('Zmiany zapisano');
 
-            $this->redirect('/profile/show');
+            $this->redirect('/profile/edit');
 
         } else {
 
