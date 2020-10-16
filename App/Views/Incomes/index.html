@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Przychody | TB twojbudzet.com{% endblock %}
+
+{% block body %}
+
+<form method="post" action="/incomes/saveIncome" id="formIncome">
+    <div class="row text-center bg-background my-6 p-sm-3 p-lg-0">
+
+        <div class="col-lg-10 offset-lg-1 my-5 bg-white bg-shadow">
+
+            <h1 class="h2 font-weight-bold bg-color my-4 nav-name">
+                Dodaj swój przychód
+            </h1>
+
+        </div>
+
+        <div class="col-lg-5 offset-lg-1">
+
+            <label class="font-weight-bold" for="kwota">Dodaj kwotę przychodu</label>
+
+            <input type="text" name="kwota" class="form-control" id="kwota" placeholder="Kwota" aria-label="kwota"
+                aria-describedby="kwota">
+
+        </div>
+       
+        <div class="col-lg-5">
+
+            <label class="font-weight-bold" for="data">Dodaj datę przychodu</label>
+
+            <input type="date" name="data" class="form-control" id="data" aria-label="data" aria-describedby="data">
+
+        </div>
+
+        <div class="form-group col-lg-5 offset-lg-1">
+
+            <label class="font-weight-bold" for="przychod-kategoria">Wybierz kategorię dodawanego
+                przychodu</label>
+            
+            <select name="kategoria" multiple class="form-control" id="przychod-kategoria">
+               
+
+            </select>
+
+        </div>
+
+        <div class="form-group col-lg-5">
+
+            <label class="font-weight-bold" for="komentarz"> Dodaj opcjonalnie swój komentarz </label>
+            <textarea name="komentarz" class="form-control" id="komentarz" rows="3"></textarea>
+
+        </div>
+
+        <div class="col-lg-5 offset-lg-1 p-1">
+            <button type="submit" class="btn btn-register my-3"> Dodaj przychód </button>
+        </div>
+
+        <div class="col-lg-5 p-1">
+            <a href="/">
+                <button type="button" class="btn btn-register my-3"> Anuluj </button>
+            </a>
+        </div>  
+    </div>
+</form>
+
+{% endblock %}
