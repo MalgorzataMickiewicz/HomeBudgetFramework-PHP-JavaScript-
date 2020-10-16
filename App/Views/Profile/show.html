@@ -1,18 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}Ustawienia | TB twojbudzet.com{% endblock %}
 
 {% block body %}
 
-    <h1>Profile</h1>
+    <h1>Ustawienia</h1>
 
-    <dl class="dl-horizontal">
-        <dt>Name</dt>
-        <dd>{{ user.name }}</dd>
-        <dt>email</dt>
-        <dd>{{ user.email }}</dd>
-    </dl>
+    <div class="row text-center bg-background my-6 p-sm-3 p-lg-0">
 
-    <a href="/profile/edit">Edit</a>
+        <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
+
+            <h1 class="h2 font-weight-bold bg-color my-4 nav-name">
+                Ustawienia
+            </h1>
+
+        </div>
+
+        <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
+
+            <div class="col-lg-6 offset-lg-3 p-1">
+                <a href="/profile/edit">
+                    <button class="btn btn-settings my-3"> Edytuj dane osobowe </button>
+                </a>
+            </div>
+
+            <div class="col-lg-6 offset-lg-3 p-1">
+            <a href="categories.php">
+                <button class="btn btn-settings my-3"> Zarządzanie kategoriami </button>
+            </a>
+            </div>
+
+        </div>
+
+    </div>
 
 {% endblock %}

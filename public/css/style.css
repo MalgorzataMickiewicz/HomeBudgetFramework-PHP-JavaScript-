@@ -32,7 +32,7 @@ body {
 
 .nav-name {
     font-size: 24px!important;
-
+    font-weight: bold!important;
 }
 
 .input-group {
@@ -50,6 +50,12 @@ body {
     background-color: #e9f3e9!important;
     outline: none!important;
     box-shadow: none!important;
+}
+
+.form-control-name {
+    padding: 1.1rem .75rem!important;
+    font-size: 20px!important;
+    text-align: center;
 }
 
 .login-color {
@@ -132,6 +138,7 @@ body {
 .bg-color {
     color: #47A8BD!important;
     text-decoration: none;
+    font-weight: bold!important;
 }
 
 label {
@@ -153,43 +160,59 @@ label {
     width: 340px;
     height: 70px;
     outline: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #ffffff;
-    font-size: 20px;
-    background-color: #47A8BD;
-    font-size: 24px;
-    font-weight: bold;
+    border: none!important;
+    border-radius: 5px!important;
+    cursor: pointer!important;
+    color: #ffffff!important;
+    font-size: 20px!important;
+    background-color: #47A8BD!important;
+    font-size: 24px!important;
+    font-weight: bold!important;
     letter-spacing: 0px;
 }
 
 .btn-settings:hover
 {
-    -webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
-    -moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
-    box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
-    border: 2px solid #40798C;
-    background-color: #73abbf;
-    border: none;
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9)!important;
+    -moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9)!important;
+    box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9)!important;
+    border: 2px solid #40798C!important;
+    background-color: #73abbf!important;
+    border: none!important;
 }
 
 .btn-sub-settings {
     width: 80px;
     height: 40px;
-    background-color: #47A8BD ;
+    background-color: #47A8BD!important;
     outline: none;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    color: white;
-    font-size: 16px;
+    border: none!important;
+    border-radius: 5px!important;
+    font-weight: bold!important;
+    color: white!important;
+    font-size: 16px!important;
 }
 
 .btn-sub-settings:hover {
-    border: 2px solid #40798C;
-    background-color: #73abbf;
-    border: none;
+    border: 2px solid #40798C!important;
+    background-color: #73abbf!important;
+    border: none!important;
+}
+
+.btn-can-settings {
+    width: 80px;
+    height: 40px;
+    font-weight: bold!important;
+    font-size: 16px!important;
+    outline: none;
+    border: none!important;
+    border-radius: 5px!important;
+}
+
+.btn-can-settings:hover {
+    border: 2px solid #545b62!important;
+    background-color: #5a6268!important;
+    border: none!important;
 }
 
 .btn-sub-mini-setting {
@@ -213,8 +236,8 @@ label {
 }
 
 .h4 {
-    color: #40798C;
-    font-weight: bold;
+    color: #40798C!important;
+    font-weight: bold!important;
     font-size:18px!important;
 }
 
