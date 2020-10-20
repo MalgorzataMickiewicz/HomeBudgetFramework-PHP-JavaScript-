@@ -79,30 +79,30 @@ class User extends \Core\Model
     {
         // Name
         if ($this->name == '') {
-            $this->errors[] = 'Name is required';
+            $this->errors[] = 'Nazwa jest wymagana';
         }
 
         // email address
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->errors[] = 'Invalid email';
+            $this->errors[] = 'Błędny email';
         }
         if (static::emailExists($this->email, $this->id ?? null)) {
-            $this->errors[] = 'email already taken';
+            $this->errors[] = 'Adres email jest już zajęty';
         }
 
         // Password
         if (isset($this->password)) {
 
             if (strlen($this->password) < 6) {
-                $this->errors[] = 'Please enter at least 6 characters for the password';
+                $this->errors[] = 'Hasło powinno mieć przynajmniej 6 znaków';
             }
 
             if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
-                $this->errors[] = 'Password needs at least one letter';
+                $this->errors[] = 'Hasło powinno mieć przynajmniej jedną literę';
             }
 
             if (preg_match('/.*\d+.*/i', $this->password) == 0) {
-                $this->errors[] = 'Password needs at least one number';
+                $this->errors[] = 'Hasło powinno mieć przynajmniej jedną cyfrę';
             }
 
         }
@@ -152,7 +152,7 @@ class User extends \Core\Model
     }
 
     /**
-     //* Authenticate a user by email and password.
+     * Authenticate a user by email and password.
      * Authenticate a user by email and password. User account has to be active.
      *
      * @param string $email email address

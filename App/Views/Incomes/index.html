@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Przychody | TB twojbudzet.com{% endblock %}
+
+{% block footer %}
+    <script src="/js/app.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            /**
+             * Validate the form
+             */
+            $('#formIncome').validate({
+                rules: {
+                    valueIncome: {
+                        required: true
+                        },
+                    dateIncome: {
+                        required: true
+                    },
+                    categoryIncome: {
+                        required: true
+                    }
+                },
+                messages: {
+                    valueIncome: {
+                        remote: 'Wprowadź liczbę dodatnią, różną od zera'
+                    },
+                    dateIncome: {
+                        remote: 'Wprowadź datę'
+                    },
+                    categoryIncome: {
+                        remote: 'Wybierz kategorię'
+                    }
+                }
+            });
+
+
+            /**
+              * Show password toggle button
+              */
+            $('#inputPassword').hideShowPassword({
+                show: false,
+                innerToggle: 'focus'
+            });
+        });
+    </script>
+
+{% endblock %}
+
+
+{% block body %}
+
+{% if income.errors is not empty %}
+<p>Błędy w formularzu:</p>
+<ul>
+    {% for error in income.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+{% endif %}
+
+<form method="post" action="/incomes/saveIncome" id="formIncome">
+    <div class="row text-center bg-background my-6 p-sm-3 p-lg-0">
+
+        <div class="col-lg-10 offset-lg-1 my-5 bg-white bg-shadow">
+
+            <h1 class="h2 font-weight-bold bg-color my-4 nav-name">
+                Dodaj swój przychód
+            </h1>
+
+        </div>
+
+        <div class="col-lg-5 offset-lg-1">
+
+            <label class="font-weight-bold" for="kwota">Dodaj kwotę przychodu</label>
+
+            <input type="text" name="valueIncome" class="form-control" id="valueIncome" placeholder="Kwota" aria-label="value"
+                aria-describedby="value">
+
+        </div>
+       
+        <div class="col-lg-5">
+
+            <label class="font-weight-bold" for="data">Dodaj datę przychodu</label>
+
+            <input type="date" name="dateIncome" class="form-control" id="date" aria-label="date" aria-describedby="date">
+
+        </div>
+
+        <div class="form-group col-lg-5 offset-lg-1">
+
+            <label class="font-weight-bold" for="category">Wybierz kategorię dodawanego
+                przychodu</label>
+            
+            <select name="categoryIncome" multiple class="form-control" id="category">
+                <option value="Testowa Kategoria">Testowa Kategoria</option>
+            </select>
+
+        </div>
+
+        <div class="form-group col-lg-5">
+
+            <label class="font-weight-bold" for="comment"> Dodaj opcjonalnie swój komentarz </label>
+            <textarea name="commentIncome" class="form-control" id="comment" rows="3"></textarea>
+
+        </div>
+
+        <div class="col-lg-5 offset-lg-1 p-1">
+            <button type="submit" class="btn btn-register my-3"> Dodaj przychód </button>
+        </div>
+
+        <div class="col-lg-5 p-1">
+            <a href="/">
+                <button type="button" class="btn btn-register my-3"> Anuluj </button>
+            </a>
+        </div>  
+    </div>
+</form>
+
+{% endblock %}
