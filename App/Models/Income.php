@@ -10,8 +10,17 @@ use \Core\View;
  *
  * PHP version 7.0
  */
+
+
 class Income extends \Core\Model
 {
+    /**
+    * Error messages
+    *
+    * @var array
+    */
+    public $errors = [];
+
     /**
      * Class constructor
      *
@@ -34,32 +43,70 @@ class Income extends \Core\Model
 
     public function saveIncome() 
     {
-        $userId = $_SESSION['user_id'];
-        $categoryIncomeId = '1';
+        $this->validate();
 
-        $categoryIncome = $this->categoryIncome;
+        if (empty($this->errors)) {
 
-        //get value of choosen category id from database
-        $categoryIdString = static::getCategoryId($categoryIncome);
+            $userId = $_SESSION['user_id'];
+            $categoryIncome = $this->categoryIncome;
+            $value = $this->valueIncome;
 
-        if ($categoryIdString) {
-            $categoryIdIntiger = (int)$categoryIdString;
+            //get value of choosen category id from database
+            $categoryIdString = static::getCategoryId($categoryIncome);
 
-            $sql = 'INSERT INTO incomes (userId, dateIncome, valueIncome, categoryIncomeId, commentIncome)
-            VALUES (:userId, :dateIncome, :valueIncome, :categoryIdIntiger, :commentIncome)';
+            if ($categoryIdString) {
+                $categoryIdIntiger = (int)$categoryIdString;
+                
+                //get value withouts comma and round to 2
+                $valueDot = static::getValueWithDot($value);
+
+                $sql = 'INSERT INTO incomes (userId, dateIncome, valueIncome, categoryIncomeId, commentIncome)
+                VALUES (:userId, :dateIncome, :valueDot, :categoryIdIntiger, :commentIncome)';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+        
+                $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
+                $stmt->bindValue(':dateIncome', $this->dateIncome, PDO::PARAM_STR); 
+                $stmt->bindValue(':valueDot', $valueDot, PDO::PARAM_STR);
+                $stmt->bindValue(':categoryIdIntiger', $categoryIdIntiger, PDO::PARAM_STR);
+                $stmt->bindValue(':commentIncome', $this->commentIncome, PDO::PARAM_STR);
+                return $stmt->execute();
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Validate current property values, adding valiation error messages to the errors array property
+     *
+     * @return void
+     */
+    public function validate()
+    {
+        // Value
+        if ($this->valueIncome == '') {
+            $this->errors[] = 'Kwota jest wymagana, wprowadź liczbę dodatnią, różną od 0';
         }
 
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
+        // Date
+        if (($this->dateIncome == '0000-00-00') || ($this->dateIncome == '')){
+            $this->errors[] = 'Data jest wymagana';
+        }
 
-        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
-        $stmt->bindValue(':dateIncome', $this->dateIncome, PDO::PARAM_STR); 
-        $stmt->bindValue(':valueIncome', $this->valueIncome, PDO::PARAM_STR);
-        $stmt->bindValue(':categoryIdIntiger', $categoryIncomeId, PDO::PARAM_STR);
-        $stmt->bindValue(':commentIncome', $this->commentIncome, PDO::PARAM_STR);
+         // Category
+         if (!isset($this->categoryIncome)) {
+                $this->errors[] = 'Wybierz kategorię';
+         }
 
-        return $stmt->execute();
-    }
+        // if ($this->categoryIncome == '') {
+          //  $this->errors[] = 'Wybierz kategorię';
+        //}
+    }   
 
     static function getCategoryId($categoryIncome) {
 
@@ -79,4 +126,14 @@ class Income extends \Core\Model
         return $stmt->fetchColumn();
 
     }
+
+    static function getValueWithDot($value) {
+        $value = str_replace(",",".",$value); 
+        $places = 2;
+        $mult = pow(10, $places);
+        $valueDot = ceil($value * $mult) / $mult;
+
+        return $valueDot;
+    }
+
 }

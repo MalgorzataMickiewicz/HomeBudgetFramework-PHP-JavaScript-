@@ -47,6 +47,9 @@ class Incomes extends Authenticated
             } 
         else{
             Flash::addMessage('Nie udało się dodać przychodu', Flash::WARNING);
+            View::renderTemplate('Incomes/index.html', [
+            'income' => $income
+            ]);
         }
     }
 }
