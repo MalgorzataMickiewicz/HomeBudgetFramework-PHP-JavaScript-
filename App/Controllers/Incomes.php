@@ -41,13 +41,12 @@ class Incomes extends Authenticated
     {
         $income = new Income($_POST);
 
-          if($income -> saveIncome()) {
+        if($income -> saveIncome()) {
             Flash::addMessage('Przychód dodano pomyślnie');
-            View::renderTemplate('Incomes/index.html');
-         } 
+            $this->redirect('/Incomes/index');
+            } 
         else{
-            echo "Nie dodano przychodu";
+            Flash::addMessage('Nie udało się dodać przychodu', Flash::WARNING);
         }
-        
     }
 }
