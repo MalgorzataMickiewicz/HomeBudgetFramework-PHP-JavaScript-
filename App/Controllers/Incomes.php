@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\Income;
 use \App\Auth;
+use \App\Flash;
 
 /**
  * Incomes controller (example)
@@ -27,8 +28,7 @@ class Incomes extends Authenticated
      *
      * @return void
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         View::renderTemplate('Incomes/index.html');
     }
 
@@ -42,7 +42,8 @@ class Incomes extends Authenticated
         $income = new Income($_POST);
 
           if($income -> saveIncome()) {
-            echo "Dodano przychód";
+            Flash::addMessage('Przychód dodano pomyślnie');
+            View::renderTemplate('Incomes/index.html');
          } 
         else{
             echo "Nie dodano przychodu";
