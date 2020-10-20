@@ -3,13 +3,15 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Models\Income;
+use \App\Auth;
 
 /**
  * Incomes controller (example)
  *
  * PHP version 7.0
  */
-//class Incomes extends \Core\Controller
+
 class Incomes extends Authenticated
 {
 
@@ -37,8 +39,14 @@ class Incomes extends Authenticated
      */
     public function saveIncome()
     {
-        $income = new Incomes($_POST);
+        $income = new Income($_POST);
 
-        echo "new action";
+          if($income -> saveIncome()) {
+            echo "Dodano przychód";
+         } 
+        else{
+            echo "Nie dodano przychodu";
+        }
+        
     }
 }

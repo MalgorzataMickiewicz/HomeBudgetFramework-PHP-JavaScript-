@@ -19,8 +19,8 @@
 
             <label class="font-weight-bold" for="kwota">Dodaj kwotę przychodu</label>
 
-            <input type="text" name="kwota" class="form-control" id="kwota" placeholder="Kwota" aria-label="kwota"
-                aria-describedby="kwota">
+            <input type="text" name="valueIncome" class="form-control" id="valueIncome" placeholder="Kwota" aria-label="value"
+                aria-describedby="value">
 
         </div>
        
@@ -28,17 +28,17 @@
 
             <label class="font-weight-bold" for="data">Dodaj datę przychodu</label>
 
-            <input type="date" name="data" class="form-control" id="data" aria-label="data" aria-describedby="data">
+            <input type="date" name="dateIncome" class="form-control" id="date" aria-label="date" aria-describedby="date">
 
         </div>
 
         <div class="form-group col-lg-5 offset-lg-1">
 
-            <label class="font-weight-bold" for="przychod-kategoria">Wybierz kategorię dodawanego
+            <label class="font-weight-bold" for="category">Wybierz kategorię dodawanego
                 przychodu</label>
             
-            <select name="kategoria" multiple class="form-control" id="przychod-kategoria">
-               
+            <select name="categoryIncome" multiple class="form-control" id="category">
+                <option value="Testowa Kategoria">Testowa Kategoria</option>
 
             </select>
 
@@ -46,8 +46,8 @@
 
         <div class="form-group col-lg-5">
 
-            <label class="font-weight-bold" for="komentarz"> Dodaj opcjonalnie swój komentarz </label>
-            <textarea name="komentarz" class="form-control" id="komentarz" rows="3"></textarea>
+            <label class="font-weight-bold" for="comment"> Dodaj opcjonalnie swój komentarz </label>
+            <textarea name="commentIncome" class="form-control" id="comment" rows="3"></textarea>
 
         </div>
 

@@ -152,7 +152,7 @@ class User extends \Core\Model
     }
 
     /**
-     //* Authenticate a user by email and password.
+     * Authenticate a user by email and password.
      * Authenticate a user by email and password. User account has to be active.
      *
      * @param string $email email address
