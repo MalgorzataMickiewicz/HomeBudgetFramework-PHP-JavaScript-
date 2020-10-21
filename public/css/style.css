@@ -266,7 +266,7 @@ label {
 }
 
 .method-pay {
-    height:58%;
+    height:57%!important;
 }
 
 .method-pay label{

@@ -104,7 +104,6 @@ class User extends \Core\Model
             if (preg_match('/.*\d+.*/i', $this->password) == 0) {
                 $this->errors[] = 'Hasło powinno mieć przynajmniej jedną cyfrę';
             }
-
         }
     }
 
@@ -451,5 +450,56 @@ class User extends \Core\Model
         }
 
         return false;
+    }
+    
+    public function addDefaultCategories() {
+
+        $userId = static::getUserId($this);
+        $categoryName = static::getCategoriesNames();
+
+        var_dump($categoryName);
+        echo '<br>';
+
+        $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName)
+        VALUES (:id, :categoryIncome)';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':categoryIncome', $categoryName, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
+    public function getUserId() {
+        
+        $sql = 'SELECT id FROM users WHERE email = :email';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+    
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+
+    }
+
+    public function getCategoriesNames() {
+
+        $sql = 'SELECT categoryName FROM incomescategory';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        
+        $stmt->execute();
+        
+        $result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+        return $result;
     }
 }
