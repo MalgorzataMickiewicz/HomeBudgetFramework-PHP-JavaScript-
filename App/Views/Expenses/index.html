@@ -13,25 +13,31 @@
              */
             $('#formExpense').validate({
                 rules: {
-                    valueIncome: {
+                    valueExpense: {
                         required: true
                         },
-                    dateIncome: {
+                    dateExpense: {
                         required: true
                     },
-                    categoryIncome: {
+                    categoryExpense: {
+                        required: true
+                    },
+                    payMethodExpense: {
                         required: true
                     }
                 },
                 messages: {
-                    valueIncome: {
+                    valueExpense: {
                         remote: 'Wprowadź liczbę dodatnią, różną od zera'
                     },
-                    dateIncome: {
+                    dateExpense: {
                         remote: 'Wprowadź datę'
                     },
-                    categoryIncome: {
+                    categoryExpense: {
                         remote: 'Wybierz kategorię'
+                    },
+                    payMethodExpense: {
+                        remote: 'Wybierz metodę płatności'
                     }
                 }
             });
@@ -75,7 +81,7 @@
 
         <div class="col-lg-5 offset-lg-1">
 
-            <label class="font-weight-bold" for="kwota">Dodaj kwotę wydatku</label>
+            <label class="font-weight-bold" for="valueExpense">Dodaj kwotę wydatku</label>
 
             <input type="text" class="form-control" name="valueExpense" id="valueExpense" placeholder="Kwota"
                 aria-label="value" aria-describedby="value">
@@ -83,42 +89,42 @@
 
         <div class="col-lg-5">
 
-            <label class="font-weight-bold" for="data">Dodaj datę wydatku</label>
+            <label class="font-weight-bold" for="dateExpense">Dodaj datę wydatku</label>
 
-            <input type="date" name="data" class="form-control" id="data" aria-label="data"
-                aria-describedby="data">
+            <input type="date" name="dateExpense" class="form-control" id="dateExpense" aria-label="date"
+                aria-describedby="date">
 
         </div>
         
         <div class="form-group col-lg-3 offset-lg-1">
             <label class="font-weight-bold"> Wybierz metodę płatności </label>
                 <div class="form-control method-pay">
-                    <input type="radio" id="gotowka" name="metodaPlatnosci" value="Gotówka" checked>
-                    <label for="gotowka">Gotówka</label>
+                    <input type="radio" id="cash" name="payMethodExpense" value="Gotówka" checked>
+                    <label for="cash">Gotówka</label>
                     <br />
-                    <input type="radio" id="debetowa" name="metodaPlatnosci" value="Karta debetowa">
-                    <label for="debetowa">Karta debetowa</label>
+                    <input type="radio" id="debet" name="payMethodExpense" value="Karta debetowa">
+                    <label for="debet">Karta debetowa</label>
                     <br />
-                    <input type="radio" id="kredytowa" name="metodaPlatnosci" value="Karta kredytowa">
-                    <label for="kredytowa">Karta kredytowa</label>  
+                    <input type="radio" id="credit" name="payMethodExpense" value="Karta kredytowa">
+                    <label for="credit">Karta kredytowa</label>  
                 </div>    
             </label>
         </div>
 
         <div class="form-group col-lg-4">
 
-            <label class="font-weight-bold" for="przychod-kategoria">Wybierz kategorie dodawanego
+            <label class="font-weight-bold" for="categoryExpense">Wybierz kategorie dodawanego
                 wydatku</label>
-            <select name="kategoria" multiple class="form-control" id="przychod-kategoria">
-
+            <select name="categoryExpense" multiple class="form-control" id="categoryExpense">
+                <option value="Testowa Kategoria">Testowa Kategoria</option>
             </select>
 
         </div>
 
         <div class="form-group col-lg-3">
 
-            <label class="font-weight-bold" for="komentarz"> Dodaj opcjonalnie swój komentarz </label>
-            <textarea name="komentarz" class="form-control" id="komentarz" rows="3"></textarea>
+            <label class="font-weight-bold" for="commentExpense"> Dodaj opcjonalnie swój komentarz </label>
+            <textarea name="commentExpense" class="form-control" id="commentExpense" rows="3"></textarea>
 
         </div>
 
@@ -127,9 +133,9 @@
         </div>
 
         <div class="col-lg-5 p-1">
-            <a href="menu.php">
+            <a href="/">
                 <button type="button" class="btn btn-register my-3"> Anuluj </button>
-            </a>
+            </as>
         </div>
 
     </div>
