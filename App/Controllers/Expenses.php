@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
-//use \App\Models\Expense;
+use \App\Models\Expense;
 use \App\Auth;
 use \App\Flash;
 
@@ -33,24 +33,24 @@ class Expenses extends Authenticated
     }
 
       /**
-     * Add a new income
+     * Add a new expense
      *
      * @return void
      */
-    /*
-    public function saveIncome()
+    
+    public function saveExpense()
     {
-        $income = new Income($_POST);
+        $expense = new Expense($_POST);
 
-        if($income -> saveIncome()) {
-            Flash::addMessage('Przychód dodano pomyślnie');
-            $this->redirect('/Incomes/index');
+        if($expense -> saveExpense()) {
+            Flash::addMessage('Wydatek dodano pomyślnie');
+            $this->redirect('/Expenses/index');
             } 
         else{
-            Flash::addMessage('Nie udało się dodać przychodu', Flash::WARNING);
-            View::renderTemplate('Incomes/index.html', [
-            'income' => $income
+            Flash::addMessage('Nie udało się dodać wydatku', Flash::WARNING);
+            View::renderTemplate('Expenses/index.html', [
+            'expense' => $expense
             ]);
         }
-    }*/
+    }
 }
