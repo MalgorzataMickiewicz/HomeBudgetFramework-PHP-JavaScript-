@@ -457,8 +457,8 @@ class User extends \Core\Model
         $userId = static::getUserId($this);
         $categoryName = static::getCategoriesNames();
 
-        var_dump($categoryName);
-        echo '<br>';
+       // var_dump($categoryName);
+        //echo '<br>';
 
         $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName)
         VALUES (:id, :categoryIncome)';

@@ -56,8 +56,6 @@
 
 {% block body %}
 
-<h1>Edycja danych</h1>
-
 {% if user.errors is not empty %}
 <p>Errors:</p>
 <ul>
@@ -96,6 +94,10 @@
                     </button>
                 </div>
                     <div class="modal-body">
+                        <h3 class="nav-name">Login</h3>
+                        <div class="col-6 offset-3 border my-2"></div>
+                        <p class="form-control-name">{{ user.id }}</p>
+
                         <h3 class="nav-name">Login</h3>
                         <div class="col-6 offset-3 border my-2"></div>
                         <p class="form-control-name">{{ user.name }}</p>

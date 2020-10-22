@@ -5,6 +5,8 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+use \App\Models\Income;
+
 
 /**
  * Profile controller
@@ -51,24 +53,44 @@ class Profile extends Authenticated
     }
 
     /**
+     * Show the form for editing the cateogires
+     *
+     * @return void
+     */
+    public function categoriesAction()
+    {
+        $this->categoryIncome = Auth::getUserIncome();
+
+        View::renderTemplate('Profile/categories.html', [
+            'income' => $this->categoryIncome
+        ]);
+    }
+
+    /**
      * Update the profile
      *
      * @return void
      */
-    public function updateAction()
-    {
+    public function updateAction() {
         if ($this->user->updateProfile($_POST)) {
-
             Flash::addMessage('Zmiany zapisano');
-
             $this->redirect('/profile/edit');
 
-        } else {
-
+        } else 
             View::renderTemplate('Profile/edit.html', [
                 'user' => $this->user
             ]);
+        }
 
+    public function saveCategory() {
+        $category = new Income($_POST);
+        if($category -> saveCategory()) {
+            Flash::addMessage('Kategorię dodano pomyślnie');
+            $this->redirect('/Profile/categories');
+            } 
+        else{
+            Flash::addMessage('Nie udało się dodać kategorii', Flash::WARNING);
+            View::renderTemplate('Profile/categories.html');
         }
     }
 }

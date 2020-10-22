@@ -130,4 +130,64 @@ class Income extends \Core\Model
         return $valueDot;
     }
 
+    public static function findCategoriesByID($id)
+    {
+        $sql = 'SELECT * FROM incomescategoryassigned WHERE userId = :id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+       // var_dump( $stmt->fetch());
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Save the income model with the current property values
+     *
+     * @return boolean  True if the income was saved, false otherwise
+     */
+
+    public function saveCategory() {
+            $userId = $_SESSION['user_id'];
+            $newCategoryIncome = $this->newCategory;
+
+            //check if new category already exist in database
+            $data = static::checkCategoryName($newCategoryIncome);
+            if (!$data) {
+                
+                $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName)
+                VALUES (:userId, :newCategoryIncome)';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+        
+                $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
+                $stmt->bindValue(':newCategoryIncome', $newCategoryIncome, PDO::PARAM_STR); 
+                return $stmt->execute();
+            }
+            else {
+                return false;
+            }
+    }
+
+    public function checkCategoryName($newCategoryIncome) {
+
+        $userId = $_SESSION['user_id'];
+
+        $sql = 'SELECT categoryName FROM incomescategoryassigned WHERE categoryName = :newCategoryIncome AND userId = :userId';
+ 
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':categoryIncome', $newCategoryIncome, PDO::PARAM_STR);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        return $stmt->fetchColumn();
+    }   
+
 }

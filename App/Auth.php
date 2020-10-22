@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\User;
 use App\Models\RememberedLogin;
+use App\Models\Income;
 
 /**
  * Authentication
@@ -101,6 +102,13 @@ class Auth
         } else {
 
             return static::loginFromRememberCookie();
+        }
+    }
+
+    public static function getUserIncome()
+    {
+        if (isset($_SESSION['user_id'])) {
+            return Income::findCategoriesByID($_SESSION['user_id']);
         }
     }
 
