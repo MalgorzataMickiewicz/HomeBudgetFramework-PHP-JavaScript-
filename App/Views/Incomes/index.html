@@ -96,7 +96,9 @@
                 przychodu</label>
             
             <select name="categoryIncome" multiple class="form-control" id="categoryIncome">
-                <option value="Testowa Kategoria">Testowa Kategoria</option>
+                {% for item in categoryIncome %}
+                    <option value="{{ item.categoryName }}">{{ item.categoryName }}</option>
+                {% endfor %}
             </select>
 
         </div>

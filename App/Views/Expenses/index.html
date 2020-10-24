@@ -116,7 +116,9 @@
             <label class="font-weight-bold" for="categoryExpense">Wybierz kategorie dodawanego
                 wydatku</label>
             <select name="categoryExpense" multiple class="form-control" id="categoryExpense">
-                <option value="Testowa Kategoria">Testowa Kategoria</option>
+                {% for item in categoryExpense %}
+                    <option value="{{ item.categoryName }}">{{ item.categoryName }}</option>
+                {% endfor %}            
             </select>
 
         </div>

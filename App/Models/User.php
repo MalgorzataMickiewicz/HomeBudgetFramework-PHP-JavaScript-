@@ -6,6 +6,7 @@ use PDO;
 use \App\Token;
 use \App\Mail;
 use \Core\View;
+use \App\Models\Income;
 
 /**
  * User model
@@ -118,7 +119,7 @@ class User extends \Core\Model
     public static function emailExists($email, $ignore_id = null)
     {
         $user = static::findByEmail($email);
-
+        
         if ($user) {
             if ($user->id != $ignore_id) {
                 return true;
@@ -146,7 +147,6 @@ class User extends \Core\Model
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 
         $stmt->execute();
-
         return $stmt->fetch();
     }
 
@@ -162,14 +162,12 @@ class User extends \Core\Model
     public static function authenticate($email, $password)
     {
         $user = static::findByEmail($email);
-
-        //if ($user) {
         if ($user && $user->is_active) {
             if (password_verify($password, $user->password_hash)) {
+                echo 'jestem';
                 return $user;
             }
         }
-
         return false;
     }
 
@@ -451,25 +449,49 @@ class User extends \Core\Model
 
         return false;
     }
-    
+
+
     public function addDefaultCategories() {
 
         $userId = static::getUserId($this);
-        $categoryName = static::getCategoriesNames();
 
-       // var_dump($categoryName);
-        //echo '<br>';
+        //Income
+        $categoryNameIncome = static::getCategoriesNamesIncomes();
+        $numberOfItemIncome = count($categoryNameIncome);
+        $i = 0;
 
-        $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName)
-        VALUES (:id, :categoryIncome)';
+        for($i; $i < $numberOfItemIncome; $i++) {
+            $nextCategory = $categoryNameIncome[$i]->categoryName;
+            $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName)
+            VALUES (:userId, :nextCategory)';
 
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
 
-        $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':categoryIncome', $categoryName, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':nextCategory', $nextCategory, PDO::PARAM_STR);
+            $stmt->execute();
+        }
 
-        return $stmt->execute();
+        //Expense
+        $categoryNameExpense = static::getCategoriesNamesExpenses();
+        $numberOfItemExpense = count($categoryNameExpense);
+        $j = 0;
+
+        for($j; $j < $numberOfItemExpense; $j++) {
+            $nextCategory = $categoryNameExpense[$j]->categoryName;
+            $sql = 'INSERT INTO expensescategoryassigned (userId, categoryName)
+            VALUES (:userId, :nextCategory)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':nextCategory', $nextCategory, PDO::PARAM_STR);
+            $stmt->execute();
+        }
+
+        return true;
     }
 
     public function getUserId() {
@@ -486,10 +508,9 @@ class User extends \Core\Model
         $stmt->execute();
 
         return $stmt->fetchColumn();
-
     }
 
-    public function getCategoriesNames() {
+    public function getCategoriesNamesIncomes() {
 
         $sql = 'SELECT categoryName FROM incomescategory';
     
@@ -498,8 +519,22 @@ class User extends \Core\Model
         
         $stmt->execute();
         
-        $result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 
-        return $result;
+        return $stmt->fetchAll();
+    }
+
+    public function getCategoriesNamesExpenses() {
+
+        $sql = 'SELECT categoryName FROM expensescategory';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        return $stmt->fetchAll();
     }
 }

@@ -5,6 +5,7 @@ namespace App;
 use App\Models\User;
 use App\Models\RememberedLogin;
 use App\Models\Income;
+use App\Models\Expense;
 
 /**
  * Authentication
@@ -109,6 +110,13 @@ class Auth
     {
         if (isset($_SESSION['user_id'])) {
             return Income::findCategoriesByID($_SESSION['user_id']);
+        }
+    }
+
+    public static function getUserExpense()
+    {
+        if (isset($_SESSION['user_id'])) {
+            return Expense::findCategoriesByID($_SESSION['user_id']);
         }
     }
 

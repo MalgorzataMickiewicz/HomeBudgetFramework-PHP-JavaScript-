@@ -6,7 +6,7 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 use \App\Models\Income;
-
+use \App\Models\Expense;
 
 /**
  * Profile controller
@@ -60,9 +60,11 @@ class Profile extends Authenticated
     public function categoriesAction()
     {
         $this->categoryIncome = Auth::getUserIncome();
+        $this->categoryExpense = Auth::getUserExpense();
 
         View::renderTemplate('Profile/categories.html', [
-            'income' => $this->categoryIncome
+            'income' => $this->categoryIncome,
+            'expense' => $this->categoryExpense
         ]);
     }
 
@@ -82,9 +84,21 @@ class Profile extends Authenticated
             ]);
         }
 
-    public function saveCategory() {
-        $category = new Income($_POST);
-        if($category -> saveCategory()) {
+    public function saveCategoryIncome() {
+        $categoryIncome = new Income($_POST);
+        if($categoryIncome -> saveCategoryIncome()) {
+            Flash::addMessage('Kategorię dodano pomyślnie');
+            $this->redirect('/Profile/categories');
+            } 
+        else{
+            Flash::addMessage('Nie udało się dodać kategorii', Flash::WARNING);
+            View::renderTemplate('Profile/categories.html');
+        }
+    }
+
+    public function saveCategoryExpense() {
+        $categoryExpense = new Expense($_POST);
+        if($categoryExpense -> saveCategoryExpense()) {
             Flash::addMessage('Kategorię dodano pomyślnie');
             $this->redirect('/Profile/categories');
             } 

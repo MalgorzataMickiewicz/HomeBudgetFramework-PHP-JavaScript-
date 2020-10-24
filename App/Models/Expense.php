@@ -44,7 +44,6 @@ class Expense extends \Core\Model
     public function saveExpense() 
     {
         $this->validate();
-
         if (empty($this->errors)) {
 
             $userId = $_SESSION['user_id'];
@@ -133,8 +132,59 @@ class Expense extends \Core\Model
         $places = 2;
         $mult = pow(10, $places);
         $valueDot = ceil($value * $mult) / $mult;
-
         return $valueDot;
     }
+
+    public static function findCategoriesByID($id) {
+        $sql = 'SELECT * FROM expensescategoryassigned WHERE userId = :id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function saveCategoryExpense() {
+        $userId = $_SESSION['user_id'];
+        $newCategoryExpense = $this->newCategory;
+
+        //check if new category already exist in database
+        $data = static::checkCategoryName($newCategoryExpense);
+        if (!$data) {
+
+            $sql = 'INSERT INTO expensescategoryassigned (userId, categoryName)
+            VALUES (:userId, :newCategoryExpense)';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+        
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
+            $stmt->bindValue(':newCategoryExpense', $newCategoryExpense, PDO::PARAM_STR); 
+            return $stmt->execute();
+        }
+        else {
+            return false;
+        }
+        
+    }
+
+    public function checkCategoryName($newCategoryExpense) {
+
+        $userId = $_SESSION['user_id'];
+
+        $sql = 'SELECT categoryName FROM expensescategoryassigned WHERE categoryName = :newCategoryExpense AND userId = :userId';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':categoryExpense', $newCategoryExpense, PDO::PARAM_STR);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->fetchColumn();
+    }   
 
 }

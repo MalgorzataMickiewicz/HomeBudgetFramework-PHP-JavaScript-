@@ -141,7 +141,6 @@ class Income extends \Core\Model
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 
         $stmt->execute();
-       // var_dump( $stmt->fetch());
         return $stmt->fetchAll();
     }
 
@@ -151,7 +150,7 @@ class Income extends \Core\Model
      * @return boolean  True if the income was saved, false otherwise
      */
 
-    public function saveCategory() {
+    public function saveCategoryIncome() {
             $userId = $_SESSION['user_id'];
             $newCategoryIncome = $this->newCategory;
 
@@ -189,5 +188,4 @@ class Income extends \Core\Model
 
         return $stmt->fetchColumn();
     }   
-
 }
