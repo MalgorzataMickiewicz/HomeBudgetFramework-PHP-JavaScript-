@@ -29,7 +29,11 @@ class Expenses extends Authenticated
      * @return void
      */
     public function indexAction() {
-        View::renderTemplate('Expenses/index.html');
+        $this->categoryExpense = Auth::getUserExpense();
+
+        View::renderTemplate('Expenses/index.html', [
+            'categoryExpense' => $this->categoryExpense
+        ]);
     }
 
       /**

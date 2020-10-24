@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}Ustawienia | TB twojbudzet.com{% endblock %}
+
+{% block body %}
+
+<div class="row text-center bg-background my-6 p-sm-3 p-lg-0">
+
+    <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
+
+        <h1 class="h2 font-weight-bold bg-color my-4 nav-name">
+            Zarządzanie kategoriami
+        </h1>
+
+    </div>
+
+
+    <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
+
+        <!--Incomes categories list-->
+        <div class="col-lg-6 offset-lg-3 p-3">
+
+            <div class="col-6 offset-3 mt-3"></div>
+
+            <h3 class="h4 font-weight-bold bg-color my-4 nav-name">
+                Przychód
+            </h3>
+
+            <div class="col-6 offset-3 border my-3"></div>
+
+
+            <button type="button" class="btn btn-settings" data-toggle="modal"
+                data-target="#modal-incomes-category-list">
+                Wyświetl listę kategorii
+            </button>
+
+        </div>
+
+        <div class="modal fade" id="modal-incomes-category-list" tabindex="-1" role="dialog"
+            aria-labelledby="modal-incomes-category-list" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold nav-name" id="incomes-cattegory-list">Lista kategorii
+                            przychodów
+                        </h5>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for item in income %}
+                        <p>{{ item.categoryName }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                            data-dismiss="modal">Powrót</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Incomes Add category-->
+        <div class="col-lg-6 offset-lg-3 p-3">
+
+            <button type="button" class="btn btn-settings" data-toggle="modal"
+                data-target="#modal-incomes-add-category">
+                Dodaj kategorię
+            </button>
+
+        </div>
+
+        <div class="modal fade" id="modal-incomes-add-category" tabindex="-1" role="dialog"
+            aria-labelledby="modal-incomes-add-category" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form method="post" action="/profile/saveCategoryIncome">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold nav-name" id="incomes-add-cattegory">Dodawanie
+                                kategorii przychodu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input class="d-inline-block form-control mt-3" type="text" name="newCategory"
+                                id="incomes-add-new-category" placeholder="Kategoria"
+                                aria-label="incomes-add-new-category" aria-describedby="incomes-add-new-category">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                                data-dismiss="modal">Anuluj</button>
+                            <button type="submit" class="btn btn-sub-settings font-weight-bold">Zapisz</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--Incomes Delate category-->
+        <div class="col-lg-6 offset-lg-3 p-3">
+
+            <button type="button" class="btn btn-settings" data-toggle="modal"
+                data-target="#modal-incomes-delete-category">
+                Usuń kategorię
+            </button>
+
+        </div>
+
+        <div class="modal fade" id="modal-incomes-delete-category" tabindex="-1" role="dialog"
+            aria-labelledby="modal-incomes-delete-category" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold nav-name" id="incomes-delete-cattegory">Usuwanie
+                            kategorii</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                        <div class="modal-body">
+                            <div class="border my-1">
+
+
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                            data-dismiss="modal">Powrót</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--Expenses Categories list-->
+        <div class="col-lg-6 offset-lg-3 p-3">
+            <h3 class="h4 font-weight-boldbg-color my-4">
+                Wydatek
+            </h3>
+            <div class="col-6 offset-3 border my-3"></div>
+
+            <button type="button" class="btn btn-settings" data-toggle="modal"
+                data-target="#modal-expenses-category-list">
+                Wyświetlej listę kategorii
+            </button>
+        </div>
+
+        <div class="modal fade" id="modal-expenses-category-list" tabindex="-1" role="dialog"
+        aria-labelledby="modal-expenses-category-list" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold nav-name" id="expenses-category-list">Lista kategorii
+                        wydatków
+                    </h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% for item in expense %}
+                        <p>{{ item.categoryName }}</p>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                        data-dismiss="modal">Powrót</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!--Expenses Add category-->
+        <div class="col-lg-6 offset-lg-3 p-3">
+
+            <button type="button" class="btn btn-settings" data-toggle="modal"
+                data-target="#modal-expenses-add-category">
+                Dodaj kategorię
+            </button>
+
+        </div>
+
+        <div class="modal fade" id="modal-expenses-add-category" tabindex="-1" role="dialog"
+            aria-labelledby="modal-expenses-add-category" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form method="post" action="/profile/saveCategoryExpense">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold nav-name" id="expenses-add-cattegory">Dodawanie
+                                kategorii wydatku</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input class="d-inline-block form-control mt-3" type="text" name="newCategory"
+                                id="expenses-add-new-category" placeholder="Kategoria"
+                                aria-label="expenses-add-new-category" aria-describedby="expenses-add-new-category">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                                data-dismiss="modal">Anuluj</button>
+                            <button type="submit" class="btn btn-sub-settings font-weight-bold">Zapisz</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--Expenses Delate category-->
+        <div class="col-lg-6 offset-lg-3 p-3">
+
+            <button type="button" class="btn btn-settings" data-toggle="modal"
+                data-target="#modal-expenses-delete-category">
+                Usuń kategorię
+            </button>
+
+        </div>
+
+        <div class="modal fade" id="modal-expenses-delete-category" tabindex="-1" role="dialog"
+            aria-labelledby="modal-expenses-delete-category" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold nav-name" id="expenses-delete-cattegory">Usuwanie
+                            kategorii
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post">
+                        <div class="modal-body">
+                            <div class="border my-1">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                            data-dismiss="modal">Powrót</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 offset-3 border mt-3"></div>
+
+        <!--Go back-->
+        <div class="col-lg-6 offset-lg-3 p-3">
+            <h3 class="h4 font-weight-boldbg-color my-4">
+                Powrót
+            </h3>
+            <div class="col-6 offset-3 border my-3"></div>
+            <a href="/profile/show">
+                <button type="button" class="btn btn-settings">
+                    Powrót
+                </button>
+            </a>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

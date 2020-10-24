@@ -96,7 +96,9 @@
                 przychodu</label>
             
             <select name="categoryIncome" multiple class="form-control" id="categoryIncome">
-                <option value="Testowa Kategoria">Testowa Kategoria</option>
+                {% for item in categoryIncome %}
+                    <option value="{{ item.categoryName }}">{{ item.categoryName }}</option>
+                {% endfor %}
             </select>
 
         </div>
@@ -104,7 +106,7 @@
         <div class="form-group col-lg-5">
 
             <label class="font-weight-bold" for="commentIncome"> Dodaj opcjonalnie swój komentarz </label>
-            <textarea name="commentIncome" class="form-control" id="commentIncome" rows="3"></textarea>
+            <textarea name="commentIncome" class="form-control" id="comment" rows="3"></textarea>
 
         </div>
 

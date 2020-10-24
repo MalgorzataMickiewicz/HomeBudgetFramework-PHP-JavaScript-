@@ -5,6 +5,8 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+use \App\Models\Income;
+use \App\Models\Expense;
 
 /**
  * Profile controller
@@ -51,24 +53,58 @@ class Profile extends Authenticated
     }
 
     /**
+     * Show the form for editing the cateogires
+     *
+     * @return void
+     */
+    public function categoriesAction()
+    {
+        $this->categoryIncome = Auth::getUserIncome();
+        $this->categoryExpense = Auth::getUserExpense();
+
+        View::renderTemplate('Profile/categories.html', [
+            'income' => $this->categoryIncome,
+            'expense' => $this->categoryExpense
+        ]);
+    }
+
+    /**
      * Update the profile
      *
      * @return void
      */
-    public function updateAction()
-    {
+    public function updateAction() {
         if ($this->user->updateProfile($_POST)) {
-
             Flash::addMessage('Zmiany zapisano');
-
             $this->redirect('/profile/edit');
 
-        } else {
-
+        } else 
             View::renderTemplate('Profile/edit.html', [
                 'user' => $this->user
             ]);
+        }
 
+    public function saveCategoryIncome() {
+        $categoryIncome = new Income($_POST);
+        if($categoryIncome -> saveCategoryIncome()) {
+            Flash::addMessage('Kategorię dodano pomyślnie');
+            $this->redirect('/Profile/categories');
+            } 
+        else{
+            Flash::addMessage('Nie udało się dodać kategorii', Flash::WARNING);
+            View::renderTemplate('Profile/categories.html');
+        }
+    }
+
+    public function saveCategoryExpense() {
+        $categoryExpense = new Expense($_POST);
+        if($categoryExpense -> saveCategoryExpense()) {
+            Flash::addMessage('Kategorię dodano pomyślnie');
+            $this->redirect('/Profile/categories');
+            } 
+        else{
+            Flash::addMessage('Nie udało się dodać kategorii', Flash::WARNING);
+            View::renderTemplate('Profile/categories.html');
         }
     }
 }
