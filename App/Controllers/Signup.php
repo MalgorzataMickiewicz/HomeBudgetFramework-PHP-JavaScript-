@@ -31,6 +31,7 @@ class Signup extends \Core\Controller
     public function createAction()
     {
         $user = new User($_POST);
+        $categories = new User($_POST);
 
         if ($user->save()) {
 
