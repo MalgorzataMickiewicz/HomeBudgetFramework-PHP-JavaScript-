@@ -32,7 +32,6 @@ class Bilans extends \Core\Controller
                 View::renderTemplate('Bilans/currentMonth.html', [
                     'userIncomes' => $this->userIncomes
                     ]);
-                Flash::addMessage('Nie posiadasz jeszcze żadnych wydatków');
             }
         }
         else {
@@ -47,12 +46,10 @@ class Bilans extends \Core\Controller
                     View::renderTemplate('Bilans/currentMonth.html', [
                         'userExpenses' => $this->userExpenses
                         ]);
-                    Flash::addMessage('Nie posiadasz jeszcze żadnych przychodów');
                 }
             }
             else {
                 View::renderTemplate('Bilans/currentMonth.html');
-                Flash::addMessage('Nie posiadasz jeszcze żadnych przychodów i wydatków');
             }
         }
     }
@@ -74,7 +71,6 @@ class Bilans extends \Core\Controller
                 View::renderTemplate('Bilans/previousMonth.html', [
                     'userIncomes' => $this->userIncomes
                     ]);
-                Flash::addMessage('Nie posiadasz jeszcze żadnych wydatków');
             }
         }
         else {
@@ -86,15 +82,13 @@ class Bilans extends \Core\Controller
                     ]);
                 }
                 else {
-                    View::renderTemplate('Bilans/currentMonth.html', [
+                    View::renderTemplate('Bilans/previousMonth.html', [
                         'userExpenses' => $this->userExpenses
                         ]);
-                    Flash::addMessage('Nie posiadasz jeszcze żadnych przychodów');
                 }
             }
             else {
-                View::renderTemplate('Bilans/currentMonth.html');
-                Flash::addMessage('Nie posiadasz jeszcze żadnych przychodów i wydatków');
+                View::renderTemplate('Bilans/previousMonth.html');
             }
         }
     }
@@ -116,7 +110,6 @@ class Bilans extends \Core\Controller
                 View::renderTemplate('Bilans/currentYear.html', [
                     'userIncomes' => $this->userIncomes
                     ]);
-                Flash::addMessage('Nie posiadasz jeszcze żadnych wydatków');
             }
         }
         else {
@@ -131,12 +124,10 @@ class Bilans extends \Core\Controller
                     View::renderTemplate('Bilans/currentMonth.html', [
                         'userExpenses' => $this->userExpenses
                         ]);
-                    Flash::addMessage('Nie posiadasz jeszcze żadnych przychodów');
                 }
             }
             else {
                 View::renderTemplate('Bilans/currentMonth.html');
-                Flash::addMessage('Nie posiadasz jeszcze żadnych przychodów i wydatków');
             }
         }
     }
@@ -164,7 +155,6 @@ class Bilans extends \Core\Controller
                 View::renderTemplate('Bilans/nonstandard.html', [
                     'userIncomes' => $this->userIncomes
                     ]);
-                Flash::addMessage('Nie posiadasz jeszcze żadnych wydatków');
             }
         }
         else {
@@ -179,12 +169,10 @@ class Bilans extends \Core\Controller
                     View::renderTemplate('Bilans/nontandard.html', [
                         'userExpenses' => $this->userExpenses
                         ]);
-                    Flash::addMessage('Nie posiadasz jeszcze żadnych przychodów');
                 }
             }
             else {
                 View::renderTemplate('Bilans/nonstandard.html');
-                Flash::addMessage('Nie posiadasz jeszcze żadnych przychodów i wydatków');
             }
         }
     } 

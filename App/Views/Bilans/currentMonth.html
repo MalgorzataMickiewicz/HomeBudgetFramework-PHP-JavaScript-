@@ -41,72 +41,11 @@
                     <th style="width: 25%;">Wartość</th>
                     <th style="width: 25%;">Edytuj</th>
                 </tr>
-{% for item in userIncomes %}
+                {% set sumIncomesAll = 0 %}
+                {% for item in userIncomes %}
                 <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="incomeInformation"><td incomeId="{{ item.categoryIncomeId }}">{{ item.categoryName }}</td>
                     <td>{{ item.valueIncome }}</td>
-                    <td>
-                        <button type="button" class="btn" data-toggle="modal" data-target="#edit-1" onclick="">
-                            <svg class="bi bi-check" width="1.5em" height="1.5em" viewBox="0 0 16 16"
-                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                            d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z"
-                            clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </td>
-                    <div class="modal fade" id="edit-1" tabindex="-1" role="dialog"
-                        aria-labelledby="edit-1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold nav-name" id="modal-new-password">Edytuj wartość</h5>
-                                    <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form method="post">
-                                    <div class="modal-body col-12">
-                                        <h5 class="modal-title font-weight-bold nav-name">Edytuj</h5>
-                                        <input type="text" name="newIncomeValue" class="form-control little-input d-inline-block ml-2"
-                                            id="wartosc" placeholder="Wartość" aria-label="wartosc"
-                                            aria-describedby="wartosc">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
-                                            data-dismiss="modal">Anuluj</button>
-                                        <button type="submit" class="btn btn-sub-settings font-weight-bold">Zapisz</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </tr>
-{% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="col-lg-6">
-        <table class="table table-bordered">
-            <thead class="bg-table">
-                <tr>
-                    <th style="width: 50%; text-align:center;" scope="col">WYDATKI</th>
-                </tr>
-            </thead>
-        </table>
-
-        <table class="table table-bordered bg-white">
-            <tbody>
-                <tr style="text-align: center;">
-                    <th style="width: 25%;">Kategoria</th>
-                    <th style="width: 25%;">Wartość</th>
-                    <th style="width: 25%;">Edytuj</th>
-                </tr>
-               
-                {% for item in userExpenses %}
-                <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="expenseInformation"><td expenseId="{{ item.categoryExpenseId }}">{{ item.categoryName }}</td>
-                    <td>{{ item.valueExpense }}</td>
+                    {% set sumIncomesAll = sumIncomesAll + item.valueIncome %}
                     <td>
                         <button type="button" class="btn" data-toggle="modal" data-target="#edit-1" onclick="">
                             <svg class="bi bi-check" width="1.5em" height="1.5em" viewBox="0 0 16 16"
@@ -146,9 +85,92 @@
                     </div>
                 </tr>
                 {% endfor %}
+                <tr class="bg-table">
+                    <th>SUMA</th>
+                    <th>{{ sumIncomesAll }}</th>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>
+
+
+
+    <div class="col-lg-6">
+        <table class="table table-bordered">
+            <thead class="bg-table">
+                <tr>
+                    <th style="width: 50%; text-align:center;" scope="col">WYDATKI</th>
+                </tr>
+            </thead>
+        </table>
+
+        <table class="table table-bordered bg-white">
+            <tbody>
+                <tr style="text-align: center;">
+                    <th style="width: 25%;">Kategoria</th>
+                    <th style="width: 25%;">Wartość</th>
+                    <th style="width: 25%;">Edytuj</th>
+                </tr>
+                {% set sumExpensesAll = 0 %}
+                {% for item in userExpenses %}
+                <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="expenseInformation"><td expenseId="{{ item.categoryExpenseId }}">{{ item.categoryName }}</td>
+                    <td>{{ item.valueExpense }}</td>
+                    {% set sumExpensesAll = sumExpensesAll + item.valueExpense %}
+                    <td>
+                        <button type="button" class="btn" data-toggle="modal" data-target="#edit-1" onclick="">
+                            <svg class="bi bi-check" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                            d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z"
+                            clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </td>
+                    <div class="modal fade" id="edit-1" tabindex="-1" role="dialog"
+                        aria-labelledby="edit-1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title font-weight-bold nav-name" id="modal-new-password">Edytuj wartość</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="post">
+                                    <div class="modal-body col-12">
+                                        <h5 class="modal-title font-weight-bold nav-name">Edytuj</h5>
+                                        <input type="text" name="newIncomeValue" class="form-control little-input d-inline-block ml-2"
+                                            id="wartosc" placeholder="Wartość" aria-label="wartosc"
+                                            aria-describedby="wartosc">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                                            data-dismiss="modal">Anuluj</button>
+                                        <button type="submit" class="btn btn-sub-settings font-weight-bold">Zapisz</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+                {% endfor %}
+                <tr class="bg-table">
+                    <th>SUMA</th>
+                    <th>{{ sumExpensesAll }}</th>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {% if sumExpensesAll == 0 and sumIncomesAll == 0 %} 
+        <p class="h4 col-12 mb-4">Nie posiadasz jeszcze żadnych danych</p>
+    {% elseif sumExpensesAll < sumIncomesAll %}
+        <p class="h4 col-12 mb-4">Gratulacje! Nie przekroczyłeś swojego budżetu</p>
+    {% else %} 
+        <p class="h4 col-12 mb-4">Uwaga! Przekroczyłeś swój budżet</p>
+    {% endif %}
 </div>
 
 {% endblock %}

@@ -14,10 +14,10 @@
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="list"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Poprzedni miesiąc
+                    Bieżący miesiąc
                 </button>
                 <div class="dropdown-menu" aria-labelledby="list">
-                    <a class="dropdown-item" href="/bilans/currentMonth">Bieżący miesiąc</a>
+                    <a class="dropdown-item" href="/bilans/previousMonth">Poprzedni miesiąc</a>
                     <a class="dropdown-item" href="/bilans/currentYear">Bieżący rok</a>
                     <a class="dropdown-item" href="/bilans/nonstandard">Niestandardowy</a>
                 </div>
@@ -41,11 +41,9 @@
                     <th style="width: 25%;">Wartość</th>
                     <th style="width: 25%;">Edytuj</th>
                 </tr>
-                {% set sumIncomesAll = 0 %}
-                {% for item in userIncomes %}
-                <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="incomeInformation"><td incomeId="{{ item.categoryIncomeId }}">{{ item.categoryIncomeId }}</td>
+{% for item in userIncomes %}
+                <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="incomeInformation"><td incomeId="{{ item.categoryIncomeId }}">{{ item.categoryName }}</td>
                     <td>{{ item.valueIncome }}</td>
-                    {% set sumIncomesAll = sumIncomesAll + item.valueIncome %}
                     <td>
                         <button type="button" class="btn" data-toggle="modal" data-target="#edit-1" onclick="">
                             <svg class="bi bi-check" width="1.5em" height="1.5em" viewBox="0 0 16 16"
@@ -84,12 +82,7 @@
                         </div>
                     </div>
                 </tr>
-                {% endfor %}
-                <tr class="bg-table">
-                    <th>SUMA</th>
-                    <th>{{ sumIncomesAll }}</th>
-                    <td></td>
-                </tr>       
+{% endfor %}
             </tbody>
         </table>
     </div>
@@ -110,11 +103,10 @@
                     <th style="width: 25%;">Wartość</th>
                     <th style="width: 25%;">Edytuj</th>
                 </tr>
-                {% set sumExpensesAll = 0 %}
+               
                 {% for item in userExpenses %}
                 <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="expenseInformation"><td expenseId="{{ item.categoryExpenseId }}">{{ item.categoryName }}</td>
                     <td>{{ item.valueExpense }}</td>
-                    {% set sumExpensesAll = sumExpensesAll + item.valueExpense %}
                     <td>
                         <button type="button" class="btn" data-toggle="modal" data-target="#edit-1" onclick="">
                             <svg class="bi bi-check" width="1.5em" height="1.5em" viewBox="0 0 16 16"
@@ -154,21 +146,9 @@
                     </div>
                 </tr>
                 {% endfor %}
-                <tr class="bg-table">
-                    <th>SUMA</th>
-                    <th>{{ sumExpensesAll }}</th>
-                    <td></td>
-                </tr>
             </tbody>
         </table>
     </div>
-    {% if sumExpensesAll == 0 and sumIncomesAll == 0 %} 
-    <p class="h4 col-12 mb-4">Nie posiadasz jeszcze żadnych danych</p>
-    {% elseif sumExpensesAll < sumIncomesAll %}
-        <p class="h4 col-12 mb-4">Gratulacje! Nie przekroczyłeś swojego budżetu</p>
-    {% else %} 
-        <p class="h4 col-12 mb-4">Uwaga! Przekroczyłeś swój budżet</p>
-    {% endif %}
 </div>
 
 {% endblock %}
