@@ -21,8 +21,7 @@ class Profile extends Authenticated
      *
      * @return void
      */
-    protected function before()
-    {
+    protected function before() {
         parent::before();
 
         $this->user = Auth::getUser();
@@ -33,8 +32,7 @@ class Profile extends Authenticated
      *
      * @return void
      */
-    public function showAction()
-    {
+    public function showAction() {
         View::renderTemplate('Profile/show.html', [
             'user' => $this->user
         ]);
@@ -45,8 +43,7 @@ class Profile extends Authenticated
      *
      * @return void
      */
-    public function editAction()
-    {
+    public function editAction() {
         View::renderTemplate('Profile/edit.html', [
             'user' => $this->user
         ]);
@@ -57,8 +54,7 @@ class Profile extends Authenticated
      *
      * @return void
      */
-    public function categoriesAction()
-    {
+    public function categoriesAction() {
         $this->categoryIncome = Auth::getUserIncome();
         $this->categoryExpense = Auth::getUserExpense();
 

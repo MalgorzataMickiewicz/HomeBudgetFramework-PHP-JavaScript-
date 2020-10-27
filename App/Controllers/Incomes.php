@@ -13,8 +13,7 @@ use \App\Flash;
  * PHP version 7.0
  */
 
-class Incomes extends Authenticated
-{
+class Incomes extends Authenticated {
 
     /**
      * Require the user to be authenticated before giving access to all methods in the controller
@@ -40,8 +39,7 @@ class Incomes extends Authenticated
      *
      * @return void
      */
-    public function saveIncome()
-    {
+    public function saveIncome() {
         $income = new Income($_POST);
 
         if($income -> saveIncome()) {
