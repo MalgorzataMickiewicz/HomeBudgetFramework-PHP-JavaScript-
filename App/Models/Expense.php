@@ -187,4 +187,153 @@ class Expense extends \Core\Model
         return $stmt->fetchColumn();
     }   
 
+    static function findUserExpensesByIDCurrentMonth($id) {
+
+        $curentDay = date('d');
+        $curentMonth = date('m');
+        $curentYear = date('Y');
+
+        $dayOneThisMonth = $curentYear.'-'.$curentMonth.'-01';
+
+        if($curentMonth == 1 || $curentMonth == 3 || $curentMonth == 5 || $curentMonth == 7 || $curentMonth == 8 || $curentMonth == 10 || $curentMonth == 12){
+            $endDate = $curentYear.'-'.$curentMonth.'-31';
+        }
+        else if ($curentMonth == 4 || $curentMonth == 6 || $curentMonth == 9 || $curentMonth == 11){
+            $endDate = $curentYear.'-'.$curentMonth.'-30';
+        }
+        else{
+            if($curentYear % 4 == 0 && $curentYear % 100 != 0 || $curentYear % 400 == 0){
+                $endDate = $curentYear.'-'.$curentMonth.'29';
+            }
+            else{
+                $endDate = $curentYear.'-'.$curentMonth.'28';
+            }
+        }
+
+        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':dayOneThisMonth', $dayOneThisMonth, PDO::PARAM_STR);
+        $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    static function findUserExpensesByIDPreviousMonth($id) {
+
+        $curentDay = date('d');
+        $curentMonth = date('m');
+        $curentYear = date('Y');
+
+        $dayOnePreviesMonth = $curentYear.'-'.$curentMonth.'-01';
+
+        if($curentMonth == 1){
+            $month = 12;
+            $year = $curentYear - 1;
+            $dayOneThisMonth = $year.'-'.$month.'-01';
+        }
+        else {
+            $month = $curentMonth - 1;
+            $year = $curentYear;
+            $dayOneThisMonth = $year.'-'.$month.'-01';
+        }
+
+        if($month == 1 || $month == 3 || $month == 5 || $month == 7 || $month == 8 || $month == 10 || $month == 12){
+            $endDate = $year.'-'.$month.'-31';
+        }
+        else if ($month == 4 || $month == 6 || $month == 9 || $month == 11){
+            $endDate = $year.'-'.$month.'-30';
+        }
+        else{
+            if($year % 4 == 0 && $year % 100 != 0 || $year % 400 == 0){
+                $endDate = $year.'-'.$month.'29';
+            }
+            else{
+                $endDate = $year.'-'.$month.'28';
+            }
+        }
+
+        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':dayOneThisMonth', $dayOneThisMonth, PDO::PARAM_STR);
+        $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } 
+
+    static function findUserExpensesByIDCurrentYear($id) {
+
+        $curentDay = date('d');
+            $curentMonth = date('m');
+            $curentYear = date('Y');
+
+            $dayOneThisMonth = $curentYear.'-01-01';
+            $endDate = $curentYear.'-12-31';
+
+        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':dayOneThisMonth', $dayOneThisMonth, PDO::PARAM_STR);
+        $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } 
+
+    static function findUserExpensesByIDNonstandard($id, $date) {
+
+        $validate = static::validateDate($date);
+        if ($validate == true) {
+            $curentDay = date('d');
+            $curentMonth = date('m');
+            $curentYear = date('Y');
+
+            $dayOneThisMonth = $date["dateFrom"];
+            $endDate =  $date["dateTo"];
+
+            $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->bindValue(':dayOneThisMonth', $dayOneThisMonth, PDO::PARAM_STR);
+            $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+        else{
+            return false;
+        }
+    } 
+
+    static function validateDate($date) {
+        // Date
+        if ($date["dateFrom"] == '' || $date["dateTo"] == '') {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }   
 }
