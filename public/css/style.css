@@ -280,6 +280,8 @@ label {
 
 .control {
     width: 160px!important;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media screen and (max-width:1200px) {
