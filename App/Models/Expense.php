@@ -135,7 +135,10 @@ class Expense extends \Core\Model
         return $valueDot;
     }
 
-    public static function findCategoriesByID($id) {
+    public static function findCategoriesByID() {
+
+        $id = $_SESSION['user_id'];
+
         $sql = 'SELECT * FROM expensescategoryassigned WHERE userId = :id';
 
         $db = static::getDB();
@@ -187,7 +190,9 @@ class Expense extends \Core\Model
         return $stmt->fetchColumn();
     }   
 
-    static function findUserExpensesByIDCurrentMonth($id) {
+    static function findUserExpensesByIDCurrentMonth() {
+
+        $id = $_SESSION['user_id'];
 
         $curentDay = date('d');
         $curentMonth = date('m');
@@ -225,7 +230,9 @@ class Expense extends \Core\Model
         return $stmt->fetchAll();
     }
 
-    static function findUserExpensesByIDPreviousMonth($id) {
+    static function findUserExpensesByIDPreviousMonth() {
+
+        $id = $_SESSION['user_id'];
 
         $curentDay = date('d');
         $curentMonth = date('m');
@@ -274,7 +281,9 @@ class Expense extends \Core\Model
         return $stmt->fetchAll();
     } 
 
-    static function findUserExpensesByIDCurrentYear($id) {
+    static function findUserExpensesByIDCurrentYear() {
+
+        $id = $_SESSION['user_id'];
 
         $curentDay = date('d');
             $curentMonth = date('m');
@@ -298,7 +307,9 @@ class Expense extends \Core\Model
         return $stmt->fetchAll();
     } 
 
-    static function findUserExpensesByIDNonstandard($id, $date) {
+    static function findUserExpensesByIDNonstandard($date) {
+
+        $id = $_SESSION['user_id'];
 
         $validate = static::validateDate($date);
         if ($validate == true) {

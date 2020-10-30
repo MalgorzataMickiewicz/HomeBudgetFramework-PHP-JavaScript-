@@ -130,8 +130,9 @@ class Income extends \Core\Model
         return $valueDot;
     }
 
-    public static function findCategoriesByID($id)
-    {
+    public static function findCategoriesByID() {
+        $id = $_SESSION['user_id'];
+
         $sql = 'SELECT * FROM incomescategoryassigned WHERE userId = :id';
 
         $db = static::getDB();
@@ -189,7 +190,9 @@ class Income extends \Core\Model
         return $stmt->fetchColumn();
     }   
 
-    static function findUserIncomesByIDCurrentMonth($id) {
+    static function findUserIncomesByIDCurrentMonth() {
+
+        $id = $_SESSION['user_id'];
 
         $curentDay = date('d');
         $curentMonth = date('m');
@@ -227,7 +230,9 @@ class Income extends \Core\Model
         return $stmt->fetchAll();
     }
 
-    static function findUserIncomesByIDPreviousMonth($id) {
+    static function findUserIncomesByIDPreviousMonth() {
+
+        $id = $_SESSION['user_id'];
 
         $curentDay = date('d');
         $curentMonth = date('m');
@@ -276,7 +281,9 @@ class Income extends \Core\Model
         return $stmt->fetchAll();
     } 
 
-    static function findUserIncomesByIDCurrentYear($id) {
+    static function findUserIncomesByIDCurrentYear() {
+
+        $id = $_SESSION['user_id'];
 
         $curentDay = date('d');
             $curentMonth = date('m');
@@ -300,7 +307,9 @@ class Income extends \Core\Model
         return $stmt->fetchAll();
     } 
 
-    static function findUserIncomesByIDNonstandard($id, $date) {
+    static function findUserIncomesByIDNonstandard($date) {
+
+        $id = $_SESSION['user_id'];
 
         $validate = static::validateDate($date);
         if ($validate == true) {

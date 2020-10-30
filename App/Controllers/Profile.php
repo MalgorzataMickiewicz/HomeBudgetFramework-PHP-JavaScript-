@@ -55,8 +55,8 @@ class Profile extends Authenticated
      * @return void
      */
     public function categoriesAction() {
-        $this->categoryIncome = Auth::getUserIncome();
-        $this->categoryExpense = Auth::getUserExpense();
+        $this->categoryIncome = Income::findCategoriesByID();
+        $this->categoryExpense = Expense::findCategoriesByID();
 
         View::renderTemplate('Profile/categories.html', [
             'income' => $this->categoryIncome,

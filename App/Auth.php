@@ -106,66 +106,6 @@ class Auth
         }
     }
 
-    public static function getUserIncome() {
-        if (isset($_SESSION['user_id'])) {
-            return Income::findCategoriesByID($_SESSION['user_id']);
-        }
-    }
-
-    public static function getUserExpense() {
-        if (isset($_SESSION['user_id'])) {
-            return Expense::findCategoriesByID($_SESSION['user_id']);
-        }
-    }
-
-    public static function getUserIncomesBilansCurrentMonth() {
-        if (isset($_SESSION['user_id'])) {
-            return Income::findUserIncomesByIDCurrentMonth($_SESSION['user_id']);
-        }
-    }
-
-    public static function getUserExpensesBilansCurrentMonth() {
-        if (isset($_SESSION['user_id'])) {
-            return Expense::findUserExpensesByIDCurrentMonth($_SESSION['user_id']);
-        }
-    }
-
-    public static function getUserIncomesBilansPreviousMonth() {
-        if (isset($_SESSION['user_id'])) {
-            return Income::findUserIncomesByIDPreviousMonth($_SESSION['user_id']);
-        }
-    }
-
-    public static function getUserExpensesBilansPreviousMonth() {
-        if (isset($_SESSION['user_id'])) {
-            return Expense::findUserExpensesByIDPreviousMonth($_SESSION['user_id']);
-        }
-    }
-    
-    public static function getUserIncomesBilansCurrentYear() {
-        if (isset($_SESSION['user_id'])) {
-            return Income::findUserIncomesByIDCurrentYear($_SESSION['user_id']);
-        }
-    }
-
-    public static function getUserExpensesBilansCurrentYear() {
-        if (isset($_SESSION['user_id'])) {
-            return Expense::findUserExpensesByIDCurrentYear($_SESSION['user_id']);
-        }
-    }
-
-    public static function getUserIncomesBilansNonstandard($date) {
-        if (isset($_SESSION['user_id'])) {
-            return Income::findUserIncomesByIDNonstandard($_SESSION['user_id'], $date);
-        }
-    }
-
-    public static function getUserExpensesBilansNonstandard($date) {
-        if (isset($_SESSION['user_id'])) {
-            return Expense::findUserExpensesByIDNonstandard($_SESSION['user_id'], $date);
-        }
-    }
-
     /**
      * Login the user from a remembered login cookie
      *
