@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\Income;
-use \App\Auth;
 use \App\Flash;
 
 /**

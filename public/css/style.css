@@ -279,7 +279,7 @@ label {
 }
 
 .control {
-    width: 160px!important;
+    width: 190px!important;
     margin-left: auto!important;
     margin-right: auto!important;
 }
@@ -301,4 +301,5 @@ label {
         margin-right: auto;
     }
 }
+
 
