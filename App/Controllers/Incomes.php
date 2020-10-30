@@ -27,7 +27,7 @@ class Incomes extends Authenticated {
      * @return void
      */
     public function indexAction() {
-        $this->categoryIncome = Auth::getUserIncome();
+        $this->categoryIncome = Income::findCategoriesByID();
         View::renderTemplate('Incomes/index.html', [
             'categoryIncome' => $this->categoryIncome
         ]);
