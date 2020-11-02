@@ -32,4 +32,5 @@ return array(
     'Clue\\StreamFilter\\' => array($vendorDir . '/clue/stream-filter/src'),
     'Buzz\\' => array($vendorDir . '/kriswallsmith/buzz/lib'),
     'App\\' => array($baseDir . '/App'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
 );
