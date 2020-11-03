@@ -64,8 +64,44 @@
                     <th style="width: 25%;">Wartość</th>
                     <th style="width: 25%;">Edytuj/Usuń</th>
                 </tr>  
+
+                <script type="text/javascript">
+                    var counterIncome = 0;
+                    const tabValueIncome = [];
+                    const tabNameIncome = [];
+                </script>
+
                 {% set sumIncomesAll = 0 %}
                 {% for item in userIncomes %}
+
+                <script type="text/javascript">
+                    var valueIncome = "{{ item.valueIncome }}";
+                    var newNumber = Number(valueIncome);
+                    var nameIncome = "{{ item.categoryName }}";
+                    var counterIncomeSameCategory = 0;
+
+                    if(counterIncome > 0) {
+                        for(var q = 0; q < counterIncome; q++)  {
+                            if (nameIncome == tabNameIncome[q]) {
+                                tabValueIncome[q] = Number(tabValueIncome[q]) + Number(newNumber);
+                                counterIncomeSameCategory = 1;
+                            }
+                        }
+                        if(counterIncomeSameCategory == 0) {
+                            tabValueIncome[counterIncome] = valueIncome;
+                            tabNameIncome[counterIncome] = "{{ item.categoryName }}";
+                            counterIncome++;
+                        }
+                        counterIncomeSameCategory = 0;
+                    }
+                    else {
+                        tabValueIncome[counterIncome] = valueIncome;
+                        tabNameIncome[counterIncome] = "{{ item.categoryName }}";
+                        counterIncome++;
+                    }
+
+                </script>
+
                 <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="incomeInformation"><td incomeId="{{ item.categoryIncomeId }}">{{ item.categoryName }}</td>
                     <td>{{ item.valueIncome }}</td>
                     {% set sumIncomesAll = sumIncomesAll + item.valueIncome %}
@@ -133,8 +169,45 @@
                     <th style="width: 25%;">Wartość</th>
                     <th style="width: 25%;">Edytuj/Usuń</th>
                 </tr>
+
+                <script type="text/javascript">
+                    var counterExpense = 0;
+                    const tabValueExpense = [];
+                    const tabNameExpense = [];
+                </script>
+
                 {% set sumExpensesAll = 0 %}
                 {% for item in userExpenses %}
+
+                <script type="text/javascript">
+                
+                    var valueExpense = "{{ item.valueExpense }}";
+                    var newNumber = Number(valueExpense);
+                    var nameExpense = "{{ item.categoryName }}";
+                    var counterExpenseSameCategory = 0;
+
+                    if(counterExpense > 0) {
+                        for(var q = 0; q < counterExpense; q++)  {
+                            if (nameExpense == tabNameExpense[q]) {
+                                tabValueExpense[q] = Number(tabValueExpense[q]) + Number(newNumber);
+                                counterExpenseSameCategory = 1;
+                            }
+                        }
+                        if(counterExpenseSameCategory == 0) {
+                            tabValueExpense[counterExpense] = valueExpense;
+                            tabNameExpense[counterExpense] = "{{ item.categoryName }}";
+                            counterExpense++;
+                        }
+                        counterExpenseSameCategory = 0;
+                    }
+                    else {
+                        tabValueExpense[counterExpense] = valueExpense;
+                        tabNameExpense[counterExpense] = "{{ item.categoryName }}";
+                        counterExpense++;
+                    }
+                    
+                </script>
+
                 <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="expenseInformation"><td expenseId="{{ item.categoryExpenseId }}">{{ item.categoryName }}</td>
                     <td>{{ item.valueExpense }}</td>
                     {% set sumExpensesAll = sumExpensesAll + item.valueExpense %}
@@ -192,6 +265,87 @@
     {% else %} 
         <p class="h4 col-12 mb-4">Uwaga! Przekroczyłeś swój budżet</p>
     {% endif %}
+
+    <div id="chartContainerIncome" class="mx-3 col-lg-6"></div>
+    <div id="chartContainerExpense" class="mx-3 col-lg-6"></div>
+
+    <script type="text/javascript">
+
+//Income chart
+    var datasetValueIncome = [];
+        for (var j = 0; j < counterIncome; j++) {
+                datasetValueIncome[j] = {
+                y: tabValueIncome[j],
+                indexLabel: tabNameIncome[j]
+            }
+        }
+    
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainerIncome",
+            {
+                title:{
+                    text: "Przychody"
+                },
+                legend: {
+                    maxWidth: 350,
+                    itemWidth: 120
+                },
+                data: [
+                {
+                    type: "pie",
+                    showInLegend: true,
+                    legendText: "{indexLabel}",
+                    dataPoints: [
+                    ]
+                }
+                ]
+            }
+            );
+            for (var l = 0; l < datasetValueIncome.length; l++) {
+                chart.options.data[0].dataPoints.push(datasetValueIncome[l]);
+            }
+            chart.render();
+
+            //Expense chart
+    var datasetValueExpense = [];
+        for (var n = 0; n < counterExpense; n++) {
+                datasetValueExpense[n] = {
+                y: tabValueExpense[n],
+                indexLabel: tabNameExpense[n]
+            }
+        }
+    
+        {
+            var chart = new CanvasJS.Chart("chartContainerExpense",
+            {
+                title:{
+                    text: "Wydatki"
+                },
+                legend: {
+                    maxWidth: 350,
+                    itemWidth: 120
+                },
+                data: [
+                {
+                    type: "pie",
+                    showInLegend: true,
+                    legendText: "{indexLabel}",
+                    dataPoints: [
+                    ]
+                }
+                ]
+            }
+            );
+            
+            for (var m = 0; m < datasetValueExpense.length; m++) {
+                chart.options.data[0].dataPoints.push(datasetValueExpense[m]);
+            }
+            chart.render();
+        }
+        }
+    </script>
+     
 </div>
 
 {% endblock %}

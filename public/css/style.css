@@ -284,6 +284,29 @@ label {
     margin-right: auto!important;
 }
 
+#chartContainerIncome {
+    margin-bottom: 50px;
+    height: 300px;
+    max-width: 46%!important;
+}
+
+#chartContainerExpense {
+    margin-bottom: 50px;
+    height: 300px;
+    max-width: 46%!important;
+}
+
+@media screen and (max-width:991px) {
+
+    #chartContainerIncome {
+        max-width: 90%!important;
+    }
+
+    #chartContainerExpense {
+        max-width: 90%!important;
+    }
+}
+
 @media screen and (max-width:1200px) {
 
 .btn-register {
