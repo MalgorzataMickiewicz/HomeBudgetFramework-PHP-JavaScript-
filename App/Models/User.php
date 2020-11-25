@@ -449,7 +449,6 @@ class User extends \Core\Model
         return false;
     }
 
-
     public function addDefaultCategories() {
 
         $userId = static::getUserId($this);
@@ -476,21 +475,70 @@ class User extends \Core\Model
         $categoryNameExpense = static::getCategoriesNamesExpenses();
         $numberOfItemExpense = count($categoryNameExpense);
         $j = 0;
+        $expenseLimit = 0; 
 
         for($j; $j < $numberOfItemExpense; $j++) {
             $nextCategory = $categoryNameExpense[$j]->categoryName;
-            $sql = 'INSERT INTO expensescategoryassigned (userId, categoryName)
-            VALUES (:userId, :nextCategory)';
+            $sql = 'INSERT INTO expensescategoryassigned (userId, categoryName, expenseLimit)
+            VALUES (:userId, :nextCategory, :expenseLimit)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
             $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
             $stmt->bindValue(':nextCategory', $nextCategory, PDO::PARAM_STR);
+            $stmt->bindValue(':expenseLimit', $expenseLimit, PDO::PARAM_INT);
             $stmt->execute();
         }
 
         return true;
+    }
+
+    public function addDefaultMethodPay() {
+
+        $userId = static::getUserId($this);
+
+        $nameMethodPay = static::getMethodPayNames();
+        $numberOfItem = count($nameMethodPay);
+        $i = 0;
+
+        for($i; $i < $numberOfItem; $i++) {
+            $nextMethodPay = $nameMethodPay[$i]->nameMethodPay;
+            $sql = 'INSERT INTO methodpayassigned (userId, nameMethodPay)
+            VALUES (:userId, :nextMethodPay)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':nextMethodPay', $nextMethodPay, PDO::PARAM_STR);
+            $stmt->execute();
+        }
+
+        return true;
+    }
+
+    public function saveMethodPay() {
+        $userId = $_SESSION['user_id'];
+        $newCategory = $this->newCategory;
+
+        //check if new category already exist in database
+        $data = static::checkMethodPayName($newCategory);
+        if (!$data) {
+
+            $newCategoryExpense = ucwords($newCategory);
+            $sql = 'INSERT INTO methodpayassigned (userId, nameMethodPay)
+            VALUES (:userId, :newCategoryExpense)';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+        
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
+            $stmt->bindValue(':newCategoryExpense', $newCategoryExpense, PDO::PARAM_STR); 
+            return $stmt->execute();
+        }
+        else {
+            return false;
+        }
     }
 
     public function getUserId() {
@@ -535,5 +583,136 @@ class User extends \Core\Model
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 
         return $stmt->fetchAll();
+    }
+
+    public function getMethodPayNames() {
+
+        $sql = 'SELECT nameMethodPay FROM methodpay';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        
+        $stmt->execute();
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        return $stmt->fetchAll();
+    }
+
+    static function checkMethodPayName($newCategory) {
+
+        $userId = $_SESSION['user_id'];
+        $newMethodPay = ucwords($newCategory);
+
+        $sql = 'SELECT nameMethodPay FROM methodpayassigned WHERE nameMethodPay = :newMethodPay AND userId = :userId';
+  
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':newMethodPay', $newMethodPay, PDO::PARAM_STR);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }  
+
+    static function updateMethodPay($categoryArray) {
+        $userId = $_SESSION['user_id'];
+
+        $newCategory = $categoryArray['newCategory'];
+        $categoryId = $categoryArray['newCategoryId'];
+        // check existing categories in base
+        $data = static::checkMethodPayName($newCategory);
+        if (!$data) {
+            // update category in assigned categories
+            $newMethodPay = ucwords($newCategory);
+            $sql = 'UPDATE methodpayassigned SET nameMethodPay = :newMethodPay WHERE userId = :userId AND id = :categoryId';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+            $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR); 
+            $stmt->bindValue(':newMethodPay', $newMethodPay, PDO::PARAM_STR); 
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+            return $stmt->execute();
+        }
+         return false;
+    }
+
+    static function deleteCategoryIncome($categoryArray) {
+        $userId = $_SESSION['user_id'];
+
+        $categoryId = $categoryArray['categoryId'];
+
+        $sql = 'DELETE FROM incomescategoryassigned WHERE userId = :userId AND id = :categoryId';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+        $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR); 
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->execute();
+    }
+
+    static function deleteCategoryExpense($categoryArray) {
+        $userId = $_SESSION['user_id'];
+
+        $categoryId = $categoryArray['categoryId'];
+
+        $sql = 'DELETE FROM expensescategoryassigned WHERE userId = :userId AND id = :categoryId';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+        $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR); 
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->execute();
+    }
+
+    static function deleteMethodPay($categoryArray) {
+        $userId = $_SESSION['user_id'];
+
+        $methodPayId = $categoryArray['categoryId'];
+
+        $sql = 'DELETE FROM methodpayassigned WHERE userId = :userId AND id = :methodPayId';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+        $stmt->bindValue(':methodPayId', $methodPayId, PDO::PARAM_STR); 
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->execute();
+    }
+
+    static function setExpenseLimit($categoryArray) {
+        $userId = $_SESSION['user_id'];
+        $categoryId = $categoryArray['categoryId'];
+        $limitValue = $categoryArray['value'];
+
+        $sql = 'UPDATE expensescategoryassigned
+        SET expenseLimit = :limitValue 
+        WHERE userId = :userId 
+        AND id = :categoryId';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_INT);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':limitValue', $limitValue, PDO::PARAM_STR);
+
+        return $stmt->execute();
     }
 }

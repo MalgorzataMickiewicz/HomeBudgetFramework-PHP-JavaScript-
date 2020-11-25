@@ -153,19 +153,22 @@ class Income extends \Core\Model
 
     public function saveCategoryIncome() {
             $userId = $_SESSION['user_id'];
-            $newCategoryIncome = $this->newCategory;
+            $newCategory = $this->newCategory;
+            $incomeLimit = 0;
 
             //check if new category already exist in database
-            $data = static::checkCategoryName($newCategoryIncome);
+            $data = static::checkCategoryName($newCategory);
             if (!$data) {
                 
-                $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName)
-                VALUES (:userId, :newCategoryIncome)';
+                $newCategoryIncome = ucwords($newCategory);
+                $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName, incomeLimit)
+                VALUES (:userId, :newCategoryIncome, :incomeLimit)';
                 $db = static::getDB();
                 $stmt = $db->prepare($sql);
         
                 $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
                 $stmt->bindValue(':newCategoryIncome', $newCategoryIncome, PDO::PARAM_STR); 
+                $stmt->bindValue(':incomeLimit', $incomeLimit, PDO::PARAM_INT); 
                 return $stmt->execute();
             }
             else {
@@ -173,20 +176,23 @@ class Income extends \Core\Model
             }
     }
 
-    public function checkCategoryName($newCategoryIncome) {
+    static function checkCategoryName($newCategory) {
 
         $userId = $_SESSION['user_id'];
+        $newCategoryIncome = ucwords($newCategory);
 
         $sql = 'SELECT categoryName FROM incomescategoryassigned WHERE categoryName = :newCategoryIncome AND userId = :userId';
- 
+  
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
-        $stmt->bindValue(':categoryIncome', $newCategoryIncome, PDO::PARAM_STR);
+        $stmt->bindValue(':newCategoryIncome', $newCategoryIncome, PDO::PARAM_STR);
         $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
 
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 
+        $stmt->execute();
+        
         return $stmt->fetchColumn();
     }   
 
@@ -222,7 +228,6 @@ class Income extends \Core\Model
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':dayOneThisMonth', $dayOneThisMonth, PDO::PARAM_STR);
         $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
-
 
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 
@@ -317,8 +322,8 @@ class Income extends \Core\Model
             $curentMonth = date('m');
             $curentYear = date('Y');
 
-            $dayOneThisMonth = $date["dateFrom"];
-            $endDate =  $date["dateTo"];
+            $dayOneThisMonth = $date['dateFrom'];
+            $endDate =  $date['dateTo'];
 
             $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate';
 
@@ -347,4 +352,101 @@ class Income extends \Core\Model
             return true;
         }
     }   
+
+    static function updateCategoryIncome($categoryArray) {
+        $userId = $_SESSION['user_id'];
+
+        $newCategory = $categoryArray['newCategory'];
+        $categoryId = $categoryArray['newCategoryId'];
+
+        // check existing categories in base
+        $data = static::checkCategoryName($newCategory);
+        if (!$data) {
+            // update category in assigned categories
+            $newCategoryIncome = ucwords($newCategory);
+            $sql = 'UPDATE incomescategoryassigned SET categoryName = :newCategoryIncome WHERE userId = :userId AND id = :categoryId';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+            $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR); 
+            $stmt->bindValue(':newCategoryIncome', $newCategoryIncome, PDO::PARAM_STR); 
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+            return $stmt->execute();
+        }
+         return false;
+    }
+
+    static function deleteIncomeForSpecificCategory($categoryArray) {
+        $userId = $_SESSION['user_id'];
+
+        $categoryId = $categoryArray['categoryId'];
+
+        $sql = 'DELETE FROM incomes WHERE userId = :userId AND categoryIncomeId = :categoryId';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+        $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR); 
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->execute();
+    }
+
+    static function deleteIncomeForSpecificMethodPay($categoryArray) {
+        $userId = $_SESSION['user_id'];
+
+        $categoryId = $categoryArray['categoryId'];
+
+        $sql = 'DELETE FROM incomes WHERE userId = :userId AND categoryIncomeId = :categoryId';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+        $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR); 
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->execute();
+    }
+
+    static function editIncome($array) {
+        $userId = $_SESSION['user_id'];
+
+        $idIncome = $array['idIncome'];
+        $newValue = $array['newValue'];
+
+        $sql = 'UPDATE incomes SET valueIncome = :newValue WHERE userId = :userId AND idIncome = :idIncome';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':idIncome', $idIncome, PDO::PARAM_INT); 
+        $stmt->bindValue(':newValue', $newValue, PDO::PARAM_STR); 
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->execute();
+    }
+
+    static function deleteIncome($array) {
+        
+        $userId = $_SESSION['user_id'];
+        $idIncome = $array['idIncome'];
+
+        $sql = 'DELETE FROM incomes WHERE userId = :userId AND idIncome = :idIncome';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':idIncome', $idIncome, PDO::PARAM_INT); 
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->execute();
+    }
 }

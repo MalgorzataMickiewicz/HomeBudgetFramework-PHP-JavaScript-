@@ -3,58 +3,56 @@
 {% block title %}Wydatki | TB twojbudzet.com{% endblock %}
 
 {% block footer %}
-    <script src="/js/app.js"></script>
+<script src="/js/app.js"></script>
 
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function () {
 
-            /**
-             * Validate the form
-             */
-            $('#formExpense').validate({
-                rules: {
-                    valueExpense: {
-                        required: true
-                        },
-                    dateExpense: {
-                        required: true
-                    },
-                    categoryExpense: {
-                        required: true
-                    },
-                    payMethodExpense: {
-                        required: true
-                    }
+        /**
+         * Validate the form
+         */
+        $('#formExpense').validate({
+            rules: {
+                valueExpense: {
+                    required: true
                 },
-                messages: {
-                    valueExpense: {
-                        remote: 'Wprowadź liczbę dodatnią, różną od zera'
-                    },
-                    dateExpense: {
-                        remote: 'Wprowadź datę'
-                    },
-                    categoryExpense: {
-                        remote: 'Wybierz kategorię'
-                    },
-                    payMethodExpense: {
-                        remote: 'Wybierz metodę płatności'
-                    }
+                dateExpense: {
+                    required: true
+                },
+                categoryExpense: {
+                    required: true
+                },
+                payMethodExpense: {
+                    required: true
                 }
-            });
-
-
-            /**
-              * Show password toggle button
-              */
-            $('#inputPassword').hideShowPassword({
-                show: false,
-                innerToggle: 'focus'
-            });
+            },
+            messages: {
+                valueExpense: {
+                    remote: 'Wprowadź liczbę dodatnią, różną od zera'
+                },
+                dateExpense: {
+                    remote: 'Wprowadź datę'
+                },
+                categoryExpense: {
+                    remote: 'Wybierz kategorię'
+                },
+                payMethodExpense: {
+                    remote: 'Wybierz metodę płatności'
+                }
+            }
         });
-    </script>
+
+        /**
+          * Show password toggle button
+          */
+        $('#inputPassword').hideShowPassword({
+            show: false,
+            innerToggle: 'focus'
+        });
+    });
+</script>
 
 {% endblock %}
-
 
 {% block body %}
 
@@ -62,13 +60,18 @@
 <p>Błędy w formularzu:</p>
 <ul>
     {% for error in expense.errors %}
-        <li>{{ error }}</li>
+    <li>{{ error }}</li>
     {% endfor %}
 </ul>
 {% else %}
 {% endif %}
 
-<form method="post" action="/expenses/saveExpense" id="formExpense">
+<div id="alert-success" class="alert alert-success communicat-limit-hide">Przychód dodano pomyślnie</div>
+<div id="alert-warning" class="alert alert-warning communicat-limit-hide">Przychód nie został dodany</div>
+
+<form method="post" id="formExpense"> 
+
+
     <div class="row text-center bg-background my-6 p-sm-3 p-lg-0">
 
         <div class="col-lg-10 offset-lg-1 my-5 bg-white bg-shadow">
@@ -79,11 +82,30 @@
 
         </div>
 
+        <div id="communicat-low" class="col-lg-10 offset-lg-1 my-1 opacity-communicat-success communicat-limit-hide">
+
+            <h3 class="my-4 h4" style="color: black!important;">
+                Nie przekroczono limitu dla tej kategorii wydatku
+            </h3>
+
+        </div>
+
+        <div id="communicat-high" class="col-lg-10 offset-lg-1 my-1 opacity-communicat-limit communicat-limit-hide" style="font-weight: 700;">
+        </div>
+
+        <div id="communicat-validation" class="col-lg-10 offset-lg-1 my-1 opacity-communicat-limit communicat-limit-hide" style="font-weight: 700;">
+
+            <h3 class="my-4 h4" style="color: black!important;">
+                Wprowadź wszystkie dane poprawnie!
+            </h3>
+
+        </div>
+
         <div class="col-lg-5 offset-lg-1">
 
             <label class="font-weight-bold" for="valueExpense">Dodaj kwotę wydatku</label>
 
-            <input type="text" class="form-control" name="valueExpense" id="valueExpense" placeholder="Kwota"
+            <input type="text" class="form-control" name="valueExpense" id="valueExpense" placeholder="Kwota, różna od 0"
                 aria-label="value" aria-describedby="value">
         </div>
 
@@ -95,52 +117,260 @@
                 aria-describedby="date">
 
         </div>
-        
+
         <div class="form-group col-lg-3 offset-lg-1">
             <label class="font-weight-bold"> Wybierz metodę płatności </label>
-                <div class="form-control method-pay">
-                    <input type="radio" id="cash" name="payMethodExpense" value="Gotówka" checked>
-                    <label for="cash">Gotówka</label>
-                    <br />
-                    <input type="radio" id="debet" name="payMethodExpense" value="Karta debetowa">
-                    <label for="debet">Karta debetowa</label>
-                    <br />
-                    <input type="radio" id="credit" name="payMethodExpense" value="Karta kredytowa">
-                    <label for="credit">Karta kredytowa</label>  
-                </div>    
+            <div class="form-control method-pay" style="height: auto;">
+                {% set counterMethodPay = 0 %}
+                {% for item in methodPay %}
+                {% if counterMethodPay == 0 %}
+                <input checked type="radio" id="{{ item.id }}" name="payMethodExpense" value="{{ item.nameMethodPay }}">
+                <label for="{{ item.id }}">{{ item.nameMethodPay }}</label>
+                <br />
+                {% set counterMethodPay = counterMethodPay + 1 %}
+                {% else %}
+                <input type="radio" id="{{ item.id }}" name="payMethodExpense"
+                    value="{{ item.nameMethodPay }}">
+                <label for="{{ item.id }}">{{ item.nameMethodPay }}</label>
+                <br />
+                {% set counterMethodPay = counterMethodPay + 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
             </label>
-        </div>
-
-        <div class="form-group col-lg-4">
-
-            <label class="font-weight-bold" for="categoryExpense">Wybierz kategorie dodawanego
-                wydatku</label>
-            <select name="categoryExpense" multiple class="form-control" id="categoryExpense">
-                {% for item in categoryExpense %}
-                    <option value="{{ item.categoryName }}">{{ item.categoryName }}</option>
-                {% endfor %}            
-            </select>
-
         </div>
 
         <div class="form-group col-lg-3">
 
+            <label class="font-weight-bold" for="categoryExpense">Wybierz kategorie dodawanego
+                wydatku</label>
+                <div class="form-control" style="height: auto;">
+                    {% set counterCategory = 0 %}
+                    {% for item in categoryExpense %}
+                    {% if counterCategory == 0 %}
+                        <input checked type="radio" id="{{ item.id }}" name="categoryExpense" value="{{ item.categoryName }}">
+                        <label style="height: 10px;" for="{{ item.id }}">{{ item.categoryName }}</label>
+                        <br/>
+                    {% set counterCategory = counterCategory + 1 %}
+                    {% else %}
+                        <input type="radio" id="{{ item.id }}" name="categoryExpense" value="{{ item.categoryName }}">
+                        <label style="height: 10px;" for="{{ item.id }}">{{ item.categoryName }}</label>
+                        <br/>
+                    {% set counterCategory = counterCategory + 1 %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </select>
+
+        </div>
+
+        <div class="form-group col-lg-4">
+
             <label class="font-weight-bold" for="commentExpense"> Dodaj opcjonalnie swój komentarz </label>
-            <textarea name="commentExpense" class="form-control" id="commentExpense" rows="3"></textarea>
+            <textarea id="comment" name="commentExpense" class="form-control" placeholder="Opcjonalny komentarz" id="commentExpense" rows="3"></textarea>
 
         </div>
 
         <div class="col-lg-5 offset-lg-1 p-1">
-            <button type="submit" class="btn btn-register my-3"> Dodaj wydatek </button>
+            <button type="button" class="btn btn-register my-3 btn-submit"> Dodaj wydatek </button>
         </div>
 
         <div class="col-lg-5 p-1">
             <a href="/">
                 <button type="button" class="btn btn-register my-3"> Anuluj </button>
-            </as>
+                </as>
         </div>
 
     </div>
 </form>
+
+<script>
+    $(document).ready(function () {
+
+        // checked limit for category
+        var coll = document.getElementsByClassName('btn-submit');
+        var j;
+        for (j = 0; j < coll.length; j++) {
+            coll[j].addEventListener('click', function () {
+                // value
+                var valueDiv = document.getElementById('valueExpense');
+                var value = $(valueDiv).val();
+            
+                // date
+                var dateDiv = document.getElementById('dateExpense');
+                var date = $(dateDiv).val();
+
+                //methodPay
+                var methodPayDiv = document.getElementsByClassName('method-pay');
+                var numberOfElement = methodPayDiv[0].childElementCount;
+                var tab = methodPayDiv[0].children;
+                for(var b = 0; b < numberOfElement; b++){
+                    if(tab[b].localName == 'input'){
+                        if(tab[b].checked == true){
+                            var methodPay = tab[b].getAttribute('id');
+                        }
+                    }
+                }
+
+                 //comment
+                var commentDiv = document.getElementById('comment');
+                var commentExpense = $(commentDiv).val();
+
+                //categoryId
+                var parent = this.parentElement;
+                var comment = parent.previousElementSibling;
+                var category = comment.previousElementSibling;
+                var categories = category.children;
+                var select = categories[1];
+                var number = select.childElementCount;
+                var tab = select.children;
+
+                for(var a = 0; a < number; a++){
+                    if(tab[a].localName == 'input'){
+                        if(tab[a].checked == true){
+                            var checkedCategory = tab[a];
+                            var categoryId = checkedCategory.getAttribute('id');
+                            $.post('checkCategoryLimit', {
+                                categoryId: categoryId,
+                                value: value,
+                                date: date
+                            }, function(data,status,xhr){
+                                var result = data;
+
+                                if(status == 'success'){
+                                    // category without limit
+                                    if(result == 'nolimit') {
+                                        // hide old communicat 'warning'
+                                        if(!document.getElementById('communicat-high').classList.contains('communicat-limit-hide')){
+                                            document.getElementById('communicat-high').classList.add('communicat-limit-hide');
+                                        }
+                                        // hide old communicat 'validation'
+                                        if(!document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')){
+                                            document.getElementById('communicat-validation').classList.add('communicat-limit-hide');
+                                        }
+                                        $.post('saveExpense', {
+                                            categoryExpense: categoryId,
+                                            payMethodExpense: methodPay,
+                                            valueExpense: value,
+                                            dateExpense: date,
+                                            commentExpense: commentExpense
+                                        }, function(data,status,xhr){
+                                            var response = data;
+                                            // expense was added to base
+                                            if (response == 1){
+                                                // show alert 'success'
+                                                if(document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
+                                                    document.getElementById('alert-success').classList.remove('communicat-limit-hide');
+                                                }
+                                            }
+                                            // expense wasn't added to base
+                                            else {
+                                                // show alert 'warning'
+                                                if(document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
+                                                    document.getElementById('alert-warning').classList.remove('communicat-limit-hide');
+                                                }
+                                            }
+                                        });
+                                    }
+                                    // limit wasn't exceeded and validation is empty
+                                    else if(result == 'true'){
+                                        // hide old communicat 'warning'
+                                        if(!document.getElementById('communicat-high').classList.contains('communicat-limit-hide')){
+                                            document.getElementById('communicat-high').classList.add('communicat-limit-hide');
+                                        }
+                                        // hide old communicat 'validation'
+                                        if(!document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')){
+                                            document.getElementById('communicat-validation').classList.add('communicat-limit-hide');
+                                        }
+                                        // show communicat 'success'
+                                        document.getElementById('communicat-low').classList.remove('communicat-limit-hide');
+
+                                        $.post('saveExpense', {
+                                            categoryExpense: categoryId,
+                                            payMethodExpense: methodPay,
+                                            valueExpense: value,
+                                            dateExpense: date,
+                                            commentExpense: commentExpense
+                                        }, function(data,status,xhr){
+                                            var response = data;
+                                            // expense was added to base
+                                            if (response == 1){
+                                                // show alert 'success'
+                                                if(document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
+                                                    document.getElementById('alert-success').classList.remove('communicat-limit-hide');
+                                                }
+                                            }
+                                            // expense wasn't added to base
+                                            else {
+                                                // show alert 'warning'
+                                                if(document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
+                                                    document.getElementById('alert-warning').classList.remove('communicat-limit-hide');
+                                                }
+                                            }
+                                        });
+                                    }
+                                    // limit was exceeded or validation isn't empty
+                                    else if(result != 'true'){
+                                        // validation isn't empty
+                                        if(result == 'false'){
+                                            // show communicato 'validation'
+                                            if(document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')){
+                                                document.getElementById('communicat-validation').classList.remove('communicat-limit-hide');
+                                            }
+                                            // hide communicat 'success'
+                                            if(!document.getElementById('communicat-low').classList.contains('communicat-limit-hide')){
+                                                document.getElementById('communicat-low').classList.add('communicat-limit-hide');
+                                            }
+                                             // hide communicat 'warning'
+                                             if(!document.getElementById('communicat-high').classList.remove('communicat-limit-hide')) {
+                                                document.getElementById('communicat-high').classList.add('communicat-limit-hide');
+                                            }
+                                            // hide alert 'warninig'
+                                            if(!document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
+                                                document.getElementById('alert-warinig').classList.add('communicat-limit-hide');
+                                                }
+                                            // hide alert 'success'
+                                            if(!document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
+                                                document.getElementById('alert-success').classList.add('communicat-limit-hide');
+                                            }
+                                        }
+                                        // limit was exceeded
+                                        else{
+                                            // hide communicat 'success'
+                                            if(!document.getElementById('communicat-low').classList.contains('communicat-limit-hide')){
+                                                document.getElementById('communicat-low').classList.add('communicat-limit-hide');
+                                            }
+                                            // hide communicat 'validation'
+                                            if(!document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')){
+                                                document.getElementById('communicat-validation').classList.add('communicat-limit-hide');
+                                            }
+                                            result = -result;
+                                            // clean communicat 'warning'
+                                            document.getElementById('communicat-high').innerHTML = '';
+                                            // show communicat 'warning'
+                                            document.getElementById('communicat-high').classList.remove('communicat-limit-hide');
+                                            // add insert to communicat 'warning'
+                                            document.getElementById('communicat-high').insertAdjacentHTML('afterbegin','<h3 class="my-4 h4" style="color: black!important; display: inline-block;">Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '. Wydatek nie został dodany.</h3>');
+                                            
+                                            // hide alert 'warninig'
+                                            if(!document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
+                                                    document.getElementById('alert-warinig').classList.add('communicat-limit-hide');
+                                                }
+                                            // hide alert 'success'
+                                            if(!document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
+                                                    document.getElementById('alert-success').classList.add('communicat-limit-hide');
+                                            }
+                                        }
+                                    }
+                                }
+                            })
+                            ; 
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
 
 {% endblock %}

@@ -5,15 +5,15 @@
 {% block body %}
 
 <div class="row text-center bg-background my-4 p-sm-3 p-lg-0">
-
+ 
     <div class="col-lg-10 offset-lg-1 my-5 bg-white bg-shadow">
         <p class=" h2 col-8 font-weight-bold bg-color my-4 d-inline-block nav-name">
             Przeglądaj swój bilans
         </p>
         <div class="d-inline-block">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="list"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="list" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
                     Bieżący miesiąc
                 </button>
                 <div class="dropdown-menu" aria-labelledby="list">
@@ -25,6 +25,11 @@
         </div>
     </div>
 
+    <div id="chartContainer" class="mx-3 col-lg-5" style="height: 200px; width: 100%; margin-bottom: 10px;"></div>
+    <div class="col-lg-6"></div>
+    <div id="communicat-zero" class="communicat-limit-hide mx-3 my-2 col-lg-12">Wprowadź inną wartość niż 0.</div>
+    <div id="communicat-limit" class="communicat-limit-hide mx-3 my-2 col-lg-12"></div>
+    <!--INCOMES-->
     <div class="col-lg-6">
         <table class="table table-bordered">
             <thead class="bg-table">
@@ -37,10 +42,11 @@
         <table class="table table-bordered bg-white">
             <tbody>
                 <tr style="text-align: center;">
-                    <th style="width: 25%;">Kategoria</th>
-                    <th style="width: 25%;">Wartość</th>
-                    <th style="width: 25%;">Edytuj</th>
-                </tr>                            
+                    <th style="width: 25%;">Data dodania</th>
+                    <th style="width: 20%;">Kategoria</th>
+                    <th style="width: 5%;">Wartość</th>
+                    <th style="width: 25%;">Edytuj / Usuń</th>
+                </tr>
 
                 <script type="text/javascript">
                     var counterIncome = 0;
@@ -50,72 +56,87 @@
 
                 {% set sumIncomesAll = 0 %}
                 {% for item in userIncomes %}
-                
-                 <script type="text/javascript">
-                        var valueIncome = "{{ item.valueIncome }}";
-                        var newNumber = Number(valueIncome);
-                        var nameIncome = "{{ item.categoryName }}";
-                        var counterIncomeSameCategory = 0;
 
-                        if(counterIncome > 0) {
-                            for(var q = 0; q < counterIncome; q++)  {
-                                if (nameIncome == tabNameIncome[q]) {
-                                    tabValueIncome[q] = Number(tabValueIncome[q]) + Number(newNumber);
-                                    counterIncomeSameCategory = 1;
-                                }
+                <script type="text/javascript">
+                    var valueIncome = "{{ item.valueIncome }}";
+                    var newNumber = Number(valueIncome);
+                    var nameIncome = "{{ item.categoryName }}";
+                    var counterIncomeSameCategory = 0;
+
+                    if (counterIncome > 0) {
+                        for (var q = 0; q < counterIncome; q++) {
+                            if (nameIncome == tabNameIncome[q]) {
+                                tabValueIncome[q] = Number(tabValueIncome[q]) + Number(newNumber);
+                                counterIncomeSameCategory = 1;
                             }
-                            if(counterIncomeSameCategory == 0) {
-                                tabValueIncome[counterIncome] = valueIncome;
-                                tabNameIncome[counterIncome] = "{{ item.categoryName }}";
-                                counterIncome++;
-                            }
-                            counterIncomeSameCategory = 0;
                         }
-                        else {
+                        if (counterIncomeSameCategory == 0) {
                             tabValueIncome[counterIncome] = valueIncome;
                             tabNameIncome[counterIncome] = "{{ item.categoryName }}";
                             counterIncome++;
                         }
+                        counterIncomeSameCategory = 0;
+                    }
+                    else {
+                        tabValueIncome[counterIncome] = valueIncome;
+                        tabNameIncome[counterIncome] = "{{ item.categoryName }}";
+                        counterIncome++;
+                    }
 
-                    </script>
+                </script>
 
-                <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="incomeInformation"><td incomeId="{{ item.categoryIncomeId }}">{{ item.categoryName }}</td>
-                    <td>{{ item.valueIncome }}</td>
+                <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="incomeInformation">
+                    <td>{{ item.dateIncome }}</td>
+                    <td incomeId="{{ item.categoryIncomeId }}">{{ item.categoryName }}</td>
+                    <td class="values" buttonvalue="{{ item.valueIncome }}" name="income">{{ item.valueIncome }}</td>
                     {% set sumIncomesAll = sumIncomesAll + item.valueIncome %}
                     <td>
-                        <button type="button" class="btn" data-toggle="modal" data-target="#edit-1" onclick="">
-                            <svg class="bi bi-check" width="1.5em" height="1.5em" viewBox="0 0 16 16"
-                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                            d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z"
-                            clip-rule="evenodd" />
-                            </svg>
+                        <button class="btn edit-btn income-button" buttonid="{{ item.idIncome }}"
+                            buttonname="{{ item.categoryName}}" buttonvalue="{{ item.valueIncome }}"
+                            buttondate="{{ item.dateIncome }}" buttoncategoryid="{{ item.categoryIncomeId }}"
+                            data-toggle="modal" data-target="#edit-1" onclick="" style="padding: 0px;">
+                            <span class="input-group-text category-color-green"
+                                style="float: left; height: 40px; margin-top: 2px; margin-left: 5px;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                </svg>
+                            </span>
+                        </button>
+                        <button class="btn delete-btn income-button" buttonId="{{ item.idIncome }}" data-toggle="modal"
+                            data-target="#delete-1" onclick="" style="padding: 0px;">
+                            <span class="input-group-text category-color"
+                                style="float: left; height: 40px; margin-top: 2px; margin-left: 5px;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
+                                </svg>
+                                </svg>
+                            </span>
                         </button>
                     </td>
-                    <div class="modal fade" id="edit-1" tabindex="-1" role="dialog"
-                        aria-labelledby="edit-1" aria-hidden="true">
+                    <div class="modal fade" id="delete-1" tabindex="-1" role="dialog" aria-labelledby="delete-1"
+                        aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold nav-name" id="modal-new-password">Edytuj wartość</h5>
-                                    <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
+                                    <h5 class="modal-title font-weight-bold nav-name" id="modal-new-password">Usuń
+                                        przychód</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form method="post">
-                                    <div class="modal-body col-12">
-                                        <h5 class="modal-title font-weight-bold nav-name">Edytuj</h5>
-                                        <input type="text" name="newIncomeValue" class="form-control little-input d-inline-block ml-2"
-                                            id="wartosc" placeholder="Wartość" aria-label="wartosc"
-                                            aria-describedby="wartosc">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
-                                            data-dismiss="modal">Anuluj</button>
-                                        <button type="submit" class="btn btn-sub-settings font-weight-bold">Zapisz</button>
-                                    </div>
-                                </form>
+                                <div class="modal-body col-12">
+                                    <span>Kliknij Usuń aby potwierdzić chęć usunięcia wybranego przychodu</span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                                        data-dismiss="modal">Anuluj</button>
+                                    <button type="button" class="btn category-color font-weight-bold delete-submit"
+                                        style="width: 80px;" data-dismiss="modal">Usuń</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -123,13 +144,15 @@
                 {% endfor %}
                 <tr class="bg-table">
                     <th>SUMA</th>
-                    <th>{{ sumIncomesAll }}</th>
+                    <td></td>
+                    <th id="income-sum">{{ sumIncomesAll }}</th>
                     <td></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
+    <!-- EXPENSES -->
     <div class="col-lg-6">
         <table class="table table-bordered">
             <thead class="bg-table">
@@ -142,9 +165,10 @@
         <table class="table table-bordered bg-white">
             <tbody>
                 <tr style="text-align: center;">
-                    <th style="width: 25%;">Kategoria</th>
-                    <th style="width: 25%;">Wartość</th>
-                    <th style="width: 25%;">Edytuj</th>
+                    <th style="width: 25%;">Data dodania</th>
+                    <th style="width: 20%;">Kategoria</th>
+                    <th style="width: 5%;">Wartość</th>
+                    <th style="width: 25%;">Edytuj / Usuń</th>
                 </tr>
 
                 <script type="text/javascript">
@@ -157,20 +181,20 @@
                 {% for item in userExpenses %}
 
                 <script type="text/javascript">
-                
+
                     var valueExpense = "{{ item.valueExpense }}";
                     var newNumber = Number(valueExpense);
                     var nameExpense = "{{ item.categoryName }}";
                     var counterExpenseSameCategory = 0;
 
-                    if(counterExpense > 0) {
-                        for(var q = 0; q < counterExpense; q++)  {
+                    if (counterExpense > 0) {
+                        for (var q = 0; q < counterExpense; q++) {
                             if (nameExpense == tabNameExpense[q]) {
                                 tabValueExpense[q] = Number(tabValueExpense[q]) + Number(newNumber);
                                 counterExpenseSameCategory = 1;
                             }
                         }
-                        if(counterExpenseSameCategory == 0) {
+                        if (counterExpenseSameCategory == 0) {
                             tabValueExpense[counterExpense] = valueExpense;
                             tabNameExpense[counterExpense] = "{{ item.categoryName }}";
                             counterExpense++;
@@ -182,121 +206,576 @@
                         tabNameExpense[counterExpense] = "{{ item.categoryName }}";
                         counterExpense++;
                     }
-                    
+
                 </script>
 
-                <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="expenseInformation"><td expenseId="{{ item.categoryExpenseId }}">{{ item.categoryName }}</td>
-                    <td>{{ item.valueExpense }}</td>
+                <tr style="background-color: lightgrey; text-align: center; font-size: 20px;" id="expenseInformation">
+                    <td>{{ item.dateExpense }}</td>
+                    <td expenseId="{{ item.categoryExpenseId }}">{{ item.categoryName }}</td>
+                    <td class="values" buttonvalue="{{ item.valueExpense }}" name="expense">{{ item.valueExpense }}</td>
                     {% set sumExpensesAll = sumExpensesAll + item.valueExpense %}
                     <td>
-                        <button type="button" class="btn" data-toggle="modal" data-target="#edit-1" onclick="">
-                            <svg class="bi bi-check" width="1.5em" height="1.5em" viewBox="0 0 16 16"
-                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                            d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z"
-                            clip-rule="evenodd" />
-                            </svg>
+                        <button class="btn edit-btn expense-button" buttonid="{{ item.idExpense }}"
+                            buttonname="{{ item.categoryName}}" buttonvalue="{{ item.valueExpense }}"
+                            buttondate="{{ item.dateExpense }}" buttoncategoryid="{{ item.categoryExpenseId }}"
+                            data-toggle="modal" data-target="#edit-2" onclick="" style="padding: 0px;">
+                            <span class="input-group-text category-color-green"
+                                style="float: left; height: 40px; margin-top: 2px; margin-left: 5px;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                </svg>
+                            </span>
+                        </button>
+                        <button class="btn delete-btn expense-button" buttonId="{{ item.idExpense }}"
+                            data-toggle="modal" data-target="#delete-2" onclick="" style="padding: 0px;">
+                            <span class="input-group-text category-color"
+                                style="float: left; height: 40px; margin-top: 2px; margin-left: 5px;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
+                                </svg>
+                                </svg>
+                            </span>
                         </button>
                     </td>
-                    <div class="modal fade" id="edit-1" tabindex="-1" role="dialog"
-                        aria-labelledby="edit-1" aria-hidden="true">
+
+                    <div class="modal fade" id="delete-2" tabindex="-1" role="dialog" aria-labelledby="delete-2"
+                        aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold nav-name" id="modal-new-password">Edytuj wartość</h5>
-                                    <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
+                                    <h5 class="modal-title font-weight-bold nav-name" id="modal-new-password">Usuń
+                                        przychód</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form method="post">
-                                    <div class="modal-body col-12">
-                                        <h5 class="modal-title font-weight-bold nav-name">Edytuj</h5>
-                                        <input type="text" name="newIncomeValue" class="form-control little-input d-inline-block ml-2"
-                                            id="wartosc" placeholder="Wartość" aria-label="wartosc"
-                                            aria-describedby="wartosc">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
-                                            data-dismiss="modal">Anuluj</button>
-                                        <button type="submit" class="btn btn-sub-settings font-weight-bold">Zapisz</button>
-                                    </div>
-                                </form>
+                                <div class="modal-body col-12">
+                                    <span>Kliknij Usuń aby potwierdzić chęć usunięcia wybranego przychodu</span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                                        data-dismiss="modal">Anuluj</button>
+                                    <button type="button" class="btn category-color font-weight-bold delete-submit"
+                                        style="width: 80px;" data-dismiss="modal">Usuń</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
                 </tr>
                 {% endfor %}
                 <tr class="bg-table">
                     <th>SUMA</th>
-                    <th>{{ sumExpensesAll }}</th>
+                    <td></td>
+                    <th id="expense-sum">{{ sumExpensesAll }}</th>
                     <td></td>
                 </tr>
             </tbody>
         </table>
     </div>
-    {% if sumExpensesAll == 0 and sumIncomesAll == 0 %} 
-        <p class="h4 col-12 mb-4">Nie posiadasz jeszcze żadnych danych</p>
-    {% elseif sumExpensesAll < sumIncomesAll %}
-        <p class="h4 col-12 mb-4">Gratulacje! Nie przekroczyłeś swojego budżetu</p>
-    {% else %} 
-        <p class="h4 col-12 mb-4">Uwaga! Przekroczyłeś swój budżet</p>
+    {% if sumExpensesAll == 0 and sumIncomesAll == 0 %}
+    <p id="final-communicat" class="h4 col-12 mb-4">Nie posiadasz jeszcze żadnych danych</p>
+    {% elseif sumExpensesAll <= sumIncomesAll %}
+    <p id="final-communicat" class="h4 col-12 mb-4">Gratulacje! Nie przekroczyłeś swojego budżetu</p>
+    {% else %}
+    <p id="final-communicat" class="h4 col-12 mb-4">Uwaga! Przekroczyłeś swój budżet</p>
     {% endif %}
 
-    <div id="chartContainerIncome" class="mx-3 col-lg-6"></div>
-    <div id="chartContainerExpense" class="mx-3 col-lg-6"></div>
 
     <script type="text/javascript">
+        // edit button
+        var coll = document.getElementsByClassName('edit-btn');
+        var j;
 
-//Income chart
-    var datasetValueIncome = [];
-        for (var j = 0; j < counterIncome; j++) {
-                datasetValueIncome[j] = {
-                y: tabValueIncome[j],
-                indexLabel: tabNameIncome[j]
-            }
+        for (j = 0; j < coll.length; j++) {
+            coll[j].addEventListener('click', function () {
+                var button = this;
+                var date = button.getAttribute('buttondate');
+                var categoryId = button.getAttribute('buttoncategoryid');
+                var id = button.getAttribute('buttonid');
+                var parent = this.parentElement;
+                var td = parent.previousElementSibling;
+                var currentValue = td.getAttribute('buttonvalue');
+                var currentCategoryName = button.getAttribute('buttonname');
+
+                // hide communicat about 0
+                if (document.getElementById('communicat-zero').classList.contains('communicat-limit-hide')) {
+                }
+                else {
+                    document.getElementById('communicat-zero').classList.add('communicat-limit-hide');
+                }
+
+                ///hide communicat abou limit
+                if (document.getElementById('communicat-limit').classList.contains('communicat-limit-hide')) {
+                }
+                else {
+                    document.getElementById('communicat-limit').classList.add('communicat-limit-hide');
+                }
+
+                // nonactive button
+                if (!this.classList.contains('active')) {
+                    this.classList.toggle('active');
+                    td.innerHTML = '<input placeholder="' + currentValue + '" value="' + currentValue + '" class="form-control input-value" aria-label="' + currentCategoryName + '" aria-describedby="' + currentCategoryName + '" />';
+
+                    // change button 
+                    var elmnt = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-all" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14l.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"/></svg>';
+                    button.childNodes[1].innerHTML = elmnt;
+                }
+                // active button
+                else {
+                    this.classList.toggle("active");
+                    var input = td.firstElementChild;
+                    var newValue = $(input).val(); // get new input value
+
+                    // new value different then 0
+                    if (newValue != '0') {
+
+                        if (button.classList.contains('income-button')) {
+                            td.innerHTML = newValue;
+                            td.setAttribute('buttonvalue', newValue);
+
+                            // change sum
+                            var sumIncome = 0;
+                            var k;
+                            var coll2 = document.getElementsByClassName('values')
+                            for (k = 0; k < coll2.length; k++) {
+                                var name = coll2[k].getAttribute('name');
+                                var check = coll2[k].childNodes[0].localName;
+                                if ((name == 'income') && (check == 'input')) {
+                                    var value = coll2[k].childNodes[0].defaultValue
+                                    sumIncome = parseInt(sumIncome) + parseInt(value);
+                                }
+                                else if (name == 'income') {
+                                    var children = coll2[k].childNodes;
+                                    var value = children[0].nodeValue;
+                                    sumIncome = parseInt(sumIncome) + parseInt(value);
+                                }
+                            }
+                            if (button.classList.contains('income-button')) {
+                                document.getElementById('income-sum').innerHTML = sumIncome;
+                                var sumInc = sumIncome;
+                                var sumExp = document.getElementById('expense-sum').textContent;
+
+                                if ((sumExp == 0) && (sumInc == 0)) {
+                                    document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                                }
+                                else if (sumExp <= sumInc) {
+                                    document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                                }
+                                else {
+                                    document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                                }
+                                // conect with data base
+                                $.post('editIncome', {
+                                    newValue: newValue,
+                                    idIncome: id
+                                }
+                                );
+                                var column3 = columnChart();
+                                var incomeChartRender2 = incomeChart();
+                                var expenseChartRender2 = expenseChart();
+                            }
+                        }
+                        else if (button.classList.contains('expense-button')) {
+                            // check if category has limit
+                            $.post('checkCategoryLimitEdit', {
+                                categoryId: categoryId,
+                                value: newValue,
+                                date: date,
+                                idExpense: id
+                            }, function (data, status, xhr) {
+                                var result = data;
+                                // no limit
+                                if (result == 'nolimit') {
+                                    td.setAttribute('buttonvalue', newValue);
+                                    td.innerHTML = newValue;
+                                    // change sum
+                                    var sumExpense1 = 0;
+                                    var i;
+                                    var coll6 = document.getElementsByClassName('values')
+                                    for (i = 0; i < coll6.length; i++) {
+                                        var name1 = coll6[i].getAttribute('name');
+                                        var check1 = coll6[i].childNodes[0].localName;
+                                        if ((name1 == 'expense') && (check1 == 'input')) {
+                                            var value1 = coll6[i].childNodes[0].defaultValue
+                                            sumExpense1 = parseInt(sumExpense1) + parseInt(value1);
+                                        }
+                                        else if (name1 == 'expense') {
+                                            var children1 = coll6[i].childNodes;
+                                            var value1 = children1[0].nodeValue;
+                                            sumExpense1 = parseInt(sumExpense1) + parseInt(value1);
+                                        }
+                                    }
+                                    document.getElementById('expense-sum').innerHTML = sumExpense1;
+                                    var sumExp = sumExpense1;
+                                    var sumInc = document.getElementById('income-sum').textContent;
+
+                                    if ((sumExp == 0) && (sumInc == 0)) {
+                                        document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                                    }
+                                    else if (sumExp <= sumInc) {
+                                        document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                                    }
+                                    else {
+                                        document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                                    }
+                                    // conect with data base
+                                    $.post('editExpense', {
+                                        newValue: newValue,
+                                        idExpense: id
+                                    }
+                                    );
+                                    var column2 = columnChart();
+                                    var incomeChartRender3 = incomeChart();
+                                    var expenseChartRender3 = expenseChart();
+                                }
+                                // limit wasn't exceeded and validation is empty
+                                else if (result == 'true') {
+                                    td.setAttribute('buttonvalue', newValue);
+                                    td.innerHTML = newValue;
+                                    // change sum
+                                    var sumExpense = 0;
+                                    var k;
+                                    var coll2 = document.getElementsByClassName('values')
+                                    for (k = 0; k < coll2.length; k++) {
+                                        var name = coll2[k].getAttribute('name');
+                                        var check = coll2[k].childNodes[0].localName;
+                                        if ((name == 'expense') && (check == 'input')) {
+                                            var value = coll2[k].childNodes[0].defaultValue
+                                            sumExpense = parseInt(sumExpense) + parseInt(value);
+                                        }
+                                        else if (name == 'expense') {
+                                            var children = coll2[k].childNodes;
+                                            var value = children[0].nodeValue;
+                                            sumExpense = parseInt(sumExpense) + parseInt(value);
+                                        }
+                                    }
+                                    document.getElementById('expense-sum').innerHTML = sumExpense;
+                                    var sumExp = sumExpense;
+                                    var sumInc = document.getElementById('income-sum').textContent;
+                                    if ((sumExp == 0) && (sumInc == 0)) {
+                                        document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                                    }
+                                    else if (sumExp <= sumInc) {
+                                        document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                                    }
+                                    else {
+                                        document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                                    }
+                                    // conect with data base
+                                    $.post('editExpense', {
+                                        newValue: newValue,
+                                        idExpense: id
+                                    }
+                                    );
+                                    var column = columnChart();
+                                    var incomeChartRender4 = incomeChart();
+                                    var expenseChartRende4 = expenseChart();
+                                }
+                                // limit was exceeded and validation is empty
+                                else if (result != 'true') {
+                                    result = -result;
+                                    td.innerHTML = currentValue;
+                                    document.getElementById('communicat-limit').classList.remove('communicat-limit-hide');
+                                    document.getElementById('communicat-limit').innerHTML = 'Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '. Wydatek nie został dodany.';
+                                }
+                            });
+                        }
+                    }
+                    // new value eqaul 0
+                    else {
+                        td.innerHTML = button.getAttribute('buttonvalue');
+                        if (document.getElementById('communicat-zero').classList.contains('communicat-limit-hide')) {
+                            document.getElementById('communicat-zero').classList.remove('communicat-limit-hide');
+                        }
+                    }
+
+                    // change button 
+                    var elmnt = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" /> </svg>';
+                    var button = this.childNodes[1].innerHTML = elmnt;
+                }
+            });
         }
-    
-        window.onload = function () {
 
-            var chart = new CanvasJS.Chart("chartContainerIncome",
-            {
-                title:{
-                    text: "Przychody"
+        //delete button
+        var coll3 = document.getElementsByClassName('delete-btn');
+        var l;
+        for (l = 0; l < coll3.length; l++) {
+            coll3[l].addEventListener('click', function () {
+                var idDelete = this.getAttribute('buttonid');
+                var nameIncome = this.classList.contains('income-button');
+                var nameExpense = this.classList.contains('expense-button');
+                var parentButton = this.previousElementSibling;
+                var parentTd = parentButton.parentElement;
+                var parentTr = parentTd.parentElement;
+                var buttonTest = this;
+
+                var z;
+                var coll4 = document.getElementsByClassName('delete-submit');
+                for (z = 0; z < coll4.length; z++) {
+                    coll4[z].addEventListener('click', function () {
+
+                        if (nameIncome == true) {
+                            // conect with data base
+                            $.post('deleteIncome', {
+                                idIncome: idDelete
+                            }
+                            );
+                            parentTr.remove();
+                        }
+                        else if (nameExpense == true) {
+                            // conect with data base
+                            $.post('deleteExpense', {
+                                idExpense: idDelete
+                            }
+                            );
+                            parentTr.remove();
+                        }
+
+                        // change sum
+                        var sumIncomeDelete = 0;
+                        var sumExpenseDelete = 0;
+                        var t;
+                        var coll5 = document.getElementsByClassName('values')
+                        for (t = 0; t < coll5.length; t++) {
+                            var nameDelete = coll5[t].getAttribute('name');
+                            var checkDelete = coll5[t].childNodes[0].localName;
+
+                            if ((nameDelete == 'income') && (checkDelete == 'input')) {
+                                var valueDelete = coll5[t].childNodes[0].defaultValue
+                                sumIncomeDelete = parseInt(sumIncomeDelete) + parseInt(valueDelete);
+                            }
+                            else if ((nameDelete == 'expense') && (checkDelete == 'input')) {
+                                var valueDelete = coll5[t].childNodes[0].defaultValue
+                                sumExpenseDelete = parseInt(sumExpenseDelete) + parseInt(valueDelete);
+                            }
+                            else if (nameDelete == 'income') {
+                                var childrenDelete = coll5[t].childNodes;
+                                var valueDelete = childrenDelete[0].nodeValue;
+                                sumIncomeDelete = parseInt(sumIncomeDelete) + parseInt(valueDelete);
+                            }
+                            else if (nameDelete == 'expense') {
+                                var childrenDelete = coll5[t].childNodes;
+                                var valueDelete = childrenDelete[0].nodeValue;
+                                sumExpenseDelete = parseInt(sumExpenseDelete) + parseInt(valueDelete);
+                            }
+                        }
+                        if (buttonTest.classList.contains('income-button')) {
+                            document.getElementById('income-sum').innerHTML = sumIncomeDelete;
+                            var sumInc = sumIncomeDelete;
+                            var sumExp = document.getElementById('expense-sum').textContent;
+                            if ((sumExp == 0) && (sumInc == 0)) {
+                                document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                            }
+                            else if (sumExp <= sumInc) {
+                                document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                            }
+                            else {
+                                document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                            }
+                        }
+                        else if (buttonTest.classList.contains('expense-button')) {
+                            document.getElementById('expense-sum').innerHTML = sumExpenseDelete;
+                            var sumExp = sumExpenseDelete;
+                            var sumInc = document.getElementById('income-sum').textContent;
+                            if ((sumExp == 0) && (sumInc == 0)) {
+                                document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                            }
+                            else if (sumExp <= sumInc) {
+                                document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                            }
+                            else {
+                                document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                            }
+                        }
+                        var incomeChartRender = incomeChart();
+                        var expenseChartRender = expenseChart();
+                        var column = columnChart();
+
+                    });
+                }
+            });
+        }
+
+        // JS chart, edit and delete incomes/expenses
+
+        //Column chart
+        function columnChart() {
+            var chart = new CanvasJS.Chart("chartContainer", {
+
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                title: {
+                    text: "Przychody vs Wydatki"
                 },
-                legend: {
-                    maxWidth: 350,
-                    itemWidth: 120
+                axisY: {
+                    title: "Kwota [zł]"
                 },
-                data: [
-                {
-                    type: "pie",
+                data: [{
+                    type: "column",
                     showInLegend: true,
-                    legendText: "{indexLabel}",
+                    legendMarkerColor: "grey",
+                    legendText: "Przychody vs Wydatki",
                     dataPoints: [
                     ]
-                }
-                ]
+                }]
+            });
+
+            var sumExpense = document.getElementById('expense-sum').textContent;
+            var numberSumExpense = Number(sumExpense);
+
+            var sumIncome = document.getElementById('income-sum').textContent;
+            var numberSumIncome = Number(sumIncome);
+
+            var datasetSum = [];
+            datasetSum[0] = {
+                y: numberSumIncome,
+                label: 'Przychody'
             }
+            datasetSum[1] = {
+                y: numberSumExpense,
+                label: 'Wydatki'
+            }
+            chart.options.data[0].dataPoints.push(datasetSum[0]);
+            chart.options.data[0].dataPoints.push(datasetSum[1]);
+
+            chart.render();
+        }
+
+        //Income chart
+        function incomeChart() {
+            var counterIncomeNew = 0;
+            var counterIncomeSameCategoryNew = 0;
+            const tabValueIncomeNew = [];
+            const tabNameIncomeNew = [];
+
+            var k;
+            var coll2 = document.getElementsByClassName('values')
+            for (k = 0; k < coll2.length; k++) {
+                var name = coll2[k].getAttribute('name');
+                var check = coll2[k].childNodes[0].localName;
+                var categoryName = coll2[k].previousElementSibling.textContent;
+                if ((name == 'income') && (check == 'input')) {
+                    var value = coll2[k].childNodes[0].defaultValue;
+
+                }
+                else if (name == 'income') {
+                    var children = coll2[k].childNodes;
+                    var value = children[0].nodeValue;
+                }
+                if((counterIncomeNew > 0) && (name == 'income')) {
+                    for (var q = 0; q < counterIncomeNew; q++) {
+                        if (categoryName == tabNameIncome[q]) {
+                            tabValueIncomeNew[q] = Number(tabValueIncomeNew[q]) + Number(value);
+                            counterIncomeSameCategoryNew = 1;
+                        }
+                    }
+                    if (counterIncomeSameCategoryNew == 0) {
+                        tabValueIncomeNew[counterIncomeNew] = value;
+                        tabNameIncomeNew[counterIncomeNew] = categoryName;
+                        counterIncomeNew++;
+                    }
+                    counterIncomeSameCategoryNew = 0;
+                }                   
+                else if(name == 'income'){
+                    tabValueIncomeNew[counterIncomeNew] = value;
+                    tabNameIncomeNew[counterIncomeNew] = categoryName;
+                    counterIncomeNew++;
+                }
+            }
+
+            var datasetValueIncomeNew = [];
+            for (var j = 0; j < counterIncomeNew; j++) {
+                datasetValueIncomeNew[j] = {
+                    y: tabValueIncomeNew[j],
+                    indexLabel: tabNameIncomeNew[j]
+                }
+            }
+
+            var chart = new CanvasJS.Chart("chartContainerIncome",
+                {
+                    animationEnabled: true,
+                    theme: "light2", // "light1", "light2", "dark1", "dark2"
+                    title: {
+                        text: "Przychody"
+                    },
+                    legend: {
+                        maxWidth: 350,
+                        itemWidth: 120
+                    },
+                    data: [
+                        {
+                            type: "pie",
+                            showInLegend: true,
+                            legendText: "{indexLabel}",
+                            dataPoints: [
+                            ]
+                        }
+                    ]
+                }
             );
-            for (var l = 0; l < datasetValueIncome.length; l++) {
-                chart.options.data[0].dataPoints.push(datasetValueIncome[l]);
+            for (var l = 0; l < datasetValueIncomeNew.length; l++) {
+                chart.options.data[0].dataPoints.push(datasetValueIncomeNew[l]);
             }
             chart.render();
-
-            //Expense chart
-    var datasetValueExpense = [];
-        for (var n = 0; n < counterExpense; n++) {
-                datasetValueExpense[n] = {
-                y: tabValueExpense[n],
-                indexLabel: tabNameExpense[n]
-            }
+  
         }
-    
-        {
-            var chart = new CanvasJS.Chart("chartContainerExpense",
-            {
-                title:{
+
+        //Expense chart
+        function expenseChart() {
+            var counterExpenseNew = 0;
+            var counterExpenseSameCategoryNew = 0;
+            const tabValueExpenseNew = [];
+            const tabNameExpenseNew = [];
+
+            var k;
+            var coll2 = document.getElementsByClassName('values')
+            for (k = 0; k < coll2.length; k++) {
+                var name = coll2[k].getAttribute('name');
+                var check = coll2[k].childNodes[0].localName;
+                var categoryName = coll2[k].previousElementSibling.textContent;
+                if ((name == 'expense') && (check == 'input')) {
+                    var value = coll2[k].childNodes[0].defaultValue;
+
+                }
+                else if (name == 'expense') {
+                    var children = coll2[k].childNodes;
+                    var value = children[0].nodeValue;
+                }
+                if((counterExpenseNew > 0) && (name == 'expense')) {
+                    for (var q = 0; q < counterExpenseNew; q++) {
+                        if (categoryName == tabNameExpense[q]) {
+                            tabValueExpenseNew[q] = Number(tabValueExpenseNew[q]) + Number(value);
+                            counterExpenseSameCategoryNew = 1;
+                        }
+                    }
+                    if (counterExpenseSameCategoryNew == 0) {
+                        tabValueExpenseNew[counterExpenseNew] = value;
+                        tabNameExpenseNew[counterExpenseNew] = categoryName;
+                        counterExpenseNew++;
+                    }
+                    counterExpenseSameCategoryNew = 0;
+                }                   
+                else if(name == 'expense'){
+                    tabValueExpenseNew[counterExpenseNew] = value;
+                    tabNameExpenseNew[counterExpenseNew] = categoryName;
+                    counterExpenseNew++;
+                }
+            }
+
+            var datasetValueExpenseNew = [];
+            for (var n = 0; n < counterExpenseNew; n++) {
+                datasetValueExpenseNew[n] = {
+                    y: tabValueExpenseNew[n],
+                    indexLabel: tabNameExpenseNew[n]
+                }
+            }
+
+            var chart = new CanvasJS.Chart("chartContainerExpense", {
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                title: {
                     text: "Wydatki"
                 },
                 legend: {
@@ -304,22 +783,142 @@
                     itemWidth: 120
                 },
                 data: [
-                {
-                    type: "pie",
-                    showInLegend: true,
-                    legendText: "{indexLabel}",
-                    dataPoints: [
-                    ]
-                }
+                    {
+                        type: "pie",
+                        showInLegend: true,
+                        legendText: "{indexLabel}",
+                        dataPoints: [
+                        ]
+                    }
                 ]
             }
             );
-            
+
+            for (var m = 0; m < datasetValueExpenseNew.length; m++) {
+                chart.options.data[0].dataPoints.push(datasetValueExpenseNew[m]);
+            }
+            chart.render();
+        }
+    </script>
+
+    <div id="chartContainerIncome" class="mx-3 col-lg-6"></div>
+    <div id="chartContainerExpense" class="mx-3 col-lg-6"></div>
+
+    <script type="text/javascript">
+
+        //Income chart
+        var datasetValueIncome = [];
+        for (var j = 0; j < counterIncome; j++) {
+            datasetValueIncome[j] = {
+                y: tabValueIncome[j],
+                indexLabel: tabNameIncome[j]
+            }
+        }
+
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainerIncome",
+                {
+                    animationEnabled: true,
+                    theme: "light2", // "light1", "light2", "dark1", "dark2"
+                    title: {
+                        text: "Przychody"
+                    },
+                    legend: {
+                        maxWidth: 350,
+                        itemWidth: 120
+                    },
+                    data: [
+                        {
+                            type: "pie",
+                            showInLegend: true,
+                            legendText: "{indexLabel}",
+                            dataPoints: [
+                            ]
+                        }
+                    ]
+                }
+            );
+            for (var l = 0; l < datasetValueIncome.length; l++) {
+                chart.options.data[0].dataPoints.push(datasetValueIncome[l]);
+            }
+            chart.render();
+
+            //Expense chart
+            var datasetValueExpense = [];
+            for (var n = 0; n < counterExpense; n++) {
+                datasetValueExpense[n] = {
+                    y: tabValueExpense[n],
+                    indexLabel: tabNameExpense[n]
+                }
+            }
+            var chart = new CanvasJS.Chart("chartContainerExpense", {
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                title: {
+                    text: "Wydatki"
+                },
+                legend: {
+                    maxWidth: 350,
+                    itemWidth: 120
+                },
+                data: [
+                    {
+                        type: "pie",
+                        showInLegend: true,
+                        legendText: "{indexLabel}",
+                        dataPoints: [
+                        ]
+                    }
+                ]
+            }
+            );
+
             for (var m = 0; m < datasetValueExpense.length; m++) {
                 chart.options.data[0].dataPoints.push(datasetValueExpense[m]);
             }
             chart.render();
-        }
+
+            //Column chart
+            var chart = new CanvasJS.Chart("chartContainer", {
+
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                title: {
+                    text: "Przychody vs Wydatki"
+                },
+                axisY: {
+                    title: "Kwota [zł]"
+                },
+                data: [{
+                    type: "column",
+                    showInLegend: true,
+                    legendMarkerColor: "grey",
+                    legendText: "Przychody vs Wydatki",
+                    dataPoints: [
+                    ]
+                }]
+            });
+
+            var sumExpense = document.getElementById('expense-sum').textContent;
+            var numberSumExpense = Number(sumExpense);
+
+            var sumIncome = document.getElementById('income-sum').textContent;
+            var numberSumIncome = Number(sumIncome);
+
+            var datasetSum = [];
+            datasetSum[0] = {
+                y: numberSumIncome,
+                label: 'Przychody'
+            }
+            datasetSum[1] = {
+                y: numberSumExpense,
+                label: 'Wydatki'
+            }
+            chart.options.data[0].dataPoints.push(datasetSum[0]);
+            chart.options.data[0].dataPoints.push(datasetSum[1]);
+
+            chart.render();
         }
     </script>
 

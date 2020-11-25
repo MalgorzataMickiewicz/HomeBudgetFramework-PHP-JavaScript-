@@ -32,10 +32,12 @@ class Signup extends \Core\Controller
     {
         $user = new User($_POST);
         $categories = new User($_POST);
+        $methodPay = new User($_POST);
 
         if ($user->save()) {
 
             $categories->addDefaultCategories();
+            $methodPay->addDefaultMethodPay();
 
             $user->sendActivationEmail();
 
