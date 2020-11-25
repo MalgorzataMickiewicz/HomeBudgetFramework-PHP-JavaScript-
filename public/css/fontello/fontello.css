@@ -70,3 +70,5 @@
 .icon-user-plus:before { content: '\f234'; } /* '' */
 .icon-calendar-plus-o:before { content: '\f271'; } /* '' */
 .icon-facebook-squared:before { content: '\f308'; } /* '' */
+.icon-pencil:before { content: '\270f'; } /* '✏' */
+.icon-trash:before { content: '\e83d'; } /* '' */

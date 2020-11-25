@@ -3,7 +3,6 @@
 {% block title %}Ustawienia | TB twojbudzet.com{% endblock %}
 
 {% block body %}
-
 <div class="row text-center bg-background my-6 p-sm-3 p-lg-0">
 
     <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
@@ -13,7 +12,6 @@
         </h1>
 
     </div>
-
 
     <div class="col-lg-10 offset-lg-1 my-4 bg-white shadow p-3">
 
@@ -31,9 +29,8 @@
 
             <button type="button" class="btn btn-settings" data-toggle="modal"
                 data-target="#modal-incomes-category-list">
-                Wyświetl listę kategorii
+                Lista kategorii
             </button>
-
         </div>
 
         <div class="modal fade" id="modal-incomes-category-list" tabindex="-1" role="dialog"
@@ -49,12 +46,37 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+
                     <div class="modal-body">
                         {% for item in income %}
-                        <p>{{ item.categoryName }}</p>
+
+                        <div class="modal-body income-div" style="height: 60px;">
+                            <input style="float: left; width: 78%;" id="{{ item.id }}" name="{{ item.categoryName }}"
+                                placeholder="Kategoria" value="{{ item.categoryName }}"
+                                class="form-control input-disabled income-input" aria-label="{{ item.categoryName }}"
+                                aria-describedby="{{ item.categoryName }}" />
+                            <span class="input-group-text category-color-green edit-btn"
+                                style="float: left; height: 40px; cursor: pointer; margin-left: 5px; margin-top: 2px;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                </svg>
+                            </span>
+                            <span class="input-group-text category-color delete-btn"
+                                style="float: left; height: 40px; cursor: pointer; margin-left: 5px; margin-top: 2px;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
+                                </svg>
+                            </span>
+                            <div class="limit-hide" style="display: inline-block">
+                            </div>
+                        </div>
                         {% endfor %}
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" style="display:inline-block;">
                         <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
                             data-dismiss="modal">Powrót</button>
                     </div>
@@ -99,43 +121,6 @@
             </div>
         </div>
 
-        <!--Incomes Delate category-->
-        <div class="col-lg-6 offset-lg-3 p-3">
-
-            <button type="button" class="btn btn-settings" data-toggle="modal"
-                data-target="#modal-incomes-delete-category">
-                Usuń kategorię
-            </button>
-
-        </div>
-
-        <div class="modal fade" id="modal-incomes-delete-category" tabindex="-1" role="dialog"
-            aria-labelledby="modal-incomes-delete-category" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold nav-name" id="incomes-delete-cattegory">Usuwanie
-                            kategorii</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                        <div class="modal-body">
-                            <div class="border my-1">
-
-
-                            </div>
-                        </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
-                            data-dismiss="modal">Powrót</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
         <!--Expenses Categories list-->
         <div class="col-lg-6 offset-lg-3 p-3">
             <h3 class="h4 font-weight-boldbg-color my-4">
@@ -145,35 +130,98 @@
 
             <button type="button" class="btn btn-settings" data-toggle="modal"
                 data-target="#modal-expenses-category-list">
-                Wyświetlej listę kategorii
+                Lista kategorii
             </button>
         </div>
 
         <div class="modal fade" id="modal-expenses-category-list" tabindex="-1" role="dialog"
-        aria-labelledby="modal-expenses-category-list" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold nav-name" id="expenses-category-list">Lista kategorii
-                        wydatków
-                    </h5>
+            aria-labelledby="modal-expenses-category-list" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold nav-name" id="expenses-category-list">Lista kategorii
+                            wydatków
+                        </h5>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {% for item in expense %}
-                        <p>{{ item.categoryName }}</p>
-                    {% endfor %}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
-                        data-dismiss="modal">Powrót</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        {% for item in expense %}
+                        <div class="modal-body" style="height: 60px;">
+
+                            <input style="width: 78%; float: left;" id="{{ item.id }}" name="{{ item.categoryName }}"
+                                placeholder="Kategoria" value="{{ item.categoryName }}"
+                                class="form-control input-disabled expense-input" aria-label="{{ item.categoryName }}"
+                                aria-describedby="{{ item.categoryName }}" />
+                            <span class="input-group-text category-color-green edit-btn"
+                                style="float: left; height: 40px; margin-top: 2px; margin-left: 5px; cursor: pointer;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                </svg>
+                            </span>
+                            <span class="input-group-text category-color delete-btn"
+                                style="float: left; height: 40px; margin-top: 2px; margin-left: 5px; cursor: pointer;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
+                                </svg>
+                                </svg>
+                            </span>
+                            <div class="limit-hide" style="display: inline-block">
+                            </div>
+                        </div>
+                        {% if item.expenseLimit == 0 %} 
+                        <div id="categoryLimit" class="categoryLimit">
+                            <input type="checkbox" id="limit-exp-{{item.categoryName}}" class="limit">
+                            <label for="limit-exp-{{item.categoryName}}" style="height: 25px;">Włącz limit dla
+                                kategorii</label>
+                            <div class="limit-hide">
+                                <div class="opacity">
+                                    <p style="font-size: 14px; color: black;">Ustaw miesięczny limit wydatków dla tej
+                                        kategorii 
+                                    </p>
+                                    <input placeholder="200" required class="form-control expense-input"
+                                    style="width: 100px; margin-left: auto; margin-right: auto; padding-top: 5px;display: inline-block;" name="{{ item.id }}">
+                                    <button class="btn btn-sub-settings limit-btn" style="display: inline-block;">Ustaw</button>
+                                    <div class="limit-hide" style="display: block; color: black;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div id="categoryLimit" class="categoryLimit">
+                            <input type="checkbox" id="limit-{{item.categoryName}}" class="limit active"  checked="checked">
+                            <label for="limit-{{item.categoryName}}" style="height: 25px;">Włącz limit dla
+                                kategorii</label>
+                            <div class="limit-show">
+                                <div class="opacity">
+                                    <p style="font-size: 14px; color: black;">Ustaw miesięczny limit wydatków dla tej
+                                        kategorii               
+                                    </p>
+                                    <input placeholder="200" required class="form-control expense-input"
+                                    style="width: 100px; margin-left: auto; margin-right: auto; padding-top: 5px;display: inline-block;" value="{{ item.expenseLimit }}" name="{{ item.id }}">
+                                    <button class="btn btn-sub-settings limit-btn" style="display: inline-block;">Ustaw</button>
+                                    <div class="limit-hide" style="display: block; color: black;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                            data-dismiss="modal">Powrót</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <!--Expenses Add category-->
         <div class="col-lg-6 offset-lg-3 p-3">
@@ -212,34 +260,61 @@
             </div>
         </div>
 
-        <!--Expenses Delate category-->
+        <!--Method Pay list-->
         <div class="col-lg-6 offset-lg-3 p-3">
+            <h3 class="h4 font-weight-boldbg-color my-4">
+                Metody płatności
+            </h3>
+            <div class="col-6 offset-3 border my-3"></div>
 
-            <button type="button" class="btn btn-settings" data-toggle="modal"
-                data-target="#modal-expenses-delete-category">
-                Usuń kategorię
+            <button type="button" class="btn btn-settings" data-toggle="modal" data-target="#modal-methodPay-list">
+                Lista metod płatności
             </button>
-
         </div>
 
-        <div class="modal fade" id="modal-expenses-delete-category" tabindex="-1" role="dialog"
-            aria-labelledby="modal-expenses-delete-category" aria-hidden="true">
+        <div class="modal fade" id="modal-methodPay-list" tabindex="-1" role="dialog"
+            aria-labelledby="modal-methodPay-list" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold nav-name" id="expenses-delete-cattegory">Usuwanie
-                            kategorii
+                        <h5 class="modal-title font-weight-bold nav-name" id="expenses-category-list">Lista metod
+                            płatności
                         </h5>
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="post">
-                        <div class="modal-body">
-                            <div class="border my-1">
+                    <div class="modal-body">
+
+                        {% for item in methodPay %}
+                        <div class="modal-body" style="height: 60px;">
+                            <input style="width: 78%; float: left;" id="{{ item.id }}" name="{{ item.nameMethodPay }}"
+                                placeholder="Metoda płatności" value="{{ item.nameMethodPay }}" required
+                                class="form-control input-disabled pay-input" aria-label="{{ item.nameMethodPay }}"
+                                aria-describedby="{{ item.nameMethodPay }}" />
+                            <span class="input-group-text category-color-green edit-btn"
+                                style="float: left; height: 40px; margin-top: 2px; margin-left: 5px; cursor: pointer;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                </svg>
+                            </span>
+                            <span class="input-group-text category-color delete-btn"
+                                style="float: left; height: 40px; margin-top: 2px; margin-left: 5px; cursor: pointer;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
+                                </svg>
+                                </svg>
+                            </span>
+                            <div class="limit-hide" style="display: inline-block">
                             </div>
                         </div>
-                    </form>
+                        {% endfor %}
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
                             data-dismiss="modal">Powrót</button>
@@ -248,7 +323,42 @@
             </div>
         </div>
 
-        <div class="col-6 offset-3 border mt-3"></div>
+        <!--Method Pay Add new category-->
+        <div class="col-lg-6 offset-lg-3 p-3">
+
+            <button type="button" class="btn btn-settings" data-toggle="modal"
+                data-target="#modal-method-pay-add-category">
+                Dodaj metodę płatności
+            </button>
+
+        </div>
+
+        <div class="modal fade" id="modal-method-pay-add-category" tabindex="-1" role="dialog"
+            aria-labelledby="modal-method-pay-add-category" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form method="post" action="/profile/saveMethodPay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold nav-name" id="method-pay- expenses-add-cattegory">Dodawanie
+                                metody płatności</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input class="d-inline-block form-control mt-3" type="text" name="newCategory"
+                                id="method-pay-add-new-category" placeholder="Metoda płatności"
+                                aria-label="method-pay-add-new-category" aria-describedby="method-pay-add-new-category">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary font-weight-bold btn-can-settings"
+                                data-dismiss="modal">Anuluj</button>
+                            <button type="submit" class="btn btn-sub-settings font-weight-bold">Zapisz</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!--Go back-->
         <div class="col-lg-6 offset-lg-3 p-3">
@@ -266,5 +376,195 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
 
+        // category limit show/hide
+        var coll = document.getElementsByClassName('limit');
+        var i;
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                if (!this.classList.contains('active')) {
+                    // show limit
+                    this.classList.toggle('active');
+                    var nextElement = this.nextElementSibling;
+                    var element = nextElement.nextElementSibling;
+                    element.classList.add('limit-show');
+                    element.classList.remove('limit-hide');
+                }
+                else {
+                    // hide limit
+                    this.classList.toggle('active');
+                    var nextElement = this.nextElementSibling;
+                    var element = nextElement.nextElementSibling;
+                    element.classList.add('limit-hide');
+                    element.classList.remove('limit-show');
+
+                    // set empty value in input
+                    var r2 = element.getElementsByTagName('input')[0].value = '';
+                    
+                    var checkbox = this.nextElementSibling;
+                    var div = checkbox.nextElementSibling;
+                    var child = div.childNodes;
+                    var child2 = child[1].childNodes;
+                    var input = child2[3];
+                    var value = 0;
+                    var categoryId = input.getAttribute('name');
+                    if(input.classList.contains('expense-input')){
+                        $.post('setExpenseLimit', {
+                        categoryId: categoryId,
+                        value: value
+                    }
+                    );
+                    }
+                }
+            });
+        } // end limit
+
+        // category set limit
+        var coll = document.getElementsByClassName('limit-btn');
+        var l;
+        for (l = 0; l < coll.length; l++) {
+            coll[l].addEventListener("click", function () {
+                var input = this.previousElementSibling;
+                var value = $(input).val(); // get new input value
+                var categoryId = input.getAttribute('name');
+                var child = this.nextElementSibling;
+                child.classList.remove('limit-hide');
+                child.classList.add('show-limit');
+                child.innerHTML = 'Limit został dodany';
+                if(input.classList.contains('expense-input')) {
+                    $.post('setExpenseLimit', {
+                    categoryId: categoryId,
+                    value: value
+                }
+                );
+                }
+            })
+        } //end set category limit
+
+        //edit button
+        var coll = document.getElementsByClassName('edit-btn');
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener('click', function () {
+                if (!this.classList.contains('active')) {
+                    this.classList.toggle('active'); // toggle -> przełącznik. Jeśli posiada klasę to ją usuwa, jeśli jej nie posiada to ją dodaje (klasę 'active')
+                    var input = this.previousElementSibling;
+                    if (input.classList.contains('input-disabled')) {
+                        // change input class  
+                        input.classList.remove('input-disabled');
+
+                        // change button 
+                        var elmnt = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-all" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14l.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"/></svg>';
+                        var button = this.childNodes[1].innerHTML = elmnt;
+                    }
+                }
+                else {
+                    this.classList.toggle("active");
+                    var input = this.previousElementSibling;
+                    if (!input.classList.contains('input-disabled')) {
+                        // change input class
+                        input.classList.add('input-disabled');
+                        // set new category name
+                        input.classList.add('active-input');
+                        $('input').each(function () {
+                            if ($(this).hasClass('active-input')) {
+                                var categoryName = $(this).val(); // get new input value
+                                input.classList.remove('active-input');
+                                var categoryId = input.getAttribute('id');
+                                var oldCategory = input.getAttribute('name');
+                                if (categoryName != oldCategory) {
+                                    if (input.classList.contains('income-input')) {
+                                        $.post('updateNewCategoryIncome', {
+                                            newCategory: categoryName,
+                                            newCategoryId: categoryId
+                                        }
+                                        );
+                                    }
+                                    else if (input.classList.contains('expense-input')) {
+                                        $.post('updateNewCategoryExpense', {
+                                            newCategory: categoryName,
+                                            newCategoryId: categoryId
+                                        }
+                                        );
+                                    }
+                                    else if (input.classList.contains('pay-input')) {
+                                        $.post('updateNewMethodPay', {
+                                            newCategory: categoryName,
+                                            newCategoryId: categoryId
+                                        }
+                                        );
+                                    }
+                                }
+                            }
+                        });
+
+                        // change button 
+                        var elmnt = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" /> </svg>';
+                        var button = this.childNodes[1].innerHTML = elmnt;
+                    }
+                }
+            });
+        } // end edit
+
+        //delete button
+        var coll = document.getElementsByClassName('delete-btn');
+        var j;
+        for (j = 0; j < coll.length; j++) {
+            coll[j].addEventListener('click', function () { 
+                if(!this.classList.contains('active')){
+                    this.classList.toggle('active');
+                    var p = this.nextElementSibling;
+                    var parent = this.parentElement;
+                    parent.style.height = '140px';
+                    p.classList.add('red');
+                    p.classList.add('limit-show');
+                    p.classList.remove('limit-hide');
+                    var edit = this.previousElementSibling;
+                    var input = edit.previousElementSibling;
+                        if(input.classList.contains('income-input')){
+                            p.innerHTML = 'Czy na pewno? Przychody z tej kategorii zostaną usunięte. Potwierdź klikając ponownie przycisk usunięcia.';
+                        }
+                        else if(input.classList.contains('expense-input')) {
+                            p.innerHTML = 'Czy na pewno? Wydatki z tej kategorii zostaną usunięte. Potwierdź klikając ponownie przycisk usunięcia.';
+                        }
+                        else if(input.classList.contains('pay-input')) {
+                            p.innerHTML = 'Czy na pewno? Wydatki z tą metodą płatności zostaną usunięte. Potwierdź klikając ponownie przycisk usunięcia.';
+                        }
+                    }
+                    else {
+                        this.classList.toggle('active');
+                        var p = this.nextElementSibling;
+                        var parent = this.parentElement;
+                        parent.style.height = '90px';
+                        p.innerHTML = 'Kategoria przychodu została usunięta.';
+                        var edit = this.previousElementSibling;
+                        var input = edit.previousElementSibling;
+                        var categoryId = input.getAttribute('id');
+                        if (input.classList.contains('income-input')) {
+                            $.post('deleteCategoryIncome', {
+                                categoryId: categoryId
+                                }
+                            );
+                        }
+                        else if(input.classList.contains('expense-input')){
+                            $.post('deleteCategoryExpense', {
+                                categoryId: categoryId
+                                }
+                            );
+                        }
+                        else if(input.classList.contains('pay-input')){
+                            $.post('deleteMethodPay', {
+                                categoryId: categoryId
+                                }
+                            );
+                        }
+                    }
+            });
+        } // end delete
+    }); //end ready 
+</script>
 {% endblock %}
+

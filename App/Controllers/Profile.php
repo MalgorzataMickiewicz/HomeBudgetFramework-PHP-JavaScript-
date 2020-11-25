@@ -7,6 +7,7 @@ use \App\Auth;
 use \App\Flash;
 use \App\Models\Income;
 use \App\Models\Expense;
+use \App\Models\User;
 
 /**
  * Profile controller
@@ -57,10 +58,12 @@ class Profile extends Authenticated
     public function categoriesAction() {
         $this->categoryIncome = Income::findCategoriesByID();
         $this->categoryExpense = Expense::findCategoriesByID();
+        $this->methodPay = Expense::findMethodPayByID();
 
         View::renderTemplate('Profile/categories.html', [
             'income' => $this->categoryIncome,
-            'expense' => $this->categoryExpense
+            'expense' => $this->categoryExpense,
+            'methodPay' => $this->methodPay
         ]);
     }
 
@@ -87,8 +90,8 @@ class Profile extends Authenticated
             $this->redirect('/Profile/categories');
             } 
         else{
-            Flash::addMessage('Nie udało się dodać kategorii', Flash::WARNING);
-            View::renderTemplate('Profile/categories.html');
+            Flash::addMessage('Nie udało się dodać kategorii, sprawdź czy nie posiadasz już takiej', Flash::WARNING);
+            $this->redirect('/Profile/categories');
         }
     }
 
@@ -99,8 +102,58 @@ class Profile extends Authenticated
             $this->redirect('/Profile/categories');
             } 
         else{
-            Flash::addMessage('Nie udało się dodać kategorii', Flash::WARNING);
-            View::renderTemplate('Profile/categories.html');
+            Flash::addMessage('Nie udało się dodać kategorii, sprawdź czy nie posiadasz już takiej', Flash::WARNING);
+            $this->redirect('/Profile/categories');
         }
+    }
+
+    public function saveMethodPay() {
+        $methodPay = new User($_POST);
+        if($methodPay -> saveMethodPay()) {
+            Flash::addMessage('Metodę płatności dodano pomyślnie');
+            $this->redirect('/Profile/categories');
+            } 
+        else{
+            Flash::addMessage('Nie udało się dodać metody płatności, sprawdź czy nie posiadasz już takiej', Flash::WARNING);
+            $this->redirect('/Profile/categories');
+        }
+    }
+
+    public function updateNewCategoryIncome() {
+        $categoryArray = $_POST;
+        $updatedCategory = Income::updateCategoryIncome($categoryArray);
+    }
+
+    public function updateNewCategoryExpense() {
+        $categoryArray = $_POST;
+        $updatedCategory = Expense::updateCategoryExpense($categoryArray);
+    }
+
+    public function updateNewMethodPay() {
+        $categoryArray = $_POST;
+        $updatedCategory = User::updateMethodPay($categoryArray);
+    }
+
+    public function deleteCategoryIncome() {
+        $categoryArray = $_POST;
+        $deleteCategory = User::deleteCategoryIncome($categoryArray);
+        $deleteIncome = Income::deleteIncomeForSpecificCategory($categoryArray);
+    }
+
+    public function deleteCategoryExpense() {
+        $categoryArray = $_POST;
+        $deleteCategory = User::deleteCategoryExpense($categoryArray);
+        $deleteExpense = Expense::deleteExpenseForSpecificCategory($categoryArray);
+    }
+
+    public function deleteMethodPay() {
+        $categoryArray = $_POST;
+        $deleteMethodPay = User::deleteMethodPay($categoryArray);
+        $deleteExpense = Expense::deleteExpenseForSpecificMethodPay($categoryArray);
+    }
+    
+    public function setExpenseLimit() {
+        $categoryArray = $_POST;
+        $limitCategoryExpense = User::setExpenseLimit($categoryArray);
     }
 }

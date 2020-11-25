@@ -30,9 +30,11 @@ class Expenses extends Authenticated
      */
     public function indexAction() {
         $this->categoryExpense = Expense::findCategoriesByID();
+        $this->methodPay = Expense::findMethodPayByID();
 
         View::renderTemplate('Expenses/index.html', [
-            'categoryExpense' => $this->categoryExpense
+            'categoryExpense' => $this->categoryExpense,
+            'methodPay' => $this->methodPay
         ]);
     }
 
@@ -42,19 +44,21 @@ class Expenses extends Authenticated
      * @return void
      */
     
-    public function saveExpense()
-    {
-        $expense = new Expense($_POST);
-
-        if($expense -> saveExpense()) {
-            Flash::addMessage('Wydatek dodano pomyślnie');
-            $this->redirect('/Expenses/index');
-            } 
-        else{
-            Flash::addMessage('Nie udało się dodać wydatku', Flash::WARNING);
-            View::renderTemplate('Expenses/index.html', [
-            'expense' => $expense
-            ]);
+    public function saveExpense() {
+        $expense = $_POST;
+        $result = Expense::saveExpense($expense);
+        if($result == true) {
+            echo $result;
         }
+        else {
+            echo '2';
+        }
+        
+    }
+
+    public function checkCategoryLimit() {
+        $categoryArray = $_POST;
+        $limitCategoryExpense = Expense::checkCategoryLimit($categoryArray);
+        echo $limitCategoryExpense;
     }
 }

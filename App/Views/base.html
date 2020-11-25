@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="/css/fontello/fontello.css" type="text/css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet" />
-
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    
     <!--[if lt IE 9]>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
-
+    
 </head>
 <body>
 
@@ -33,9 +34,10 @@
                         <li class="nav-item"> <a class="nav-link" href="/incomes/index"> Dodaj przychód</a></li>
                         <li class="nav-item"> <a class="nav-link" href="/expenses/index"> Dodaj wydatek</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle"  data-toggle="dropdown" href="/bilans/currentMonth" role="button"
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/bilans/currentMonth" role="button"
                                 aria-expanded="false" id="submenu" aria-haspopup="true"> Przeglądaj bilans </a>
-                            <div class="dropdown-menu" aria-labelledby="submenu">
+                            
+                                <div class="dropdown-menu" aria-labelledby="submenu">
 
                                 <a class="dropdown-item" href="/bilans/currentMonth"> Bieżący miesiąc </a>
                                 <a class="dropdown-item" href="/bilans/previousMonth"> Poprzedni miesiąc </a>
@@ -77,16 +79,14 @@
 
     <footer class="fixed-bottom">    
         <div class="footer">
-         © Małgorzata Mickiewicz <a href="malgorzatamickiewicz.pl/kontakt">contact with me</a>
+        <span style="color: white; cursor: text; text-decoration: none!important;"> © Małgorzata Mickiewicz </span> <a href="malgorzatamickiewicz.pl/kontakt">contact with me</a>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
     {% block footer %}
     {% endblock %}
 </body>
