@@ -394,6 +394,11 @@ label {
     #chartContainerExpense {
         max-width: 90%!important;
     }
+
+    .row {
+        margin-left: -140px!important;
+        margin-right: -140px!important;
+    }
 }
 
 @media screen and (max-width:1200px) {
