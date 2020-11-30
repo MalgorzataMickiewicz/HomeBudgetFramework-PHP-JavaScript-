@@ -43,16 +43,16 @@
                 placeholder="2012-04-19">
 
         </div>
-            <a href="">
-                <button type="submit" class="bt n btn-register my-4"> Pokaż </button>
-            </a>
+        <a href="">
+            <button type="submit" class="bt n btn-register my-4"> Pokaż </button>
+        </a>
     </form>
-    
+
     </script>
 
     <div id="chartContainer" class="mx-3 col-lg-5" style="height: 200px; width: 100%; margin-bottom: 10px;"></div>
     <div class="col-lg-6"></div>
-    
+
     <div id="communicat-zero" class="communicat-limit-hide mx-3 my-2 col-lg-12">Wprowadź inną wartość niż 0.</div>
     <div id="communicat-limit" class="communicat-limit-hide mx-3 my-2 col-lg-12"></div>
     <div id="communicat-date" class="col-lg-12 my-2"></div>
@@ -178,18 +178,19 @@
         </table>
     </div>
 
+    <!-- EXPENSES -->
     <div class="col-lg-6">
         <table class="table table-bordered">
             <thead class="bg-table">
                 <tr>
-                    <th style="width: 50%;" scope="col">WYDATKI</th>
+                    <th style="width: 50%; text-align:center;" scope="col">WYDATKI</th>
                 </tr>
             </thead>
         </table>
 
         <table class="table table-bordered bg-white">
             <tbody>
-                <tr>
+                <tr style="text-align: center;">
                     <th style="width: 25%;">Data dodania</th>
                     <th style="width: 20%;">Kategoria</th>
                     <th style="width: 5%;">Wartość</th>
@@ -288,6 +289,8 @@
                                         style="width: 80px;" data-dismiss="modal">Usuń</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                 </tr>
                 {% endfor %}
                 <tr class="bg-table">
@@ -306,6 +309,7 @@
     {% else %}
     <p id="final-communicat" class="h4 col-12 mb-4">Uwaga! Przekroczyłeś swój budżet</p>
     {% endif %}
+
 
     <script type="text/javascript">
         // edit button
@@ -455,7 +459,7 @@
                                     var expenseChartRender3 = expenseChart();
                                 }
                                 // limit wasn't exceeded and validation is empty
-                                else if (result == 'true') {
+                                else if (result >= 0) {
                                     td.setAttribute('buttonvalue', newValue);
                                     td.innerHTML = newValue;
                                     // change sum
@@ -493,16 +497,29 @@
                                         idExpense: id
                                     }
                                     );
+
+                                    // show communicat 'success'
+                                    document.getElementById('communicat-limit').classList.remove('communicat-limit-hide');
+                                    document.getElementById('communicat-limit').innerHTML = 'Limit dla tej kategorii wydatku nie został przekroczony. Możesz jeszcze dodać: ' + result + '.';
+
                                     var column = columnChart();
                                     var incomeChartRender4 = incomeChart();
                                     var expenseChartRende4 = expenseChart();
                                 }
                                 // limit was exceeded and validation is empty
-                                else if (result != 'true') {
+                                else if (result < 0) {
                                     result = -result;
-                                    td.innerHTML = currentValue;
+                                    td.setAttribute('buttonvalue', newValue);
+                                    td.innerHTML = newValue;
                                     document.getElementById('communicat-limit').classList.remove('communicat-limit-hide');
-                                    document.getElementById('communicat-limit').innerHTML = 'Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '. Wydatek nie został dodany.';
+                                    document.getElementById('communicat-limit').innerHTML = 'Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '.';
+
+                                    // conect with data base
+                                    $.post('editExpense', {
+                                        newValue: newValue,
+                                        idExpense: id
+                                    }
+                                    );
                                 }
                             });
                         }

@@ -154,21 +154,19 @@ class Income extends \Core\Model
     public function saveCategoryIncome() {
             $userId = $_SESSION['user_id'];
             $newCategory = $this->newCategory;
-            $incomeLimit = 0;
 
             //check if new category already exist in database
             $data = static::checkCategoryName($newCategory);
             if (!$data) {
                 
                 $newCategoryIncome = ucwords($newCategory);
-                $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName, incomeLimit)
-                VALUES (:userId, :newCategoryIncome, :incomeLimit)';
+                $sql = 'INSERT INTO incomescategoryassigned (userId, categoryName)
+                VALUES (:userId, :newCategoryIncome)';
                 $db = static::getDB();
                 $stmt = $db->prepare($sql);
         
                 $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
                 $stmt->bindValue(':newCategoryIncome', $newCategoryIncome, PDO::PARAM_STR); 
-                $stmt->bindValue(':incomeLimit', $incomeLimit, PDO::PARAM_INT); 
                 return $stmt->execute();
             }
             else {
@@ -221,7 +219,7 @@ class Income extends \Core\Model
             }
         }
 
-        $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate';
+        $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate order by incomes.dateIncome';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -271,7 +269,7 @@ class Income extends \Core\Model
             }
         }
 
-        $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate';
+        $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate order by incomes.dateIncome';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -297,7 +295,7 @@ class Income extends \Core\Model
             $dayOneThisMonth = $curentYear.'-01-01';
             $endDate = $curentYear.'-12-31';
 
-        $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate';
+        $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate order by incomes.dateIncome';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -325,7 +323,7 @@ class Income extends \Core\Model
             $dayOneThisMonth = $date['dateFrom'];
             $endDate =  $date['dateTo'];
 
-            $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate';
+            $sql = 'SELECT * FROM incomes INNER JOIN incomescategoryassigned ON incomes.categoryIncomeId = incomescategoryassigned.id AND incomes.userId = :id AND incomes.dateIncome >= :dayOneThisMonth AND incomes.dateIncome <= :endDate order by incomes.dateIncome';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);

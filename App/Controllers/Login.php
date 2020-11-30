@@ -77,6 +77,6 @@ class Login extends \Core\Controller
     {
         Flash::addMessage('Wylogowano pomyślnie');
 
-        $this->redirect('/');
+        $this->redirect('/login');
     }
 }

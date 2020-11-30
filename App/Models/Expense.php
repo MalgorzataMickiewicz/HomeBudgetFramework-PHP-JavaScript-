@@ -271,7 +271,7 @@ class Expense extends \Core\Model
             }
         }
 
-        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate';
+        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate order by expenses.dateExpense';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -322,7 +322,7 @@ class Expense extends \Core\Model
             }
         }
 
-        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate';
+        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate order by expenses.dateExpense';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -348,7 +348,7 @@ class Expense extends \Core\Model
             $dayOneThisMonth = $curentYear.'-01-01';
             $endDate = $curentYear.'-12-31';
 
-        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate';
+        $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate order by expenses.dateExpense';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -376,7 +376,7 @@ class Expense extends \Core\Model
             $dayOneThisMonth = $date["dateFrom"];
             $endDate =  $date["dateTo"];
 
-            $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate';
+            $sql = 'SELECT * FROM expenses INNER JOIN expensescategoryassigned ON expenses.categoryExpenseId = expensescategoryassigned.id AND expenses.userId = :id AND expenses.dateExpense >= :dayOneThisMonth AND expenses.dateExpense <= :endDate order by expenses.dateExpense';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -553,7 +553,7 @@ class Expense extends \Core\Model
                 }
                 
                 if ($sumValue + $value <= $limit) {
-                    $result = 'true';
+                    $result = $limit - ($sumValue + $value);
                     return $result;
                 }
                 else {
@@ -607,7 +607,7 @@ class Expense extends \Core\Model
                 }
                 
                 if ($sumValue + $value <= $limit) {
-                    $result = 'true';
+                    $result = $limit - ($sumValue + $value);
                     return $result;
                 }
                 else {

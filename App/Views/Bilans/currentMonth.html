@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="row text-center bg-background my-4 p-sm-3 p-lg-0">
- 
+
     <div class="col-lg-10 offset-lg-1 my-5 bg-white bg-shadow">
         <p class=" h2 col-8 font-weight-bold bg-color my-4 d-inline-block nav-name">
             Przeglądaj swój bilans
@@ -263,6 +263,8 @@
                                         style="width: 80px;" data-dismiss="modal">Usuń</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                 </tr>
                 {% endfor %}
                 <tr class="bg-table">
@@ -431,7 +433,7 @@
                                     var expenseChartRender3 = expenseChart();
                                 }
                                 // limit wasn't exceeded and validation is empty
-                                else if (result == 'true') {
+                                else if (result >= 0) {
                                     td.setAttribute('buttonvalue', newValue);
                                     td.innerHTML = newValue;
                                     // change sum
@@ -469,16 +471,29 @@
                                         idExpense: id
                                     }
                                     );
+
+                                    // show communicat 'success'
+                                    document.getElementById('communicat-limit').classList.remove('communicat-limit-hide');
+                                    document.getElementById('communicat-limit').innerHTML = 'Limit dla tej kategorii wydatku nie został przekroczony. Możesz jeszcze dodać: ' + result + '.';
+
                                     var column = columnChart();
                                     var incomeChartRender4 = incomeChart();
                                     var expenseChartRende4 = expenseChart();
                                 }
                                 // limit was exceeded and validation is empty
-                                else if (result != 'true') {
+                                else if (result < 0) {
                                     result = -result;
-                                    td.innerHTML = currentValue;
+                                    td.setAttribute('buttonvalue', newValue);
+                                    td.innerHTML = newValue;
                                     document.getElementById('communicat-limit').classList.remove('communicat-limit-hide');
-                                    document.getElementById('communicat-limit').innerHTML = 'Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '. Wydatek nie został dodany.';
+                                    document.getElementById('communicat-limit').innerHTML = 'Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '.';
+
+                                    // conect with data base
+                                    $.post('editExpense', {
+                                        newValue: newValue,
+                                        idExpense: id
+                                    }
+                                    );
                                 }
                             });
                         }
@@ -664,7 +679,7 @@
                     var children = coll2[k].childNodes;
                     var value = children[0].nodeValue;
                 }
-                if((counterIncomeNew > 0) && (name == 'income')) {
+                if ((counterIncomeNew > 0) && (name == 'income')) {
                     for (var q = 0; q < counterIncomeNew; q++) {
                         if (categoryName == tabNameIncome[q]) {
                             tabValueIncomeNew[q] = Number(tabValueIncomeNew[q]) + Number(value);
@@ -677,8 +692,8 @@
                         counterIncomeNew++;
                     }
                     counterIncomeSameCategoryNew = 0;
-                }                   
-                else if(name == 'income'){
+                }
+                else if (name == 'income') {
                     tabValueIncomeNew[counterIncomeNew] = value;
                     tabNameIncomeNew[counterIncomeNew] = categoryName;
                     counterIncomeNew++;
@@ -719,7 +734,7 @@
                 chart.options.data[0].dataPoints.push(datasetValueIncomeNew[l]);
             }
             chart.render();
-  
+
         }
 
         //Expense chart
@@ -743,7 +758,7 @@
                     var children = coll2[k].childNodes;
                     var value = children[0].nodeValue;
                 }
-                if((counterExpenseNew > 0) && (name == 'expense')) {
+                if ((counterExpenseNew > 0) && (name == 'expense')) {
                     for (var q = 0; q < counterExpenseNew; q++) {
                         if (categoryName == tabNameExpense[q]) {
                             tabValueExpenseNew[q] = Number(tabValueExpenseNew[q]) + Number(value);
@@ -756,8 +771,8 @@
                         counterExpenseNew++;
                     }
                     counterExpenseSameCategoryNew = 0;
-                }                   
-                else if(name == 'expense'){
+                }
+                else if (name == 'expense') {
                     tabValueExpenseNew[counterExpenseNew] = value;
                     tabNameExpenseNew[counterExpenseNew] = categoryName;
                     counterExpenseNew++;
