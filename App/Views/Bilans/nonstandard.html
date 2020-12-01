@@ -54,7 +54,16 @@
         </a>
     </form>
 
-    </script>
+    <div class="col-lg-12" style="font-weight: 600;">
+        {% for item in obj %}
+
+        Od:
+        {{ item.dateFrom }}
+        do: 
+        {{ item.dateTo }}
+
+        {% endfor %}
+    </div>
 
     <div id="chartContainer" class="mx-3 col-lg-5" style="height: 200px; width: 100%; margin-bottom: 10px;"></div>
     <div class="col-lg-6"></div>

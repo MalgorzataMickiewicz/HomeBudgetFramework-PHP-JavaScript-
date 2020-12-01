@@ -60,11 +60,25 @@ class Bilans extends Authenticated
     //Generate bilans for nonstandard Date
     public function nonstandardDateAction() { 
         $date = $_POST;
+
         $this->userIncomes = Income::findUserIncomesByIDNonstandard($date);
         $this->userExpenses = Expense::findUserExpensesByIDNonstandard($date);
-            View::renderTemplate('Bilans/nonstandard.html', [
-                'userIncomes' => $this->userIncomes,
-                'userExpenses' => $this->userExpenses
+
+        $arr = Array();
+
+        $dateFrom = $_POST['dateFrom'];
+        $dateTo = $_POST['dateTo'];
+
+        $obj0 = (object) array();
+        $obj0->dateFrom = $dateFrom;
+        $obj0->dateTo = $dateTo;
+
+        $arr[0] = $obj0;
+
+        View::renderTemplate('Bilans/nonstandard.html', [
+            'userIncomes' => $this->userIncomes,
+            'userExpenses' => $this->userExpenses,
+            'obj' => $arr
         ]);
     }
 
