@@ -1,13 +1,240 @@
+function hideCommunicats() {
+    // hide old communicat 'warning'
+    if (!document.getElementById('communicat-high').classList.contains('communicat-limit-hide')) {
+        document.getElementById('communicat-high').classList.add('communicat-limit-hide');
+    }
+    // hide old communicat 'validation'
+    if (!document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')) {
+        document.getElementById('communicat-validation').classList.add('communicat-limit-hide');
+    }
+    // hide old communicat 'success'
+    if (!document.getElementById('communicat-low').classList.contains('communicat-limit-hide')) {
+        document.getElementById('communicat-low').classList.add('communicat-limit-hide');
+    }
+    // hide old alert 'warninig'
+    if (!document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
+        document.getElementById('alert-warinig').classList.add('communicat-limit-hide');
+    }
+    // hide old alert 'success'
+    if (!document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
+        document.getElementById('alert-success').classList.add('communicat-limit-hide');
+    }
+}
+
+function resultPlus(result) {
+    // show communicat 'success'
+    document.getElementById('communicat-low').classList.remove('communicat-limit-hide');
+    // add insert to communicat 'success'
+    document.getElementById('communicat-low').innerHTML = '<h3 class="my-4 h4" style="color: black!important; display: inline-block;">Limit dla tej kategorii wydatku nie został przekroczony. Możesz jeszcze dodać: ' + result + '.</h3>';
+}
+
+function resultValidaton() {
+    // show communicat 'validation'
+    if (document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')) {
+        document.getElementById('communicat-validation').classList.remove('communicat-limit-hide');
+    }
+}
+
+function resultMinus(result) {
+     // show communicat 'warning'
+     document.getElementById('communicat-high').classList.remove('communicat-limit-hide');
+     // add insert to communicat 'warning'
+     document.getElementById('communicat-high').innerHTML = '<h3 class="my-4 h4" style="color: black!important; display: inline-block;">Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '.</h3>';
+}
+
+function alertSuccess() {
+    // show alert 'success'
+    if (document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
+        document.getElementById('alert-success').classList.remove('communicat-limit-hide');
+    }
+}
+
+function alertFalse() {
+    // show alert 'warning'
+    if (document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
+        document.getElementById('alert-warning').classList.remove('communicat-limit-hide');
+    }
+}
+
 $(document).ready(function () {
 
-    // checked limit for category
+    // checked limit for category ver. value
+    var coll10 = document.getElementsByClassName('input-value');
+    var e;
+    for (e = 0; e < coll10.length; e++) {
+        coll10[e].addEventListener('change', function () {
+            // value
+            var inputValue = this.value;
+
+            //categoryId
+            var parent = this.parentElement;
+            var dateInput = parent.nextElementSibling;
+            var methodPayInput = dateInput.nextElementSibling;
+            var categoryInput = methodPayInput.nextElementSibling;
+            var categoriesChildren = categoryInput.children;
+            var select = categoriesChildren[1];
+            var number = select.childElementCount;
+            var tab = select.children;
+
+            //date
+            var dateDiv = document.getElementById('dateExpense');
+            var date = $(dateDiv).val();
+
+            for (var r = 0; r < number; r++) {
+                if (tab[r].localName == 'input') {
+                    if (tab[r].checked == true) {
+                        var checkedCategory = tab[r];
+                        var categoryId = checkedCategory.getAttribute('id');
+                        $.post('checkCategoryLimit', {
+                            categoryId: categoryId,
+                            value: inputValue,
+                            date: date
+                        }, function (data, status, xhr) {
+                            var result = data;
+                            // hide all communicats
+                            hideCommunicats();
+
+                            if (status == 'success') {
+                                // category without limit
+                                if (result == 'nolimit') {
+                                }
+                                // limit wasn't exceeded and validation is empty
+                                else if (result >= 0) {
+                                    resultPlus(result);
+                                }
+                                // limit was exceeded or validation isn't empty
+                                else if (result < 0) {
+                                    // validation isn't empty
+                                    if (result == 'false') {
+                                      resultValidation();
+                                    }
+                                    // limit was exceeded
+                                    else {
+                                        resultMinus(-result);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+     // checked limit for category ver. date
+     var coll10 = document.getElementById('dateExpense');
+         coll10.addEventListener('change', function () {
+
+            //categoryId
+             var parent = this.parentElement;
+             var methodPayInput = parent.nextElementSibling;
+             var categoryInput = methodPayInput.nextElementSibling;
+             var categoriesChildren = categoryInput.children;
+             var select = categoriesChildren[1];
+             var number = select.childElementCount;
+             var tab = select.children;
+
+             // value
+             var inputValue = document.getElementById('valueExpense').value;
+ 
+             //date
+             var dateDiv = document.getElementById('dateExpense');
+             var date = $(dateDiv).val();
+
+             for (var r = 0; r < number; r++) {
+                if (tab[r].localName == 'input') {
+                    if (tab[r].checked == true) {
+                        var checkedCategory = tab[r];
+                        var categoryId = checkedCategory.getAttribute('id');
+                        $.post('checkCategoryLimit', {
+                            categoryId: categoryId,
+                            value: inputValue,
+                            date: date
+                        }, function (data, status, xhr) {
+                            var result = data;
+                            // hide all communicats
+                            hideCommunicats();
+
+                            if (status == 'success') {
+                                // category without limit
+                                if (result == 'nolimit') {
+                                }
+                                // limit wasn't exceeded and validation is empty
+                                else if (result >= 0) {
+                                    resultPlus(result);
+                                }
+                                // limit was exceeded or validation isn't empty
+                                else if (result < 0) {
+                                    // validation isn't empty
+                                    if (result == 'false') {
+                                      resultValidation();
+                                    }
+                                    // limit was exceeded
+                                    else {
+                                        resultMinus(-result);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+    // checked limit for category ver. category
+     var coll = document.getElementsByClassName('categories');
+     var j;
+     for (j = 0; j < coll.length; j++) {
+         coll[j].addEventListener('click', function () {
+             //categoryId
+            var categoryId = this.getAttribute('id');
+            
+            //value
+            var inputValue = document.getElementById('valueExpense').value;
+
+            //date
+            var dateDiv = document.getElementById('dateExpense');
+            var date = $(dateDiv).val();
+
+            $.post('checkCategoryLimit', {
+                categoryId: categoryId,
+                value: inputValue,
+                date: date
+            }, function (data, status, xhr) {
+                var result = data;
+                // hide all communicats
+                hideCommunicats();
+
+                if (status == 'success') {
+                    // category without limit
+                    if (result == 'nolimit') {
+                    }
+                    // limit wasn't exceeded and validation is empty
+                    else if (result >= 0) {
+                        resultPlus(result);
+                    }
+                    // limit was exceeded or validation isn't empty
+                    else if (result < 0) {
+                        // validation isn't empty
+                        if (result == 'false') {
+                            resultValidation();
+                        }
+                        // limit was exceeded
+                        else {
+                            resultMinus(-result);
+                        }
+                    }
+                }
+            });
+        });
+    }
+              
+    // submit
     var coll = document.getElementsByClassName('btn-submit');
     var j;
     for (j = 0; j < coll.length; j++) {
         coll[j].addEventListener('click', function () {
             // value
-            var valueDiv = document.getElementById('valueExpense');
-            var value = $(valueDiv).val();
+            var value = document.getElementById('valueExpense').value;
 
             // date
             var dateDiv = document.getElementById('dateExpense');
@@ -49,19 +276,12 @@ $(document).ready(function () {
                             date: date
                         }, function (data, status, xhr) {
                             var result = data;
-
+                            hideCommunicats();
                             if (status == 'success') {
                                 // category without limit
                                 if (result == 'nolimit') {
-                                    // hide old communicat 'warning'
-                                    if (!document.getElementById('communicat-high').classList.contains('communicat-limit-hide')) {
-                                        document.getElementById('communicat-high').classList.add('communicat-limit-hide');
-                                    }
-                                    // hide old communicat 'validation'
-                                    if (!document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')) {
-                                        document.getElementById('communicat-validation').classList.add('communicat-limit-hide');
-                                    }
-                                    $.post('saveExpense', {
+                                      // add expense to base
+                                      $.post('saveExpense', {
                                         categoryExpense: categoryId,
                                         payMethodExpense: methodPay,
                                         valueExpense: value,
@@ -71,36 +291,18 @@ $(document).ready(function () {
                                         var response = data;
                                         // expense was added to base
                                         if (response == 1) {
-                                            // show alert 'success'
-                                            if (document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
-                                                document.getElementById('alert-success').classList.remove('communicat-limit-hide');
-                                            }
+                                            alertSuccess();
                                         }
                                         // expense wasn't added to base
                                         else {
-                                            // show alert 'warning'
-                                            if (document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
-                                                document.getElementById('alert-warning').classList.remove('communicat-limit-hide');
-                                            }
+                                            alertFalse();
                                         }
                                     });
                                 }
                                 // limit wasn't exceeded and validation is empty
                                 else if (result >= 0) {
-                                    // hide old communicat 'warning'
-                                    if (!document.getElementById('communicat-high').classList.contains('communicat-limit-hide')) {
-                                        document.getElementById('communicat-high').classList.add('communicat-limit-hide');
-                                    }
-                                    // hide old communicat 'validation'
-                                    if (!document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')) {
-                                        document.getElementById('communicat-validation').classList.add('communicat-limit-hide');
-                                    }
-                                    // show communicat 'success'
-                                    document.getElementById('communicat-low').classList.remove('communicat-limit-hide');
-
-                                    // add insert to communicat 'success'
-                                    document.getElementById('communicat-low').insertAdjacentHTML('afterbegin', '<h3 class="my-4 h4" style="color: black!important; display: inline-block;">Limit dla tej kategorii wydatku nie został przekroczony. Możesz jeszcze dodać: ' + result + '.</h3>');
-
+                                    resultPlus(result);
+        
                                     // add expense to base
                                     $.post('saveExpense', {
                                         categoryExpense: categoryId,
@@ -112,17 +314,11 @@ $(document).ready(function () {
                                         var response = data;
                                         // expense was added to base
                                         if (response == 1) {
-                                            // show alert 'success'
-                                            if (document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
-                                                document.getElementById('alert-success').classList.remove('communicat-limit-hide');
-                                            }
+                                            alertSuccess();
                                         }
                                         // expense wasn't added to base
                                         else {
-                                            // show alert 'warning'
-                                            if (document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
-                                                document.getElementById('alert-warning').classList.remove('communicat-limit-hide');
-                                            }
+                                            alertFalse();
                                         }
                                     });
                                 }
@@ -130,46 +326,11 @@ $(document).ready(function () {
                                 else if (result < 0) {
                                     // validation isn't empty
                                     if (result == 'false') {
-                                        // show communicato 'validation'
-                                        if (document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')) {
-                                            document.getElementById('communicat-validation').classList.remove('communicat-limit-hide');
-                                        }
-                                        // hide communicat 'success'
-                                        if (!document.getElementById('communicat-low').classList.contains('communicat-limit-hide')) {
-                                            document.getElementById('communicat-low').classList.add('communicat-limit-hide');
-                                        }
-                                        // hide communicat 'warning'
-                                        if (!document.getElementById('communicat-high').classList.remove('communicat-limit-hide')) {
-                                            document.getElementById('communicat-high').classList.add('communicat-limit-hide');
-                                        }
-                                        // hide alert 'warninig'
-                                        if (!document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
-                                            document.getElementById('alert-warinig').classList.add('communicat-limit-hide');
-                                        }
-                                        // hide alert 'success'
-                                        if (!document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
-                                            document.getElementById('alert-success').classList.add('communicat-limit-hide');
-                                        }
+                                        resultValidaton();
                                     }
                                     // limit was exceeded
                                     else {
-                                        // hide communicat 'success'
-                                        if (!document.getElementById('communicat-low').classList.contains('communicat-limit-hide')) {
-                                            document.getElementById('communicat-low').classList.add('communicat-limit-hide');
-                                        }
-                                        // hide communicat 'validation'
-                                        if (!document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')) {
-                                            document.getElementById('communicat-validation').classList.add('communicat-limit-hide');
-                                        }
-                                        result = -result;
-                                        // clean communicat 'warning'
-                                        document.getElementById('communicat-high').innerHTML = '';
-
-                                        // hide alert 'warninig'
-                                        if (!document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
-                                            document.getElementById('alert-warinig').classList.add('communicat-limit-hide');
-                                        }
-
+                                        // add expense to database
                                         $.post('saveExpense', {
                                             categoryExpense: categoryId,
                                             payMethodExpense: methodPay,
@@ -180,30 +341,18 @@ $(document).ready(function () {
                                             var response = data;
                                             // expense was added to base
                                             if (response == 1) {
-                                                // show alert 'success'
-                                                if (document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
-                                                    document.getElementById('alert-success').classList.remove('communicat-limit-hide');
-                                                }
-
-                                                // show communicat 'warning'
-                                                document.getElementById('communicat-high').classList.remove('communicat-limit-hide');
-
-                                                // add insert to communicat 'warning'
-                                                document.getElementById('communicat-high').insertAdjacentHTML('afterbegin', '<h3 class="my-4 h4" style="color: black!important; display: inline-block;">Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '.</h3>');
+                                                alertSuccess();
+                                                resultMinus(-result);
                                             }
                                             // expense wasn't added to base
                                             else {
-                                                // show alert 'warning'
-                                                if (document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
-                                                    document.getElementById('alert-warning').classList.remove('communicat-limit-hide');
-                                                }
+                                                alertFalse();
                                             }
                                         });
                                     }
                                 }
                             }
-                        })
-                            ;
+                        });
                     }
                 }
             }

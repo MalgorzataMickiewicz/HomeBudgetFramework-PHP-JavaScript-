@@ -3,55 +3,8 @@
 {% block title %}Wydatki | TB twojbudzet.com{% endblock %}
 
 {% block footer %}
-<script src="/js/app.js"></script>
 <script src="/js/expenses.js"></script>
-
-<script>
-    $(document).ready(function () {
-
-        /**
-         * Validate the form
-         */
-        $('#formExpense').validate({
-            rules: {
-                valueExpense: {
-                    required: true
-                },
-                dateExpense: {
-                    required: true
-                },
-                categoryExpense: {
-                    required: true
-                },
-                payMethodExpense: {
-                    required: true
-                }
-            },
-            messages: {
-                valueExpense: {
-                    remote: 'Wprowadź liczbę dodatnią, różną od zera'
-                },
-                dateExpense: {
-                    remote: 'Wprowadź datę'
-                },
-                categoryExpense: {
-                    remote: 'Wybierz kategorię'
-                },
-                payMethodExpense: {
-                    remote: 'Wybierz metodę płatności'
-                }
-            }
-        });
-
-        /**
-          * Show password toggle button
-          */
-        $('#inputPassword').hideShowPassword({
-            show: false,
-            innerToggle: 'focus'
-        });
-    });
-</script>
+<script src="/js/validate.js"></script>
 
 {% endblock %}
 
@@ -99,15 +52,14 @@
 
         <div class="col-lg-5 offset-lg-1">
 
-            <label class="font-weight-bold" for="valueExpense">Dodaj kwotę wydatku</label>
-
-            <input type="text" class="form-control" name="valueExpense" id="valueExpense" placeholder="Kwota, różna od 0"
+            <label id="tip-value" class="font-weight-bold" for="valueExpense">Dodaj kwotę wydatku</label>
+            <input type="text" class="form-control input-value" name="valueExpense" id="valueExpense" placeholder="Kwota, różna od 0"
                 aria-label="value" aria-describedby="value">
         </div>
 
         <div class="col-lg-5">
 
-            <label class="font-weight-bold" for="dateExpense">Dodaj datę wydatku</label>
+            <label id="tip-date" class="font-weight-bold" for="dateExpense">Dodaj datę wydatku</label>
 
             <input type="date" name="dateExpense" class="form-control" id="dateExpense" aria-label="date"
                 aria-describedby="date">
@@ -144,12 +96,12 @@
                     {% set counterCategory = 0 %}
                     {% for item in categoryExpense %}
                     {% if counterCategory == 0 %}
-                        <input checked type="radio" id="{{ item.id }}" name="categoryExpense" value="{{ item.categoryName }}">
+                        <input class="categories" checked type="radio" id="{{ item.id }}" name="categoryExpense" value="{{ item.categoryName }}">
                         <label style="height: 10px;" for="{{ item.id }}">{{ item.categoryName }}</label>
                         <br/>
                     {% set counterCategory = counterCategory + 1 %}
                     {% else %}
-                        <input type="radio" id="{{ item.id }}" name="categoryExpense" value="{{ item.categoryName }}">
+                        <input class="categories" type="radio" id="{{ item.id }}" name="categoryExpense" value="{{ item.categoryName }}">
                         <label style="height: 10px;" for="{{ item.id }}">{{ item.categoryName }}</label>
                         <br/>
                     {% set counterCategory = counterCategory + 1 %}
@@ -168,7 +120,7 @@
         </div>
 
         <div class="col-lg-5 offset-lg-1 p-1">
-            <button type="button" class="btn btn-register my-3 btn-submit"> Dodaj wydatek </button>
+            <button id="btn-submit" type="button" class="btn btn-register my-3 btn-submit"> Dodaj wydatek </button>
         </div>
 
         <div class="col-lg-5 p-1">
