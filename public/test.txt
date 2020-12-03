@@ -1,3 +1,0 @@
-<p style="font-size: 14px; color: black;">Ustaw miesięczny limit wydatków dla tej kategorii
-    <input placeholder="200" required class="form-control" style="width: 100px; margin-left: auto; margin-right: auto; padding-top: 5px;" >
-</p>

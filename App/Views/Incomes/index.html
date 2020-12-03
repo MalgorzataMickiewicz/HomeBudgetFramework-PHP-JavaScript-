@@ -2,53 +2,6 @@
 
 {% block title %}Przychody | TB twojbudzet.com{% endblock %}
 
-{% block footer %}
-    <script src="/js/app.js"></script>
-
-    <script>
-        $(document).ready(function() {
-
-            /**
-             * Validate the form
-             */
-            $('#formIncome').validate({
-                rules: {
-                    valueIncome: {
-                        required: true
-                        },
-                    dateIncome: {
-                        required: true
-                    },
-                    categoryIncome: {
-                        required: true
-                    }
-                },
-                messages: {
-                    valueIncome: {
-                        remote: 'Wprowadź liczbę dodatnią, różną od zera'
-                    },
-                    dateIncome: {
-                        remote: 'Wprowadź datę'
-                    },
-                    categoryIncome: {
-                        remote: 'Wybierz kategorię'
-                    }
-                }
-            });
-
-
-            /**
-              * Show password toggle button
-              */
-            $('#inputPassword').hideShowPassword({
-                show: false,
-                innerToggle: 'focus'
-            });
-        });
-    </script>
-
-{% endblock %}
-
 {% block body %}
 
 {% if income.errors is not empty %}

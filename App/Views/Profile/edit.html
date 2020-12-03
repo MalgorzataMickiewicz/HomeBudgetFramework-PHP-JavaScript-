@@ -3,8 +3,6 @@
 {% block title %}Edycja danych | TB twojbudzet.com{% endblock %}
 
 {% block footer %}
-<script src="/js/hideShowPassword.min.js"></script>
-<script src="/js/app.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -17,7 +15,7 @@
         $('#formProfile').validate({
             rules: {
                 name: 'required',
-                email: {
+                 email: {
                     required: true,
                     email: true,
                     remote: {
@@ -39,15 +37,6 @@
                     remote: 'Email jest już zajęty'
                 }
             }
-        });
-
-
-        /**
-          * Show password toggle button
-          */
-        $('#inputPassword').hideShowPassword({
-            show: false,
-            innerToggle: 'focus'
         });
     });
 </script>
