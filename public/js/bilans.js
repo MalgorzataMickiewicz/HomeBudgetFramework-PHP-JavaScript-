@@ -156,6 +156,10 @@ for (j = 0; j < coll.length; j++) {
             this.classList.toggle("active");
             var input = td.firstElementChild;
             var newValue = $(input).val(); // get new input value
+            newValue = newValue.toString();
+            newValue = newValue.replace(',', '.');  
+            newValue = parseFloat(newValue);
+            newValue = newValue.toFixed(2);
 
             // new value different then 0
             if (newValue != '0') {
@@ -173,12 +177,12 @@ for (j = 0; j < coll.length; j++) {
                         var check = coll2[k].childNodes[0].localName;
                         if ((name == 'income') && (check == 'input')) {
                             var value = coll2[k].childNodes[0].defaultValue
-                            sumIncome = parseInt(sumIncome) + parseInt(value);
+                            sumIncome = parseFloat(sumIncome) + parseFloat(value);
                         }
                         else if (name == 'income') {
                             var children = coll2[k].childNodes;
                             var value = children[0].nodeValue;
-                            sumIncome = parseInt(sumIncome) + parseInt(value);
+                            sumIncome = parseFloat(sumIncome) + parseFloat(value);
                         }
                     }
                     if (button.classList.contains('income-button')) {
@@ -228,12 +232,14 @@ for (j = 0; j < coll.length; j++) {
                                 var check1 = coll6[i].childNodes[0].localName;
                                 if ((name1 == 'expense') && (check1 == 'input')) {
                                     var value1 = coll6[i].childNodes[0].defaultValue
-                                    sumExpense1 = parseInt(sumExpense1) + parseInt(value1);
+                                    sumExpense1 = parseFloat(sumExpense1) + parseFloat(value1);
+                                    sumExpense1 = sumExpense1.toFixed(2);
                                 }
                                 else if (name1 == 'expense') {
                                     var children1 = coll6[i].childNodes;
                                     var value1 = children1[0].nodeValue;
-                                    sumExpense1 = parseInt(sumExpense1) + parseInt(value1);
+                                    sumExpense1 = parseFloat(sumExpense1) + parseFloat(value1);
+                                    sumExpense1 = sumExpense1.toFixed(2);
                                 }
                             }
                             document.getElementById('expense-sum').innerHTML = sumExpense1;
@@ -272,12 +278,14 @@ for (j = 0; j < coll.length; j++) {
                                 var check = coll2[k].childNodes[0].localName;
                                 if ((name == 'expense') && (check == 'input')) {
                                     var value = coll2[k].childNodes[0].defaultValue
-                                    sumExpense = parseInt(sumExpense) + parseInt(value);
+                                    sumExpense = parseFloat(sumExpense) + parseFloat(value);
+                                    sumExpense = sumExpense.toFixed(2);
                                 }
                                 else if (name == 'expense') {
                                     var children = coll2[k].childNodes;
                                     var value = children[0].nodeValue;
-                                    sumExpense = parseInt(sumExpense) + parseInt(value);
+                                    sumExpense = parseFloat(sumExpense) + parseFloat(value);
+                                    sumExpense = sumExpense.toFixed(2);
                                 }
                             }
                             document.getElementById('expense-sum').innerHTML = sumExpense;
@@ -326,12 +334,14 @@ for (j = 0; j < coll.length; j++) {
                                 var check = coll2[k].childNodes[0].localName;
                                 if ((name == 'expense') && (check == 'input')) {
                                     var value = coll2[k].childNodes[0].defaultValue
-                                    sumExpense = parseInt(sumExpense) + parseInt(value);
+                                    sumExpense = parseFloat(sumExpense) + parseFloat(value);
+                                    sumExpense = sumExpense.toFixed(2);
                                 }
                                 else if (name == 'expense') {
                                     var children = coll2[k].childNodes;
                                     var value = children[0].nodeValue;
-                                    sumExpense = parseInt(sumExpense) + parseInt(value);
+                                    sumExpense = parseFloat(sumExpense) + parseFloat(value);
+                                    sumExpense = sumExpense.toFixed(2);
                                 }
                             }
                             document.getElementById('expense-sum').innerHTML = sumExpense;
@@ -422,21 +432,23 @@ for (l = 0; l < coll3.length; l++) {
 
                     if ((nameDelete == 'income') && (checkDelete == 'input')) {
                         var valueDelete = coll5[t].childNodes[0].defaultValue
-                        sumIncomeDelete = parseInt(sumIncomeDelete) + parseInt(valueDelete);
+                        sumIncomeDelete = parseFloat(sumIncomeDelete) + parseFloat(valueDelete);
                     }
                     else if ((nameDelete == 'expense') && (checkDelete == 'input')) {
                         var valueDelete = coll5[t].childNodes[0].defaultValue
-                        sumExpenseDelete = parseInt(sumExpenseDelete) + parseInt(valueDelete);
+                        sumExpenseDelete = parseFloat(sumExpenseDelete) + parseFloat(valueDelete);
+                        sumExpenseDelete = sumExpenseDelete.toFixed(2);
                     }
                     else if (nameDelete == 'income') {
                         var childrenDelete = coll5[t].childNodes;
                         var valueDelete = childrenDelete[0].nodeValue;
-                        sumIncomeDelete = parseInt(sumIncomeDelete) + parseInt(valueDelete);
+                        sumIncomeDelete = parseFloat(sumIncomeDelete) + parseFloat(valueDelete);
                     }
                     else if (nameDelete == 'expense') {
                         var childrenDelete = coll5[t].childNodes;
                         var valueDelete = childrenDelete[0].nodeValue;
-                        sumExpenseDelete = parseInt(sumExpenseDelete) + parseInt(valueDelete);
+                        sumExpenseDelete = parseFloat(sumExpenseDelete) + parseFloat(valueDelete);
+                        sumExpenseDelete = sumExpenseDelete.toFixed(2);
                     }
                 }
                 if (buttonTest.classList.contains('income-button')) {
