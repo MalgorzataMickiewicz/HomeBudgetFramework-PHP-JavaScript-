@@ -65,6 +65,14 @@ $(document).ready(function () {
         coll10[e].addEventListener('change', function () {
             // value
             var inputValue = this.value;
+            if(inputValue != 0){
+                inputValue = inputValue.toString();
+                inputValue = inputValue.replace(',', '.');  
+                if(!inputValue.includes('.')){
+                    inputValue = inputValue + '.00';
+                }
+                inputValue = parseFloat(inputValue);
+             }
 
             //categoryId
             var parent = this.parentElement;
@@ -100,6 +108,10 @@ $(document).ready(function () {
                                 }
                                 // limit wasn't exceeded and validation is empty
                                 else if (result >= 0) {
+                                    result = parseFloat(result);
+                                    result = result.toFixed(2);
+                                    result = result.toString();
+                                    result = result.replace('.', ',');
                                     resultPlus(result);
                                 }
                                 // limit was exceeded or validation isn't empty
@@ -110,7 +122,12 @@ $(document).ready(function () {
                                     }
                                     // limit was exceeded
                                     else {
-                                        resultMinus(-result);
+                                        result = parseFloat(result);
+                                        result = -result;
+                                        result = result.toFixed(2);
+                                        result = result.toString();
+                                        result = result.replace('.', ',');
+                                        resultMinus(result);
                                     }
                                 }
                             }
@@ -135,6 +152,15 @@ $(document).ready(function () {
 
              // value
              var inputValue = document.getElementById('valueExpense').value;
+             if(inputValue != 0){
+                inputValue = inputValue.toString();
+                inputValue = inputValue.replace(',', '.');  
+                if(!inputValue.includes('.')){
+                    inputValue = inputValue + '.00';
+                }
+                inputValue = parseFloat(inputValue);
+             }
+
  
              //date
              var dateDiv = document.getElementById('dateExpense');
@@ -160,6 +186,10 @@ $(document).ready(function () {
                                 }
                                 // limit wasn't exceeded and validation is empty
                                 else if (result >= 0) {
+                                    result = parseFloat(result);
+                                    result = result.toFixed(2);
+                                    result = result.toString();
+                                    result = result.replace('.', ',');
                                     resultPlus(result);
                                 }
                                 // limit was exceeded or validation isn't empty
@@ -170,7 +200,12 @@ $(document).ready(function () {
                                     }
                                     // limit was exceeded
                                     else {
-                                        resultMinus(-result);
+                                        result = parseFloat(result);
+                                        result = -result;
+                                        result = result.toFixed(2);
+                                        result = result.toString();
+                                        result = result.replace('.', ',');
+                                        resultMinus(result);
                                     }
                                 }
                             }
@@ -190,6 +225,15 @@ $(document).ready(function () {
             
             //value
             var inputValue = document.getElementById('valueExpense').value;
+            if(inputValue != 0){
+                inputValue = inputValue.toString();
+                inputValue = inputValue.replace(',', '.');  
+                if(!inputValue.includes('.')){
+                    inputValue = inputValue + '.00';
+                }
+                inputValue = parseFloat(inputValue);
+             }
+
 
             //date
             var dateDiv = document.getElementById('dateExpense');
@@ -210,6 +254,10 @@ $(document).ready(function () {
                     }
                     // limit wasn't exceeded and validation is empty
                     else if (result >= 0) {
+                        result = parseFloat(result);
+                        result = result.toFixed(2);
+                        result = result.toString();
+                        result = result.replace('.', ',');
                         resultPlus(result);
                     }
                     // limit was exceeded or validation isn't empty
@@ -220,7 +268,12 @@ $(document).ready(function () {
                         }
                         // limit was exceeded
                         else {
-                            resultMinus(-result);
+                            result = parseFloat(result);
+                            result = -result;
+                            result = result.toFixed(2);
+                            result = result.toString();
+                            result = result.replace('.', ',');
+                            resultMinus(result);
                         }
                     }
                 }
@@ -235,6 +288,15 @@ $(document).ready(function () {
         coll[j].addEventListener('click', function () {
             // value
             var value = document.getElementById('valueExpense').value;
+            if(value != 0){
+                value = value.toString();
+                value = value.replace(',', '.');  
+                if(!value.includes('.')){
+                    value = value + '.00';
+                }
+                value = parseFloat(value);
+             }
+
 
             // date
             var dateDiv = document.getElementById('dateExpense');
@@ -301,6 +363,10 @@ $(document).ready(function () {
                                 }
                                 // limit wasn't exceeded and validation is empty
                                 else if (result >= 0) {
+                                    result = parseFloat(result);
+                                    result = result.toFixed(2);
+                                    result = result.toString();
+                                    result = result.replace('.', ',');
                                     resultPlus(result);
         
                                     // add expense to base
@@ -342,7 +408,12 @@ $(document).ready(function () {
                                             // expense was added to base
                                             if (response == 1) {
                                                 alertSuccess();
-                                                resultMinus(-result);
+                                                result = parseFloat(result);
+                                                result = -result;
+                                                result = result.toFixed(2);
+                                                result = result.toString();
+                                                result = result.replace('.', ',');
+                                                resultMinus(result);
                                             }
                                             // expense wasn't added to base
                                             else {
