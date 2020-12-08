@@ -13,7 +13,7 @@ function hideCommunicats() {
     }
     // hide old alert 'warninig'
     if (!document.getElementById('alert-warning').classList.contains('communicat-limit-hide')) {
-        document.getElementById('alert-warinig').classList.add('communicat-limit-hide');
+        document.getElementById('alert-warning').classList.add('communicat-limit-hide');
     }
     // hide old alert 'success'
     if (!document.getElementById('alert-success').classList.contains('communicat-limit-hide')) {
@@ -28,7 +28,7 @@ function resultPlus(result) {
     document.getElementById('communicat-low').innerHTML = '<h3 class="my-4 h4" style="color: black!important; display: inline-block;">Limit dla tej kategorii wydatku nie został przekroczony. Możesz jeszcze dodać: ' + result + '.</h3>';
 }
 
-function resultValidaton() {
+function resultValidation() {
     // show communicat 'validation'
     if (document.getElementById('communicat-validation').classList.contains('communicat-limit-hide')) {
         document.getElementById('communicat-validation').classList.remove('communicat-limit-hide');
@@ -118,7 +118,7 @@ $(document).ready(function () {
                                 else if (result < 0) {
                                     // validation isn't empty
                                     if (result == 'false') {
-                                      resultValidation();
+                                        resultValidation();
                                     }
                                     // limit was exceeded
                                     else {
@@ -286,17 +286,15 @@ $(document).ready(function () {
     var j;
     for (j = 0; j < coll.length; j++) {
         coll[j].addEventListener('click', function () {
+            hideCommunicats();
             // value
             var value = document.getElementById('valueExpense').value;
             if(value != 0){
                 value = value.toString();
                 value = value.replace(',', '.');  
-                if(!value.includes('.')){
-                    value = value + '.00';
-                }
                 value = parseFloat(value);
+                value = value.toFixed(2);
              }
-
 
             // date
             var dateDiv = document.getElementById('dateExpense');
@@ -342,6 +340,7 @@ $(document).ready(function () {
                             if (status == 'success') {
                                 // category without limit
                                 if (result == 'nolimit') {
+                                    console.log(value);
                                       // add expense to base
                                       $.post('saveExpense', {
                                         categoryExpense: categoryId,
@@ -358,6 +357,7 @@ $(document).ready(function () {
                                         // expense wasn't added to base
                                         else {
                                             alertFalse();
+                                            resultValidation();
                                         }
                                     });
                                 }
@@ -385,6 +385,7 @@ $(document).ready(function () {
                                         // expense wasn't added to base
                                         else {
                                             alertFalse();
+                                            resultValidation();
                                         }
                                     });
                                 }
@@ -392,7 +393,7 @@ $(document).ready(function () {
                                 else if (result < 0) {
                                     // validation isn't empty
                                     if (result == 'false') {
-                                        resultValidaton();
+                                        resultValidation();
                                     }
                                     // limit was exceeded
                                     else {
@@ -417,11 +418,21 @@ $(document).ready(function () {
                                             }
                                             // expense wasn't added to base
                                             else {
+                                                resultValidation();
                                                 alertFalse();
                                             }
                                         });
                                     }
                                 }
+                                // validation isn't empty
+                                else if (result == 'false') {
+                                    resultValidation();
+                                    alertFalse();
+                                }
+                            }
+                            else {
+                                resultValidation();
+                                alertFalse();
                             }
                         });
                     }

@@ -42,43 +42,32 @@ class Expense extends \Core\Model
      */
 
     static function saveExpense($expense) {
-        //$validation = static::validation($expense);
-        //if (empty($validation)) {
         
-            $userId = $_SESSION['user_id'];
-            $categoryExpense = $expense['categoryExpense'];
-            $methodPay = $expense['payMethodExpense'];
-            $value = $expense['valueExpense'];
-            $dateExpense = $expense['dateExpense'];
-            $commentExpense = $expense['commentExpense'];
-            
-                //convert string to int
-                $categoryIdIntiger = (int)$categoryExpense;
-                $methodPayIdIntiger = (int)$methodPay;
+    $userId = $_SESSION['user_id'];
+    $categoryExpense = $expense['categoryExpense'];
+    $methodPay = $expense['payMethodExpense'];
+    $valueExpense = $expense['valueExpense'];
+    $dateExpense = $expense['dateExpense'];
+    $commentExpense = $expense['commentExpense'];
+    
+        //convert string to int
+        $categoryIdIntiger = (int)$categoryExpense;
+        $methodPayIdIntiger = (int)$methodPay;
 
-                //get value withouts comma and round to 2
-                $valueDot = static::getValueWithDot($value);
+        $sql = 'INSERT INTO expenses (userId, dateExpense, valueExpense, categoryExpenseId, commentExpense, idMethodPay) VALUES (:userId, :dateExpense, :valueExpense, :categoryIdIntiger, :commentExpense, :methodPayIdIntiger)';
 
-                $valueString = (string)$valueDot;
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
 
-                $sql = 'INSERT INTO expenses (userId, dateExpense, valueExpense, categoryExpenseId, commentExpense, idMethodPay) VALUES (:userId, :dateExpense, :valueString, :categoryIdIntiger, :commentExpense, :methodPayIdIntiger)';
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
+        $stmt->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR); 
+        $stmt->bindValue(':valueExpense', $valueExpense, PDO::PARAM_STR);
+        $stmt->bindValue(':categoryIdIntiger', $categoryIdIntiger, PDO::PARAM_INT);
+        $stmt->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
+        $stmt->bindValue(':methodPayIdIntiger', $methodPayIdIntiger, PDO::PARAM_INT);
 
-                $db = static::getDB();
-                $stmt = $db->prepare($sql);
-
-                $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
-                $stmt->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR); 
-                $stmt->bindValue(':valueString', $valueString, PDO::PARAM_STR);
-                $stmt->bindValue(':categoryIdIntiger', $categoryIdIntiger, PDO::PARAM_INT);
-                $stmt->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
-                $stmt->bindValue(':methodPayIdIntiger', $methodPayIdIntiger, PDO::PARAM_INT);
-
-                $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
-                return $stmt->execute();
-      //  }
-        //else {
-          //  return false;
-        //}
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        return $stmt->execute();
     }
 
     static function validation($categoryArray) {

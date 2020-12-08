@@ -40,6 +40,7 @@ class Incomes extends Authenticated {
      */
     public function saveIncome() {
         $income = new Income($_POST);
+        $this->categoryIncome = Income::findCategoriesByID();
 
         if($income -> saveIncome()) {
             Flash::addMessage('Przychód dodano pomyślnie');
@@ -48,7 +49,8 @@ class Incomes extends Authenticated {
         else{
             Flash::addMessage('Nie udało się dodać przychodu', Flash::WARNING);
             View::renderTemplate('Incomes/index.html', [
-            'income' => $income
+            'income' => $income,
+            'categoryIncome' => $this->categoryIncome
             ]);
         }
     }

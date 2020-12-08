@@ -5,23 +5,22 @@
 {% block footer %}
 <script src="/js/expenses.js"></script>
 <script src="/js/validate.js"></script>
+<script>
+
+</script>
 
 {% endblock %}
 
 {% block body %}
 
-{% if expense.errors is not empty %}
-<p>Błędy w formularzu:</p>
-<ul>
-    {% for error in expense.errors %}
-    <li>{{ error }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-{% endif %}
-
 <div id="alert-success" class="alert alert-success communicat-limit-hide">Wydatek dodano pomyślnie</div>
 <div id="alert-warning" class="alert alert-warning communicat-limit-hide">Wydatek nie został dodany</div>
+
+<div id="errors" class="communicat-limit-hide">
+    <p>Błędy w formularzu:</p>
+    <ul>
+    </ul>
+</div>
 
 <form method="post" id="formExpense"> 
 
@@ -36,7 +35,6 @@
         </div>
 
         <div id="communicat-low" class="col-lg-10 offset-lg-1 my-1 opacity-communicat-success communicat-limit-hide">
-
         </div>
 
         <div id="communicat-high" class="col-lg-10 offset-lg-1 my-1 opacity-communicat-limit communicat-limit-hide" style="font-weight: 700;">
@@ -50,16 +48,15 @@
 
         </div>
 
-        <div class="col-lg-5 offset-lg-1">
-
-            <label id="tip-value" class="font-weight-bold" for="valueExpense">Dodaj kwotę wydatku</label>
+        <div class="col-lg-5 offset-lg-1 mt-2">
+            <span id="tip-value" class="font-weight-bold" for="valueExpense">Dodaj kwotę wydatku</span>
             <input type="text" class="form-control input-value" name="valueExpense" id="valueExpense" placeholder="Kwota, różna od 0"
                 aria-label="value" aria-describedby="value">
         </div>
 
-        <div class="col-lg-5">
+        <div class="col-lg-5 mt-2">
 
-            <label id="tip-date" class="font-weight-bold" for="dateExpense">Dodaj datę wydatku</label>
+            <span id="tip-date" class="font-weight-bold" for="dateExpense">Dodaj datę wydatku</span>
 
             <input type="date" name="dateExpense" class="form-control" id="dateExpense" aria-label="date"
                 aria-describedby="date">

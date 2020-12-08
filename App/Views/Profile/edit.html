@@ -4,6 +4,7 @@
 
 {% block footer %}
 
+<script src="/js/signup.js"></script>
 <script>
     $(document).ready(function () {
 
@@ -26,10 +27,6 @@
                             }
                         }
                     }
-                },
-                password: {
-                    minlength: 6,
-                    validPassword: true
                 }
             },
             messages: {
@@ -138,6 +135,15 @@
                     <div class="modal-body">
                         <h3 class="nav-name">Podaj nowy email</h3>
                         <input type="password" id="inputPassword" name="password" placeholder="Hasło" class="form-control" aria-label="password" aria-describedby="password" />
+                        <div id="digit" class="limit-hide">
+                            Hasło powinno zawierać przynajmniej jedną cyfrę
+                        </div>
+                        <div id="letter" class="limit-hide">
+                            Hasło powinno zawierać przynajmniej jedną literę
+                        </div>
+                        <div id="length" class="limit-hide">
+                            Hasło powinno składać się przynajmniej z 6 znaków
+                        </div>
                         <span id="helpBlock" class="help-block">Zostaw puste pole aby zachować dotychczasowe hasło</span>
                     </div>
 

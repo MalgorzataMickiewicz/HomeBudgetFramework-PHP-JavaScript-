@@ -1,3 +1,57 @@
+function hideCommunicats() {
+    // hide communicat about 0
+    if (document.getElementById('communicat-zero').classList.contains('communicat-limit-hide')) {
+    }
+    else {
+        document.getElementById('communicat-zero').classList.add('communicat-limit-hide');
+    }
+
+    //hide communicat about limit
+    if (document.getElementById('communicat-low').classList.contains('communicat-limit-hide')) {
+    }
+    else {
+        document.getElementById('communicat-low').classList.add('communicat-limit-hide');
+    }
+
+    if (document.getElementById('communicat-high').classList.contains('communicat-limit-hide')) {
+    }
+    else {
+        document.getElementById('communicat-high').classList.add('communicat-limit-hide');
+    }
+}
+
+function resultPlus(result) {
+    // show communicat 'success'
+    document.getElementById('communicat-low').classList.remove('communicat-limit-hide');
+    // add insert to communicat 'success'
+    document.getElementById('communicat-low').innerHTML = '<h3 class="my-4 h4" style="color: black!important; display: inline-block;">Limit dla tej kategorii wydatku nie został przekroczony. Możesz jeszcze dodać: ' + result + '.</h3>';
+}
+
+function resultMinus(result) {
+    // show communicat 'warning'
+    document.getElementById('communicat-high').classList.remove('communicat-limit-hide');
+    // add insert to communicat 'warning'
+    document.getElementById('communicat-high').innerHTML = '<h3 class="my-4 h4" style="color: black!important; display: inline-block;">Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '.</h3>';
+}
+
+function communicatZero() {
+    if (document.getElementById('communicat-zero').classList.contains('communicat-limit-hide')) {
+        document.getElementById('communicat-zero').classList.remove('communicat-limit-hide');
+    }
+}
+
+function noDate() {
+    document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+}
+
+function communicatPlus() {
+    document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+}
+
+function communicatMinus() {
+    document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+}
+
 //Income chart
 var datasetValueIncome = [];
 for (var j = 0; j < counterIncome; j++) {
@@ -128,19 +182,7 @@ for (j = 0; j < coll.length; j++) {
         var currentValue = td.getAttribute('buttonvalue');
         var currentCategoryName = button.getAttribute('buttonname');
 
-        // hide communicat about 0
-        if (document.getElementById('communicat-zero').classList.contains('communicat-limit-hide')) {
-        }
-        else {
-            document.getElementById('communicat-zero').classList.add('communicat-limit-hide');
-        }
-
-        ///hide communicat abou limit
-        if (document.getElementById('communicat-limit').classList.contains('communicat-limit-hide')) {
-        }
-        else {
-            document.getElementById('communicat-limit').classList.add('communicat-limit-hide');
-        }
+        hideCommunicats();
 
         // nonactive button
         if (!this.classList.contains('active')) {
@@ -162,7 +204,7 @@ for (j = 0; j < coll.length; j++) {
             newValue = newValue.toFixed(2);
 
             // new value different then 0
-            if (newValue != '0') {
+            if (newValue != 0) { 
 
                 if (button.classList.contains('income-button')) {
                     td.innerHTML = newValue;
@@ -191,13 +233,13 @@ for (j = 0; j < coll.length; j++) {
                         var sumExp = document.getElementById('expense-sum').textContent;
 
                         if ((sumExp == 0) && (sumInc == 0)) {
-                            document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                            noDate();
                         }
                         else if (sumExp <= sumInc) {
-                            document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                            communicatPlus();
                         }
                         else {
-                            document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                            communicatMinus();
                         }
                         // conect with data base
                         $.post('editIncome', {
@@ -205,9 +247,9 @@ for (j = 0; j < coll.length; j++) {
                             idIncome: id
                         }
                         );
-                        var column3 = columnChart();
-                        var incomeChartRender2 = incomeChart();
-                        var expenseChartRender2 = expenseChart();
+                        columnChart();
+                        incomeChart();
+                        expenseChart();
                     }
                 }
                 else if (button.classList.contains('expense-button')) {
@@ -247,13 +289,13 @@ for (j = 0; j < coll.length; j++) {
                             var sumInc = document.getElementById('income-sum').textContent;
 
                             if ((sumExp == 0) && (sumInc == 0)) {
-                                document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                                noDate();
                             }
                             else if (sumExp <= sumInc) {
-                                document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                                communicatPlus();
                             }
                             else {
-                                document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                                communicatMinus();
                             }
                             // conect with data base
                             $.post('editExpense', {
@@ -261,9 +303,9 @@ for (j = 0; j < coll.length; j++) {
                                 idExpense: id
                             }
                             );
-                            var column2 = columnChart();
-                            var incomeChartRender3 = incomeChart();
-                            var expenseChartRender3 = expenseChart();
+                            columnChart();
+                            incomeChart();
+                            expenseChart();
                         }
                         // limit wasn't exceeded and validation is empty
                         else if (result >= 0) {
@@ -292,13 +334,13 @@ for (j = 0; j < coll.length; j++) {
                             var sumExp = sumExpense;
                             var sumInc = document.getElementById('income-sum').textContent;
                             if ((sumExp == 0) && (sumInc == 0)) {
-                                document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                                noDate();
                             }
                             else if (sumExp <= sumInc) {
-                                document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                                communicatPlus();
                             }
                             else {
-                                document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                                communicatMinus();
                             }
                             // conect with data base
                             $.post('editExpense', {
@@ -306,22 +348,18 @@ for (j = 0; j < coll.length; j++) {
                                 idExpense: id
                             }
                             );
+                            resultPlus(result);
 
-                            // show communicat 'success'
-                            document.getElementById('communicat-limit').classList.remove('communicat-limit-hide');
-                            document.getElementById('communicat-limit').innerHTML = 'Limit dla tej kategorii wydatku nie został przekroczony. Możesz jeszcze dodać: ' + result + '.';
-
-                            var column = columnChart();
-                            var incomeChartRender4 = incomeChart();
-                            var expenseChartRende4 = expenseChart();
+                            columnChart();
+                            incomeChart();
+                            expenseChart();
                         }
                         // limit was exceeded and validation is empty
                         else if (result < 0) {
                             result = -result;
                             td.setAttribute('buttonvalue', newValue);
                             td.innerHTML = newValue;
-                            document.getElementById('communicat-limit').classList.remove('communicat-limit-hide');
-                            document.getElementById('communicat-limit').innerHTML = 'Uwaga, limit dla tej kategorii wydatku został przekroczony o ' + result + '.';
+                            resultMinus(result);
 
                             td.setAttribute('buttonvalue', newValue);
                             td.innerHTML = newValue;
@@ -348,13 +386,13 @@ for (j = 0; j < coll.length; j++) {
                             var sumExp = sumExpense;
                             var sumInc = document.getElementById('income-sum').textContent;
                             if ((sumExp == 0) && (sumInc == 0)) {
-                                document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                                noDate();
                             }
                             else if (sumExp <= sumInc) {
-                                document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                                communicatPlus();
                             }
                             else {
-                                document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                                communicatMinus();
                             }
 
                             // conect with data base
@@ -364,19 +402,19 @@ for (j = 0; j < coll.length; j++) {
                             }
                             );
 
-                            var column5 = columnChart();
-                            var incomeChartRender5 = incomeChart();
-                            var expenseChartRende5 = expenseChart();
+                            columnChart();
+                            incomeChart();
+                            expenseChart();
                         }
                     });
                 }
             }
             // new value eqaul 0
             else {
-                td.innerHTML = button.getAttribute('buttonvalue');
-                if (document.getElementById('communicat-zero').classList.contains('communicat-limit-hide')) {
-                    document.getElementById('communicat-zero').classList.remove('communicat-limit-hide');
-                }
+                var parent = button.parentElement;
+                var previous = parent.previousElementSibling;
+                td.innerHTML = previous.getAttribute('buttonvalue');
+                communicatZero();
             }
 
             // change button 
@@ -456,13 +494,13 @@ for (l = 0; l < coll3.length; l++) {
                     var sumInc = sumIncomeDelete;
                     var sumExp = document.getElementById('expense-sum').textContent;
                     if ((sumExp == 0) && (sumInc == 0)) {
-                        document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                        noDate();
                     }
                     else if (sumExp <= sumInc) {
-                        document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                        communicatPlus();
                     }
                     else {
-                        document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                        communicatMinus();
                     }
                 }
                 else if (buttonTest.classList.contains('expense-button')) {
@@ -470,18 +508,18 @@ for (l = 0; l < coll3.length; l++) {
                     var sumExp = sumExpenseDelete;
                     var sumInc = document.getElementById('income-sum').textContent;
                     if ((sumExp == 0) && (sumInc == 0)) {
-                        document.getElementById('final-communicat').innerHTML = 'Nie posiadasz jeszcze żadnych danych</p>';
+                        noDate();
                     }
                     else if (sumExp <= sumInc) {
-                        document.getElementById('final-communicat').innerHTML = 'Gratulacje! Nie przekroczyłeś swojego budżetu';
+                        communicatPlus();
                     }
                     else {
-                        document.getElementById('final-communicat').innerHTML = 'Uwaga! Przekroczyłeś swój budżet';
+                        communicatMinus();
                     }
                 }
-                var incomeChartRender = incomeChart();
-                var expenseChartRender = expenseChart();
-                var column = columnChart();
+                incomeChart();
+                expenseChart();
+                columnChart();
 
             });
         }

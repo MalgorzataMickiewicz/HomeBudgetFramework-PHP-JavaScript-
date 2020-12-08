@@ -26,6 +26,7 @@ class Bilans extends Authenticated
     public function currentMonthAction() {    
         $this->userIncomes = Income::findUserIncomesByIDCurrentMonth();
         $this->userExpenses = Expense::findUserExpensesByIDCurrentMonth();
+        //var_dump($this->userIncomes);
         View::renderTemplate('Bilans/currentMonth.html', [
             'userIncomes' => $this->userIncomes,
             'userExpenses' => $this->userExpenses

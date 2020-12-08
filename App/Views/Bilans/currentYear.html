@@ -111,10 +111,16 @@
 
     <div id="chartContainer" class="mx-3 col-lg-5" style="height: 200px; width: 100%; margin-bottom: 10px;"></div>
     <div class="col-lg-6"></div>
-    <div id="communicat-zero" class="communicat-limit-hide mx-3 my-2 col-lg-12">Wprowadź inną wartość niż 0.</div>
-    <div id="communicat-limit" class="communicat-limit-hide mx-3 my-2 col-lg-12"></div>
+    <div id="communicat-zero" class="col-lg-10 offset-lg-1 my-1 opacity-communicat-warning communicat-limit-hide">
+        <h3 class="my-4 h4" style="color: black!important; display: inline-block;">Wprowadź inną wartość niż 0.</h3>
+    </div>
+    <div id="communicat-low" class="col-lg-10 offset-lg-1 my-1 opacity-communicat-success communicat-limit-hide">
+    </div>
+    <div id="communicat-high" class="col-lg-10 offset-lg-1 my-1 opacity-communicat-limit communicat-limit-hide">
+    </div>
+
     <!--INCOMES-->
-    <div class="col-lg-6">
+    <div class="col-lg-6 mt-3">
         <table class="table table-bordered">
             <thead class="bg-table">
                 <tr>
@@ -203,7 +209,7 @@
     </div>
 
     <!-- EXPENSES -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 mt-3">
         <table class="table table-bordered">
             <thead class="bg-table">
                 <tr>

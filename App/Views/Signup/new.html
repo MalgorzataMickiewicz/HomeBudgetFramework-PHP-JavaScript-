@@ -3,46 +3,31 @@
 {% block title %}Zarejestruj się | TB twojbudzet.com{% endblock %}
 
 {% block footer %}
-    <script src="/js/hideShowPassword.min.js"></script>
     <script src="/js/app.js"></script>
-
+    <script src="/js/signup.js"></script>
     <script>
-        $(document).ready(function() {
+         $(document).ready(function() {
 
             /**
              * Validate the form
              */
-            $('#formSignup').validate({
-                rules: {
-                    name: 'required',
-                    email: {
-                        required: true,
-                        email: true,
-                        remote: '/account/validate-email'
+                $('#formSignup').validate({
+                    rules: {
+                        name: 'required',
+                        email: {
+                            required: true,
+                            email: true,
+                            remote: '/account/validate-email'
+                        }
                     },
-                    password: {
-                        required: true,
-                        minlength: 6,
-                        validPassword: true
+                    messages: {
+                        email: {
+                            remote: 'Adres emial jest już zajęty'
+                        }
                     }
-                },
-                messages: {
-                    email: {
-                        remote: 'Adres emial jest już zajęty'
-                    }
-                }
+                });
             });
-
-
-            /**
-              * Show password toggle button
-              */
-            $('#inputPassword').hideShowPassword({
-                show: false,
-                innerToggle: 'focus'
-            });
-        });
-    </script>
+</script>
 
 {% endblock %}
 
@@ -114,7 +99,15 @@
 
                         <input type="password" name="password" class="form-control" placeholder="*Hasło" id="inputPassword" aria-label="inputPassword"
                             aria-describedby="Password">
-                    
+                        <div id="digit" class="limit-hide">
+                            Hasło powinno zawierać przynajmniej jedną cyfrę
+                        </div>
+                        <div id="letter" class="limit-hide">
+                            Hasło powinno zawierać przynajmniej jedną literę
+                        </div>
+                        <div id="length" class="limit-hide">
+                            Hasło powinno składać się przynajmniej z 6 znaków
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-register my-3 mb-3">Zarejestruj się</button>

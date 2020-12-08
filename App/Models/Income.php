@@ -48,15 +48,14 @@ class Income extends \Core\Model
 
             $userId = $_SESSION['user_id'];
             $categoryIncome = $this->categoryIncome;
-            $value = $this->valueIncome;
+            $valueIncome = $this->valueIncome;
+            var_dump($valueIncome);
+            $valueDot = static::getValueWithDot($valueIncome);
 
             //get value of choosen category id from database
             $categoryIdString = static::getCategoryId($categoryIncome);
             if ($categoryIdString) {
                 $categoryIdIntiger = (int)$categoryIdString;
-                
-                //get value withouts comma and round to 2
-                $valueDot = static::getValueWithDot($value);
 
                 $sql = 'INSERT INTO incomes (userId, dateIncome, valueIncome, categoryIncomeId, commentIncome)
                 VALUES (:userId, :dateIncome, :valueDot, :categoryIdIntiger, :commentIncome)';
@@ -125,9 +124,8 @@ class Income extends \Core\Model
         $value = str_replace(",",".",$value); 
         $places = 2;
         $mult = pow(10, $places);
-        $valueDot = ceil($value * $mult) / $mult;
-
-        return $valueDot;
+        $english_format_number = number_format($value, 2, '.', '');
+        return $english_format_number;
     }
 
     public static function findCategoriesByID() {
